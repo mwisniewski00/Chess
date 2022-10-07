@@ -1,0 +1,25 @@
+{
+  "name": "chesgame",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext ts,tsx,js,jsx . && prettier -c \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint --fix --ext ts,tsx,js,jsx . && prettier -c --write \"src/**/*.{ts,tsx}\"",
+    "build": "tsc --build --clean && tsc --build tsconfig.build.json --force",
+    "dev": "tsc-watch"
+  },
+  "devDependencies": {
+    "lint-staged": "^13.0.3",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.8.4",
+    "eslint": "^8.24.0",
+    "@typescript-eslint/eslint-plugin": "^5.39.0"
+  },
+  "lint-staged": {
+    "**/*.(js|jsx|ts|tsx)": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "license": "MIT"
+}
