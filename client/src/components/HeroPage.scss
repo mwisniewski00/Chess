@@ -1,0 +1,15 @@
+@import "../variables.scss";
+
+.heroPage {
+    background-color: $main-dark;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    .leftSide {
+        background-color: $main-light;
+        width: 40%;
+    }
+    .rightSide {
+        width: 60%;
+    }
+}
