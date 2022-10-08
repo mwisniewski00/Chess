@@ -20,5 +20,5 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "test"]
+  "include": ["./src/*"]
 }
