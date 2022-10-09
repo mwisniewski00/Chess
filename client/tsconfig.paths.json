@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@chessgame/*": ["../chessgame/src/*"]
+      "@chessgame/*": ["../chessgame/src/*"],
+      "@chesspieces/*": ["./src/assets/chesspieces/*"]
     }
   }
 }

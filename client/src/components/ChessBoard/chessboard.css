@@ -1,0 +1,68 @@
+:root {
+  --chessfield-light: #d3d3d3;
+  --chessfield-dark: #6c757d;
+  --chessboard-border-radius: 15px;
+}
+
+#chessboard {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: black;
+  border-radius: var(--chessboard-border-radius);
+  box-shadow: 10px 10px 10px grey;
+}
+
+#chessboard > div {
+  width: 100%;
+  height: calc(100% / 8);
+  display: flex;
+  flex-direction: row;
+}
+
+#chessboard > div:first-of-type {
+  border-top-left-radius: var(--chessboard-border-radius);
+  border-top-right-radius: var(--chessboard-border-radius);
+}
+
+#chessboard > div:last-of-type {
+  border-bottom-left-radius: var(--chessboard-border-radius);
+  border-bottom-right-radius: var(--chessboard-border-radius);
+}
+
+.chessfield {
+  width: calc(100% / 8);
+  height: 100%;
+  background-color: var(--chessfield-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#chessboard > div:nth-child(2n) > .chessfield:nth-child(2n) {
+  background-color: var(--chessfield-dark);
+}
+
+#chessboard > div:nth-child(2n + 1) > .chessfield:nth-child(2n + 1) {
+  background-color: var(--chessfield-dark);
+}
+
+#field-a0 {
+  border-top-left-radius: var(--chessboard-border-radius);
+}
+
+#field-h0 {
+  border-top-right-radius: var(--chessboard-border-radius);
+}
+
+#field-a7 {
+  border-bottom-left-radius: var(--chessboard-border-radius);
+}
+
+#field-h7 {
+  border-bottom-right-radius: var(--chessboard-border-radius);
+}
+
+.chess-piece {
+  width: 80%;
+  height: 80%;
+}
