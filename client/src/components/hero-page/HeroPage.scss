@@ -1,0 +1,47 @@
+@import "../../variables.scss";
+
+.heroPage {
+    display: inline-block;
+    background-color: $dark-background;
+    width: 100%;
+    height: 100vh;
+    .mainContent {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 240px;
+        margin-left: 66px;
+        max-width: 650px;
+        .heroText {
+            font-family: "Roboto", sans-serif;
+            font-size: 2.9rem;
+            font-weight: bold;
+            color: $main-theme-color;
+            text-transform: uppercase;
+        }
+        .heroSubText {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 0.95rem;
+            color: $dark-grey;
+        }
+        .heroButton {
+            margin-top: 10px;
+            button {
+                font-family: sans-serif;
+                font-size: 0.95rem;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                background-color: $dark-background-contrast;
+                color: $main-theme-color;
+                height: 45px;
+                width: 180px;
+                border: none;
+                border-radius: 10px;
+                box-shadow: 2px 2px 8px 0px black;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
