@@ -10,7 +10,7 @@
         flex-direction: column;
         gap: 20px;
         margin-top: 240px;
-        margin-left: 66px;
+        margin-left: 65px;
         max-width: 650px;
         .heroText {
             font-family: "Roboto", sans-serif;
@@ -22,7 +22,7 @@
         .heroSubText {
             font-family: Verdana, Geneva, Tahoma, sans-serif;
             font-size: 0.95rem;
-            color: $dark-grey;
+            color: $text-grey;
         }
         .heroButton {
             margin-top: 10px;
