@@ -1,3 +1,4 @@
+import { CirclePattern } from "./circle-pattern/CirclePattern";
 import "./HeroPage.scss";
 
 export const HeroPage: React.FC = () => {
@@ -10,7 +11,13 @@ export const HeroPage: React.FC = () => {
           <button>Start Now</button>
         </div>
       </div>
-      <div className="gifGrid"></div>
+      <div className="circle-pattern__left">
+        <CirclePattern height={5} width={19} />
+      </div>
+      <div className="circle-pattern__right">
+        <CirclePattern height={6} width={7} />
+      </div>
+      <img className="board-3d" alt="board" src="./board1.png"></img>
     </div>
   );
 };
