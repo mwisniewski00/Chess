@@ -1,24 +1,24 @@
 import { CirclePattern } from "./circle-pattern/CirclePattern";
 import "./HeroPage.scss";
 import boardImg from "./board1.png";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export const HeroPage: React.FC = () => {
   const scope = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const animateBoard = gsap.timeline({ repeat: -1 });
-    gsap.context(() => {
-      animateBoard.fromTo(".board-3d", {
+  useLayoutEffect(() => {
+    const animation = gsap.context(() => {
+      gsap.timeline({ repeat: -1 })
+      .fromTo(".board-3d", {
         y: -20,
         visibility: 1,
       }, {
         duration: 2.5,
         ease: "power1.inOut",
         y: 20,
-      });
-      animateBoard.fromTo(".board-3d", {
+      })
+      .fromTo(".board-3d", {
         y: 20,
       }, {
         duration: 2.5,
@@ -34,10 +34,12 @@ export const HeroPage: React.FC = () => {
           stagger: {
             each: 0.02,
           },
-          opacity: 1,
+          opacity: 0.5,
         },
       );
     }, scope);
+
+    return () => {animation.revert()};
   }, []);
 
   return (
