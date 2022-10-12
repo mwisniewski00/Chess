@@ -1,13 +1,54 @@
 import { CirclePattern } from "./circle-pattern/CirclePattern";
 import "./HeroPage.scss";
+import boardImg from "./board1.png";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export const HeroPage: React.FC = () => {
+  const scope = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const animateBoard = gsap.timeline({ repeat: -1 });
+    gsap.context(() => {
+      animateBoard.fromTo(".board-3d", {
+        y: -20,
+        visibility: 1,
+      }, {
+        duration: 2.5,
+        ease: "power1.inOut",
+        y: 20,
+      });
+      animateBoard.fromTo(".board-3d", {
+        y: 20,
+      }, {
+        duration: 2.5,
+        ease: "power1.inOut",
+        y: -20,
+      });
+      gsap.fromTo(
+        ".circle",
+        {
+          opacity: 0,
+        },
+        {
+          stagger: {
+            each: 0.02,
+          },
+          opacity: 1,
+        },
+      );
+    }, scope);
+  }, []);
+
   return (
-    <div className="heroPage">
-      <div className="mainContent">
-        <div className="heroText">Lorem Ipsum Dolor Sit Amet consectetur</div>
-        <div className="heroSubText">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste, doloremque consectetur distinctio odio a expedita sapiente.</div>
-        <div className="heroButton">
+    <div ref={scope} className="hero-page">
+      <div className="main-content">
+        <div className="hero-text">Lorem Ipsum Dolor Sit Amet consectetur</div>
+        <div className="hero-sub-text">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste,
+          doloremque consectetur distinctio odio a expedita sapiente.
+        </div>
+        <div className="hero-button">
           <button>Start Now</button>
         </div>
       </div>
@@ -17,7 +58,7 @@ export const HeroPage: React.FC = () => {
       <div className="circle-pattern__right">
         <CirclePattern height={6} width={7} />
       </div>
-      <img className="board-3d" alt="board" src="./board1.png"></img>
+      <img className="board-3d" alt="board" src={boardImg}></img>
     </div>
   );
 };
