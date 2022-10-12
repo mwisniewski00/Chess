@@ -21,9 +21,9 @@ export const Navbar: React.FC = () => {
       </div>
       <div className="navbar__menu">
         <div className="linkContainer">
-          <a href="#" className="navbar__menu__item item__selected">
+          <Link to="/" className="navbar__menu__item item__selected">
             Home
-          </a>
+          </Link>
           {selectedLinks.home === "selected" && (
             <div className="link__underline__container">
               <div className="link__underline link__underline__upper"></div>
@@ -32,7 +32,7 @@ export const Navbar: React.FC = () => {
           )}
         </div>
         <div className="linkContainer">
-          <Link className="navbar__menu__item" to="/lobby">
+          <Link to="/lobby" className="navbar__menu__item">
             Lobby
           </Link>
           {selectedLinks.lobby === "selected" && (
@@ -43,9 +43,9 @@ export const Navbar: React.FC = () => {
           )}
         </div>
         <div className="linkContainer">
-          <a href="#" className="navbar__menu__item">
+          <Link to="/profile" className="navbar__menu__item">
             Profile
-          </a>
+          </Link>
           {selectedLinks.profile === "selected" && (
             <div className="link_underline__container">
               <div className="link__underline link__underline__upper"></div>
@@ -54,9 +54,7 @@ export const Navbar: React.FC = () => {
           )}
         </div>
         <div className="linkContainer">
-          <a href="#" className="navbar__menu__item item">
-            Login / Register
-          </a>
+          <div className="navbar__menu__item">Login / Register</div>
         </div>
       </div>
     </div>

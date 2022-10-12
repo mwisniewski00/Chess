@@ -1,11 +1,11 @@
-import { HeroPage } from "./components/hero-page/HeroPage";
 import { Navbar } from "./components/navbar/Navbar";
+import { Routing } from "./Routing";
 
 function App() {
   return (
     <div className="app">
       <Navbar />
-      <HeroPage />
+      <Routing />
     </div>
   );
 }
