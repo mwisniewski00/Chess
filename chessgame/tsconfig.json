@@ -19,6 +19,5 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src", "test"]
+  }
 }
