@@ -1,9 +1,36 @@
 @import "../../../variables.scss";
 
+.dialog {
+
+}
 .dialog-content {
+    border: none;
     margin: 0;
     padding: 0;
-    background-color: $dark-background-contrast;
+    background-color: $dark-background;
     min-height: 500px;
-    min-width: 300px;
+    max-height: 600px;
+    max-width: 300px;
+    // padding: 20px 24px !important;
+}
+
+.sign-up {
+    height: 430px;
+    .switch-tabs {
+        margin-top: 35px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.95rem;
+        .switch-tabs-text__left {
+            color: rgb(201, 201, 201);
+        }
+        .switch-tabs-text__right {
+            color: $main-theme-color;
+            font-weight: 600;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }

@@ -16,9 +16,15 @@ export const UserModal: React.FC<UserModalProps> = ({ open, setOpen }) => {
   return (
     <Dialog className="dialog" open={open} onClose={handleClose}>
       <DialogContent className="dialog-content">
-          <div className="sign-up">
-            <Registration />
+        <div className="sign-up">
+          <Registration />
+          <div className="switch-tabs">
+            <div className="switch-tabs-text__left">
+              Already got an account?
+            </div>
+            <div className="switch-tabs-text__right">Sign in!</div>
           </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -2,6 +2,7 @@ import "./RegistrationForm.scss";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
 import registrationSchema from "../validation-schema/validation";
+import PersonIcon from '@mui/icons-material/Person';
 
 interface Values {
   username: string;
@@ -26,15 +27,16 @@ export const RegistrationForm: React.FC = () => {
       }}
       validationSchema={registrationSchema}
     >
-      <Form>
+      <Form className="form">
         <div className="inputs">
           <CustomInput
+          icon={PersonIcon}
             type="text"
             name="username"
             placeholder="Enter Username"
           />
-          <CustomInput type="email" name="email" placeholder="Enter Email" />
-          <CustomInput
+          <CustomInput icon={PersonIcon} type="email" name="email" placeholder="Enter Email" />
+          <CustomInput icon={PersonIcon}
             type="password"
             name="password"
             placeholder="Enter Password"
