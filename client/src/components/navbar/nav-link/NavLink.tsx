@@ -10,7 +10,10 @@ interface NavLinkProps {
 export const NavLink: React.FC<NavLinkProps> = ({ link, text, selected }) => {
   return (
     <div className="linkContainer">
-      <Link to={link} className={`navbar__menu__item ${selected ? "item__selected" : ""}`}>
+      <Link
+        to={link}
+        className={`navbar__menu__item ${selected ? "item__selected" : ""}`}
+      >
         {text}
       </Link>
       {selected && (

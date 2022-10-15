@@ -1,5 +1,5 @@
 import './Lobby.scss';
 
 export const Lobby: React.FC = () => {
-        return <div>Lobby Component</div>;
+        return <div className="lobby">Lobby Component</div>;
 }

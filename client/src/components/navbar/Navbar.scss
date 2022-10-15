@@ -22,42 +22,12 @@
     }
   }
   .navbar__menu {
-    margin-right: 65px;
     display: flex;
+    align-items: flex-start;
+    position: relative;
+    top: 15px;
+    margin-right: 65px;
     gap: 55px;
-    .linkContainer {
-      .navbar__menu__item {
-        text-decoration: none;
-        color: rgb(178, 178, 178);
-        font-size: 0.95rem;
-        font-weight: 500;
-        letter-spacing: 0.7px;
-        &:hover {
-          cursor: pointer;
-          color: white;
-        }
-      }
-      .item__selected {
-        color: white;
-        font-size: 1.1rem;
-        font-weight: bold;
-      }
-
-      .link__underline__container {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        .link__underline {
-          width: inherit;
-          height: 3px;
-          border-radius: 10px;
-          background-color: $main-theme-color;
-          transition: width 0.3s ease-in-out;
-        }
-        .link__underline__lower {
-            width: 50%;
-        }
-      }
-    }
+    height: 40%;
   }
 }

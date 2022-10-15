@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { NavLink } from "./nav-link/NavLink";
+import { useLocation } from 'react-router-dom';
 import "./Navbar.scss";
 
 interface SelectedLinks {
@@ -9,10 +9,22 @@ interface SelectedLinks {
 
 export const Navbar: React.FC = () => {
   const [selectedLinks, setSelectedLinks] = useState<SelectedLinks>({
-    home: "selected",
+    home: "not-selected",
     lobby: "not-selected",
     profile: "not-selected",
   });
+
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    const links = { ...selectedLinks };
+    Object.keys(links).forEach((key) => {
+      links[key] = "not-selected";
+    });
+    links[location.pathname.slice(1)] = "selected";
+    setSelectedLinks(links);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   return (
     <div className="navbar">

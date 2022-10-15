@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 export const HeroPage: React.FC = () => {
-  const scope = useRef<HTMLDivElement | null>(null);
+  const scope = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const animation = gsap.context(() => {
