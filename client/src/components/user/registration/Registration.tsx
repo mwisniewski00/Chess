@@ -1,5 +1,8 @@
 import './Registration.scss';
+import { RegistrationForm } from './form/RegistrationForm';
 
 export const Registration: React.FC = () => {
-        return <div></div>;
+        return <div>
+            <RegistrationForm />
+        </div>;
 }
