@@ -1,6 +1,7 @@
 import "./RegistrationForm.scss";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
+import registrationSchema from "../validation-schema/validation";
 
 interface Values {
   username: string;
@@ -23,6 +24,7 @@ export const RegistrationForm: React.FC = () => {
       onSubmit={(values: Values) => {
         handleRegistration(values);
       }}
+      validationSchema={registrationSchema}
     >
       <Form>
         <div className="inputs">
