@@ -1,8 +1,5 @@
 @import "../../../variables.scss";
 
-.dialog {
-
-}
 .dialog-content {
     border: none;
     margin: 0;
@@ -12,27 +9,29 @@
     max-height: 700px;
     width: 270px;
     // padding: 20px 24px !important;
-}
+    border-radius: 0;
 
-.sign-up {
-    // height: 430px;
-    max-height: 650px;
-    .switch-tabs {
-        margin-top: 35px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        font-size: 0.95rem;
-        .switch-tabs-text__left {
-            color: rgb(201, 201, 201);
-        }
-        .switch-tabs-text__right {
-            color: $main-theme-color;
-            font-weight: 600;
-            &:hover {
-                cursor: pointer;
+    .sign-up, .log-in {
+        max-height: 650px;
+        .switch-tabs {
+            margin-top: 35px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            .switch-tabs-text__left {
+                color: rgb(201, 201, 201);
+            }
+            .switch-tabs-text__right {
+                color: $main-theme-color;
+                font-weight: 600;
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     }
 }
+
+

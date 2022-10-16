@@ -8,7 +8,6 @@
     .input-container {
         display: flex;
         justify-content: center;
-        z-index: 1;
         position: relative;
         width: 100%;
         input {
@@ -34,9 +33,8 @@
         .icon {
             color: $main-theme-color;
             position: absolute;
-            top: 8px;
+            top: 7px;
             left: 11px;
-            z-index: 2 !important;
         }
     }
     .error {
