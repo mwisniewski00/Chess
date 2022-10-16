@@ -17,7 +17,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({ icon: Icon, ...props }
         <input
           {...field}
           {...props}
-          className={meta.touched && meta.error ? "input-error" : ""}
+          className={meta.touched && meta.error ? "input-error" : meta.touched ? "input-correct" : ""}
         />
         <Icon className="icon" />
       </div>

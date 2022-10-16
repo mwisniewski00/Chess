@@ -24,4 +24,40 @@
             color: $text-grey;
         }
     }
+    .registration-status {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        .registration-status__pending {
+            position: relative;
+            color: $main-theme-color;
+            .progress-animation {
+                position: absolute;
+                left: -40px;
+                top: -4px;
+            }
+        }
+        .registration-status__resolved {
+            position: relative;
+            color: rgb(0, 166, 0);
+            .success-icon {
+                position: absolute;
+                left: -30px;
+                top: -2px;
+            }
+        }
+        .registration-status__rejected {
+            position: relative;
+            color: red;
+            .error-icon {
+                position: absolute;
+                left: -30px;
+                top: -2px;
+            }
+        }
+    }
 }

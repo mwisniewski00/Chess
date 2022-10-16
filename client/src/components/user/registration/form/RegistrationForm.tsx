@@ -8,6 +8,7 @@ interface Values {
   username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export const RegistrationForm: React.FC = () => {
@@ -21,6 +22,7 @@ export const RegistrationForm: React.FC = () => {
         username: "",
         email: "",
         password: "",
+        confirmPassword: "",
       }}
       onSubmit={(values: Values) => {
         handleRegistration(values);
@@ -41,6 +43,7 @@ export const RegistrationForm: React.FC = () => {
             name="password"
             placeholder="Enter Password"
           />
+          <CustomInput icon={PersonIcon} type="password" name="confirmPassword" placeholder="Confirm Password" />
         </div>
         <button type="submit">Register</button>
       </Form>
