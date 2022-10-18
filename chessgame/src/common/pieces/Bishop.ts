@@ -8,7 +8,7 @@ class Bishop extends Piece {
         const ccn: number = tails[this.column];     //current column number
         const ncn: number = tails[column];          //new column number
 
-        if(Math.max(ccn, ncn) - Math.min(ccn,ncn) == Math.max(this.row, row) - Math.min(this.row, row) && ccn != ncn){
+        if(Math.abs(ccn - ncn) == Math.abs(this.row - row) && ccn != ncn){
             return true;
         } 
 
