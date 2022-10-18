@@ -1,6 +1,7 @@
 import Bishop from "./common/pieces/Bishop";
 import King from "./common/pieces/King";
 import Knight from "./common/pieces/Knight"
+import Pawn from "./common/pieces/Pawn"
 
 console.log("Bishop");
 const f1 = new Bishop(true, "f", 1);
@@ -31,3 +32,14 @@ console.log(b1.canMove("d", 2)); //true
 console.log(b1.canMove("e", 6)); //false
 console.log(b1.canMove("d", 7)); //false
 console.log(b1.canMove("b", 2)); //false
+
+
+console.log("Pawn");
+const a2 = new Pawn(true, "a", 2)
+
+console.log(a2.canMove("a", 3)); //true
+console.log(a2.canMove("a", 4)); //true
+console.log(a2.canMove("a", 5)); //false
+console.log(a2.canMove("a", 1)); //false
+console.log(a2.canMove("b", 2)); //false
+console.log(a2.canMove("d", 7)); //false

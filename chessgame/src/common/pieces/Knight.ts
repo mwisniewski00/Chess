@@ -2,7 +2,7 @@ import Piece from "./_Interface";
 import tails from "../constant/tails";
 
 class Knight extends Piece {
-    type: string = "Bishop";
+    type: string = "Knight";
 
     canMove(column: string, row: number): boolean {
         const ccn: number = tails[this.column];     //current column number
