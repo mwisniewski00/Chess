@@ -5,10 +5,21 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { LoginForm } from "./form/LoginForm";
 
-type Status = "idle" | "pending" | "resolved" | "rejected";
+export type Status = "idle" | "pending" | "resolved" | "rejected";
+
+export interface Messages {
+  pending: string;
+  resolved: string;
+  rejected: string;
+}
 
 export const Login: React.FC = () => {
   const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState<Messages>({
+    pending: "",
+    resolved: "",
+    rejected: "",
+  });
 
   return (
     <div className="login">
@@ -21,7 +32,7 @@ export const Login: React.FC = () => {
       <div className="login-status">
         {status === "pending" && (
           <div className="login-status__pending">
-            Please wait...
+            {message.pending}
             <div className="progress-animation">
               <CircularProgress size={26} color="inherit" />
             </div>
@@ -29,7 +40,7 @@ export const Login: React.FC = () => {
         )}
         {status === "resolved" && (
           <div className="login-status__resolved">
-            Logged in!
+            {message.resolved}
             <div className="success-icon">
               <DoneIcon color="inherit" />
             </div>
@@ -37,14 +48,18 @@ export const Login: React.FC = () => {
         )}
         {status === "rejected" && (
           <div className="login-status__rejected">
-            Something went wrong...
+            {message.rejected}
             <div className="error-icon">
               <CloseIcon color="inherit" />
             </div>
           </div>
         )}
       </div>
-      <LoginForm />
+      <LoginForm
+        setStatus={setStatus}
+        message={message}
+        setMessage={setMessage}
+      />
     </div>
   );
 };

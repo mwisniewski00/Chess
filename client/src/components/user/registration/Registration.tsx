@@ -5,10 +5,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 
-type Status = "idle" | "pending" | "resolved" | "rejected";
+export type Status = "idle" | "pending" | "resolved" | "rejected";
+
+export interface Messages {
+  pending: string;
+  resolved: string;
+  rejected: string;
+}
 
 export const Registration: React.FC = () => {
   const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState<Messages>({
+    pending: "",
+    resolved: "",
+    rejected: "",
+  });
 
   return (
     <div className="registration">
@@ -44,7 +55,11 @@ export const Registration: React.FC = () => {
           </div>
         )}
       </div>
-      <RegistrationForm />
+      <RegistrationForm
+        setStatus={setStatus}
+        message={message}
+        setMessage={setMessage}
+      />
     </div>
   );
 };
