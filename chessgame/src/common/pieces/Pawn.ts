@@ -1,5 +1,4 @@
 import Piece from "./_Interface";
-import tails from "../constant/tails";
 
 class Pawn extends Piece {
     type: string = "Pawn";

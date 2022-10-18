@@ -2,6 +2,8 @@ import Bishop from "./common/pieces/Bishop";
 import King from "./common/pieces/King";
 import Knight from "./common/pieces/Knight"
 import Pawn from "./common/pieces/Pawn"
+import Queen from "./common/pieces/Queen";
+import Rock from "./common/pieces/Rock";
 
 console.log("Bishop");
 const f1 = new Bishop(true, "f", 1);
@@ -43,3 +45,23 @@ console.log(a2.canMove("a", 5)); //false
 console.log(a2.canMove("a", 1)); //false
 console.log(a2.canMove("b", 2)); //false
 console.log(a2.canMove("d", 7)); //false
+
+console.log("Queen");
+const d1 = new Queen(true, "d", 1)
+
+console.log(d1.canMove("d", 7)); //true
+console.log(d1.canMove("a", 4)); //true
+console.log(d1.canMove("a", 1)); //false
+console.log(d1.canMove("c", 3)); //false
+console.log(d1.canMove("g", 5)); //false
+console.log(d1.canMove("c", 8)); //false
+
+console.log("Rock");
+const a1 = new Rock(true, "a", 1)
+
+console.log(a1.canMove("a", 3)); //true
+console.log(a1.canMove("a", 4)); //true
+console.log(a1.canMove("g", 1)); //true
+console.log(a1.canMove("b", 2)); //false
+console.log(a1.canMove("g", 2)); //false
+console.log(a1.canMove("d", 7)); //false

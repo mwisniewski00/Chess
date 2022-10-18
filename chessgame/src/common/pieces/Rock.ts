@@ -1,8 +1,8 @@
 import Piece from "./_Interface";
 import tails from "../constant/tails";
 
-class Queen extends Piece {
-    type: string = "Queen";
+class Rock extends Piece {
+    type: string = "Rock";
 
     canMove(column: string, row: number): boolean {
         const ccn: number = tails[this.column];     //current column number
@@ -14,12 +14,9 @@ class Queen extends Piece {
         if(this.row != row && ccn == ncn){
             return true;
         }
-        if(Math.abs(ccn - ncn) == Math.abs(this.row - row) && ccn != ncn){
-            return true;
-        } 
 
         return false;
     }
 }
 
-export default Queen;
+export default Rock;
