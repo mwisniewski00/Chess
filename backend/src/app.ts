@@ -1,11 +1,28 @@
 import express from "express";
+import mongoose, { ConnectOptions } from "mongoose";
+import cors from "cors";
+import dbConfig from "./mongo/config";
+import users from "./routes/users";
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use(cors());
+app.use(express.json());
 
-app.listen(5000, () => {
-  console.log("Server started on port 5000");
-});
+app.use("/users", users);
+
+mongoose
+  .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  } as ConnectOptions)
+  .then((response) => {
+    console.log(
+      `Connected to MongoDB. Database name: "${response.connections[0].name}"`
+    );
+    const port = process.env.PORT || 5000;
+    app.listen(port, () => {
+      console.log(`API server listening at http://localhost:${port}`);
+    });
+  })
+  .catch((error) => console.error("Error connecting to MongoDB", error));
