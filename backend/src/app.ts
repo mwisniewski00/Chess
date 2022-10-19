@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
-import dbConfig from "./mongo/config";
+import dbConfig from "./config/dbConn";
 import users from "./routes/users";
 
 const app = express();

@@ -1,11 +1,12 @@
-import './LoginForm.scss';
+import "./LoginForm.scss";
 import { Formik, Form } from "formik";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
 import loginSchema from "../validation-schema/validation";
-import PersonIcon from '@mui/icons-material/Person';
-import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
 import { Status, Messages } from "../Login";
-import axios from 'axios';
+import axios from "axios";
+import useAuth from "hooks/useAuth";
 
 interface LoginFormProps {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
@@ -18,20 +19,35 @@ interface Values {
   password: string;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ setStatus, setMessage, message }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({
+  setStatus,
+  setMessage,
+  message,
+}) => {
+  const { setAuth } = useAuth();
+
   const handleLogin = async (values: Values) => {
-    setMessage({...message, pending: "Logging in..."});
+    setMessage({ ...message, pending: "Logging in..." });
     setStatus("pending");
-    console.log(values);
     try {
       const response = await axios.post("/users/login", values);
       console.log(response);
-      setMessage({...message, resolved: "Logged in successfully!"});
+
+      setAuth({
+        token: response.data.token,
+        username: response.data.username,
+        email: response.data.email,
+      });
+
+      setMessage({ ...message, resolved: "Logged in successfully!" });
       setStatus("resolved");
-    }
-    catch (error) {
-      console.log(error);
-      setMessage({...message, rejected: "Something went wrong..."});
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setMessage({ ...message, rejected: "Invalid user data" });
+        setStatus("rejected");
+        return;
+      }
+      setMessage({ ...message, rejected: "Something went wrong..." });
       setStatus("rejected");
     }
   };
@@ -50,12 +66,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ setStatus, setMessage, mes
       <Form className="form">
         <div className="inputs">
           <CustomInput
-          icon={PersonIcon}
+            icon={PersonIcon}
             type="text"
             name="username"
             placeholder="Enter Username"
           />
-          <CustomInput icon={LockIcon}
+          <CustomInput
+            icon={LockIcon}
             type="password"
             name="password"
             placeholder="Enter Password"

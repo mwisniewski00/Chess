@@ -28,7 +28,8 @@
             border: 2px solid red;
         }
         .input-correct {
-            border: 2px solid green;
+            // border: 2px solid green;
+            border: 2px solid $main-theme-color;
         }
         .icon {
             color: $main-theme-color;

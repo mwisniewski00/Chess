@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { NavLink } from "./nav-link/NavLink";
 import { useLocation } from "react-router-dom";
 import "./Navbar.scss";
-import { UserModal } from "../user/modal/UserModal";
+import { UserModal } from "../../user/modal/UserModal";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";
