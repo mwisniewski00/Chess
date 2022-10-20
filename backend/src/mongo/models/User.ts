@@ -4,6 +4,7 @@ interface IUser {
     username: string;
     email: string;
     password: string;
+    refreshToken: string;
 }
 
 const userSchema = new Schema<IUser>(
@@ -30,6 +31,9 @@ const userSchema = new Schema<IUser>(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
         "Password must contain at least one number, one uppercase and one lowercase letter, and at least 8 or more characters",
       ],
+    },
+    refreshToken: {
+      type: String,
     },
   },
   { collection: "users" }

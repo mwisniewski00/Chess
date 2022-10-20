@@ -3,10 +3,14 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import dbConfig from "./config/dbConn";
 import users from "./routes/users";
+import verifyJWT from "./middleware/verifyJWT";
+import credentials from "./middleware/credentials";
+import corsOptions from "./config/corsOptions";
 
 const app = express();
 
-app.use(cors());
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/users", users);
