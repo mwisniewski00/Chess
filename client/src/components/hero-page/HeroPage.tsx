@@ -3,8 +3,11 @@ import "./HeroPage.scss";
 import boardImg from "./board1.png";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
+import useRefreshToken from "hooks/useRefreshToken";
 
 export const HeroPage: React.FC = () => {
+  const refresh = useRefreshToken();
+
   const scope = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -62,7 +65,7 @@ export const HeroPage: React.FC = () => {
           doloremque consectetur distinctio odio a expedita sapiente.
         </div>
         <div className="hero-button">
-          <button>Start Now</button>
+          <button onClick={() => refresh()}>Start Now</button>
         </div>
       </div>
       <div className="circle-pattern__left">

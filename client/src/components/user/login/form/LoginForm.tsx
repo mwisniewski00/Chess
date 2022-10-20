@@ -2,11 +2,11 @@ import "./LoginForm.scss";
 import { Formik, Form } from "formik";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
 import loginSchema from "../validation-schema/validation";
-import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { Status, Messages } from "../Login";
-import axios from "axios";
 import useAuth from "hooks/useAuth";
+import axios from "api/axios";
 
 interface LoginFormProps {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
@@ -15,7 +15,7 @@ interface LoginFormProps {
 }
 
 interface Values {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -30,7 +30,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     setMessage({ ...message, pending: "Logging in..." });
     setStatus("pending");
     try {
-      const response = await axios.post("/users/login", values);
+      const response = await axios.post("/users/login", values, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
       console.log(response);
 
       setAuth({
@@ -55,7 +58,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <Formik
       initialValues={{
-        username: "",
+        email: "",
         password: "",
       }}
       onSubmit={(values: Values) => {
@@ -66,10 +69,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <Form className="form">
         <div className="inputs">
           <CustomInput
-            icon={PersonIcon}
+            icon={EmailIcon}
             type="text"
-            name="username"
-            placeholder="Enter Username"
+            name="email"
+            placeholder="Enter Email"
           />
           <CustomInput
             icon={LockIcon}

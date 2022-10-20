@@ -6,7 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { Status, Messages } from "../Registration";
-import axios from "axios";
+import axios from "api/axios";
 
 interface RegistrationFormProps {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
