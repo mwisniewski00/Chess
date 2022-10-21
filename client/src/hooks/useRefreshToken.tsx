@@ -12,7 +12,7 @@ const useRefreshToken = () => {
 
       console.log("Refreshed token, response: ", response);
 
-      setAuth({ ...auth, token: response.data.accessToken });
+      setAuth({ ...auth, token: response.data.accessToken, ...response.data.userInfo });
 
       return response.data.accessToken;
     } catch (error) {

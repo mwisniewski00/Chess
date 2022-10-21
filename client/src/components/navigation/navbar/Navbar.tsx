@@ -1,14 +1,25 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { NavLink } from "./nav-link/NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import { UserModal } from "../../user/modal/UserModal";
+import useLogout from "hooks/useLogout";
+import useAuth from "hooks/useAuth";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";
 }
 
 export const Navbar: React.FC = () => {
+  const logout = useLogout();
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+
+  const signOut = () => {
+    logout();
+    navigate("/");
+  };
+
   const [selectedLinks, setSelectedLinks] = useState<SelectedLinks>({
     home: "not-selected",
     lobby: "not-selected",
@@ -41,25 +52,38 @@ export const Navbar: React.FC = () => {
           text="Home"
           selected={selectedLinks.home === "selected"}
         />
-        <NavLink
-          link="/lobby"
-          text="Lobby"
-          selected={selectedLinks.lobby === "selected"}
-        />
-        <NavLink
-          link="/profile"
-          text="Profile"
-          selected={selectedLinks.profile === "selected"}
-        />
-        <div className="linkContainer">
-          <div
-            onClick={() => setOpenModal(true)}
-            className="navbar__menu__item"
-          >
-            Login / Register
+        {auth.username && (
+          <NavLink
+            link="/lobby"
+            text="Lobby"
+            selected={selectedLinks.lobby === "selected"}
+          />
+        )}
+        {auth.username && (
+          <NavLink
+            link="/profile"
+            text="Profile"
+            selected={selectedLinks.profile === "selected"}
+          />
+        )}
+        {!auth.username && (
+          <div className="linkContainer">
+            <div
+              onClick={() => setOpenModal(true)}
+              className="navbar__menu__item"
+            >
+              Login / Register
+            </div>
+            <UserModal open={openModal} setOpen={setOpenModal} />
           </div>
-          <UserModal open={openModal} setOpen={setOpenModal} />
-        </div>
+        )}
+        {auth.username && (
+          <div className="linkContainer">
+            <div onClick={() => signOut()} className="navbar__menu__item">
+              Logout
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

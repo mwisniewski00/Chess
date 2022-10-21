@@ -38,8 +38,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
       setAuth({
         token: response.data.token,
-        username: response.data.username,
-        email: response.data.email,
+        ...response.data.userInfo
       });
 
       setMessage({ ...message, resolved: "Logged in successfully!" });
