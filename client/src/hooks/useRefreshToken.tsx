@@ -12,9 +12,9 @@ const useRefreshToken = () => {
 
       console.log("Refreshed token, response: ", response);
 
-      setAuth({ ...auth, token: response.data.token });
+      setAuth({ ...auth, token: response.data.accessToken });
 
-      return response.data.token;
+      return response.data.accessToken;
     } catch (error) {
       console.log(error);
       return null;
