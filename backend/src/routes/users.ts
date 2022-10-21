@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
 import User from "../mongo/models/User";
 import verifyJWT, { IGetUserAuthInfoRequest } from "../middleware/verifyJWT";
-import cookieParser from "cookie-parser";
 require("dotenv").config();
 
 const getErrorMessage = (error: unknown) => {
@@ -27,7 +26,7 @@ router.get(
   },
 );
 
-router.post("/logout", async (req: Request, res: Response) => {
+router.delete("/logout", async (req: Request, res: Response) => {
   const cookies = req.cookies;
 
   if (!cookies.jwt) return res.sendStatus(204);
@@ -43,6 +42,8 @@ router.post("/logout", async (req: Request, res: Response) => {
     user.refreshToken = "";
     await user.save();
 
+    console.log(user);
+
     res.clearCookie("jwt", { httpOnly: true });
     res.sendStatus(204);
   } catch (error) {
@@ -53,7 +54,7 @@ router.post("/logout", async (req: Request, res: Response) => {
 
 router.get("/refresh-token", async (req: Request, res: Response) => {
   console.log(req.cookies);
-  
+
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
   console.log(cookies.jwt);
@@ -74,8 +75,15 @@ router.get("/refresh-token", async (req: Request, res: Response) => {
           process.env.ACCESS_TOKEN_SECRET as Secret,
           { expiresIn: "30s" },
         );
-        console.log("Refreshed Token for:", decoded.username);
-        res.json({ accessToken });
+        console.log("Refreshed Token for:", decoded.username, accessToken);
+        res.json({
+          accessToken,
+          userInfo: {
+            username: user.username,
+            email: user.email,
+            id: user._id,
+          },
+        });
       },
     );
   } catch (error) {
@@ -130,28 +138,28 @@ router.post("/login", async (req: Request, res: Response) => {
       const accessToken = jwt.sign(
         { username: user.username },
         process.env.ACCESS_TOKEN_SECRET as Secret,
-        { expiresIn: '30s' },
+        { expiresIn: "30s" },
       );
       const refreshToken = jwt.sign(
         { username: user.username },
         process.env.REFRESH_TOKEN_SECRET as Secret,
-        { expiresIn: '1d' },
+        { expiresIn: "1d" },
       );
 
       user.refreshToken = refreshToken;
       console.log(refreshToken);
       await User.findOneAndUpdate({ email }, user);
 
-      res.cookie('jwt', refreshToken, {
+      res.cookie("jwt", refreshToken, {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: "none",
         secure: true,
         maxAge: 24 * 60 * 60 * 1000,
         // secure: true,
-      })
-      
+      });
+
       return res.json({
-        status: 'success',
+        status: "success",
         token: accessToken,
         userInfo: {
           id: user._id,

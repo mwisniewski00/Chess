@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export interface IGetUserAuthInfoRequest extends Request {
   user?: string;
@@ -11,6 +11,8 @@ const verifyJWT = (
   next: NextFunction,
 ) => {
   const authHeader = req.headers["authorization"];
+
+  console.log(authHeader);
 
   if (!authHeader) return res.sendStatus(401);
 
