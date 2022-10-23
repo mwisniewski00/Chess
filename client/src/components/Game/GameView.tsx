@@ -47,21 +47,18 @@ export function GameView() {
     h7: { color: "BLACK", piece: "PAWN" },
   });
 
-  const [key, setKey] = useState(1);
-
   const movePiece = (from: string, to: string) => {
     if (gameState[from]) {
       const newGameState = { ...gameState, [to]: gameState[from] };
       delete newGameState[from];
       setGameState(newGameState);
-      setKey(key + 1);
     }
   };
 
   return (
     <main>
       <section>
-        <Chessboard gameState={gameState} key={key} movePiece={movePiece} />
+        <Chessboard gameState={gameState} movePiece={movePiece} />
       </section>
     </main>
   );

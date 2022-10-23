@@ -47,9 +47,10 @@ export default function Chessboard({ gameState, movePiece }: ChessboardProps) {
       setSelectedPiece(id);
     }
     if (selectedPiece) {
-      possibleMoves.includes(id)
-        ? movePiece(selectedPiece, id)
-        : setSelectedPiece(null);
+      if (possibleMoves.includes(id)) {
+        movePiece(selectedPiece, id);
+      }
+      setSelectedPiece(null);
     }
   };
 
