@@ -1,4 +1,4 @@
-import { GameState } from "src/App";
+import { GameState } from "../../Game/GameView";
 import CHESS_PIECES from "./";
 
 interface ChesspieceProps {

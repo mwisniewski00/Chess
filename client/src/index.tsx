@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Routing } from "./Routing";
 import "./index.scss";
 
 const root = ReactDOM.createRoot(
@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <Routing />
     </Router>
   </React.StrictMode>,
 );

@@ -1,7 +1,9 @@
+@import "../../variables.scss";
+
 :root {
   --chessfield-light: #e9ecef;
   --chessfield-dark: #6c757d;
-  --chessfield-highlighted: #ffcdb2;
+  --chessfield-highlighted: #76520e;
   --chessboard-border-radius: 15px;
 }
 
@@ -10,7 +12,7 @@
   aspect-ratio: 1 / 1;
   background-color: black;
   border-radius: var(--chessboard-border-radius);
-  box-shadow: 10px 10px 10px grey;
+  box-shadow: 10px 10px 10px #495057;
 }
 
 #chessboard > div {
@@ -40,7 +42,7 @@
 }
 
 .chessfield.selected {
-  border: 5px solid var(--chessfield-highlighted);
+  border: 5px solid $main-theme-color;
   box-sizing: border-box;
 }
 
@@ -48,7 +50,7 @@
   background: linear-gradient(
     to right,
     var(--chessfield-light) 0%,
-    var(--chessfield-highlighted) 100%
+    $main-theme-color 100%
   );
 }
 
@@ -66,7 +68,7 @@
   background: linear-gradient(
     to right,
     var(--chessfield-dark) 0%,
-    var(--chessfield-highlighted) 100%
+    $main-theme-color 100%
   );
 }
 

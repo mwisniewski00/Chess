@@ -1,16 +1,13 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { HeroPage } from "./components/hero-page/HeroPage";
-import "./Routing.scss";
+import App from "./App";
+import { GameView } from "./components/Game/GameView";
 
 export const Routing: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<HeroPage />} />
-      <Route path="/lobby" element={<HeroPage />} />
-      <Route
-        path="*"
-        element={<Navigate to="/" replace />}
-    />
+      <Route path="/" element={<App />} />
+      <Route path="/lobby" element={<GameView />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

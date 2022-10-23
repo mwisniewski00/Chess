@@ -1,5 +1,5 @@
-import "./chessboard.css";
-import { GameState } from "src/App";
+import "./chessboard.scss";
+import { GameState } from "../Game/GameView";
 import Chesspiece from "./Chesspieces/Chesspiece";
 import { useState, useMemo, useCallback } from "react";
 
