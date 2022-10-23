@@ -1,3 +1,5 @@
+import tails from "../constant/tails";
+
 abstract class Piece {
     column: string;
     row: number;
@@ -20,10 +22,18 @@ abstract class Piece {
 
     abstract canMove(column: string, row: number): boolean;
 
-    move(colum: string, row: number): any {
+    public move(colum: string, row: number): any {
         this.row = row;
         this.column = colum;
         this.isMoved = true;
+    }
+
+    protected columnDifference(column: string): number {
+        return Math.abs(tails[this.column] - tails[column])
+    }
+
+    protected rowDifference(row: number): number {
+       return Math.abs(this.row - row)
     }
 }
 
