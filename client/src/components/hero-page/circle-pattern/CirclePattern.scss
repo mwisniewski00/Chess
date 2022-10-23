@@ -1,0 +1,19 @@
+@import "../../../variables.scss";
+
+.pattern-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .pattern-row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    .circle {
+      height: 9px;
+      width: 9px;
+      border-radius: 50%;
+      background-color: $main-theme-color;
+      opacity: 0.5;
+    }
+  }
+}
