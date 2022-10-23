@@ -9,22 +9,31 @@ export const HeroPage: React.FC = () => {
 
   useLayoutEffect(() => {
     const animation = gsap.context(() => {
-      gsap.timeline({ repeat: -1 })
-      .fromTo(".board-3d", {
-        y: -20,
-        visibility: 1,
-      }, {
-        duration: 2.5,
-        ease: "power1.inOut",
-        y: 20,
-      })
-      .fromTo(".board-3d", {
-        y: 20,
-      }, {
-        duration: 2.5,
-        ease: "power1.inOut",
-        y: -20,
-      });
+      gsap
+        .timeline({ repeat: -1 })
+        .fromTo(
+          ".board-3d",
+          {
+            y: -20,
+            visibility: 1,
+          },
+          {
+            duration: 2.5,
+            ease: "power1.inOut",
+            y: 20,
+          },
+        )
+        .fromTo(
+          ".board-3d",
+          {
+            y: 20,
+          },
+          {
+            duration: 2.5,
+            ease: "power1.inOut",
+            y: -20,
+          },
+        );
       gsap.fromTo(
         ".circle",
         {
@@ -39,7 +48,9 @@ export const HeroPage: React.FC = () => {
       );
     }, scope);
 
-    return () => {animation.revert()};
+    return () => {
+      animation.revert();
+    };
   }, []);
 
   return (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.scss";
 
 interface SelectedLinks {
@@ -31,9 +32,9 @@ export const Navbar: React.FC = () => {
           )}
         </div>
         <div className="linkContainer">
-          <a href="#" className="navbar__menu__item">
+          <Link className="navbar__menu__item" to="/lobby">
             Lobby
-          </a>
+          </Link>
           {selectedLinks.lobby === "selected" && (
             <div className="link_underline__container">
               <div className="link__underline link__underline__upper"></div>

@@ -1,0 +1,98 @@
+@import "../../variables.scss";
+
+:root {
+  --chessfield-light: #e9ecef;
+  --chessfield-dark: #6c757d;
+  --chessfield-highlighted: #76520e;
+  --chessboard-border-radius: 15px;
+}
+
+#chessboard {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: black;
+  border-radius: var(--chessboard-border-radius);
+  box-shadow: 10px 10px 10px #495057;
+}
+
+#chessboard > div {
+  width: 100%;
+  height: 12.5%;
+  display: flex;
+  flex-direction: row;
+}
+
+#chessboard > div:first-of-type {
+  border-top-left-radius: var(--chessboard-border-radius);
+  border-top-right-radius: var(--chessboard-border-radius);
+}
+
+#chessboard > div:last-of-type {
+  border-bottom-left-radius: var(--chessboard-border-radius);
+  border-bottom-right-radius: var(--chessboard-border-radius);
+}
+
+.chessfield {
+  width: calc(100% / 8);
+  height: 100%;
+  background-color: var(--chessfield-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chessfield.selected {
+  border: 5px solid $main-theme-color;
+  box-sizing: border-box;
+}
+
+.chessfield.highlighted {
+  background: linear-gradient(
+    to right,
+    var(--chessfield-light) 0%,
+    $main-theme-color 100%
+  );
+}
+
+#chessboard > div:nth-child(2n) > .chessfield:nth-child(2n).chessfield,
+#chessboard > div:nth-child(2n + 1) > .chessfield:nth-child(2n + 1).chessfield {
+  background-color: var(--chessfield-dark);
+}
+
+#chessboard
+  > div:nth-child(2n)
+  > .chessfield:nth-child(2n).chessfield.highlighted,
+#chessboard
+  > div:nth-child(2n + 1)
+  > .chessfield:nth-child(2n + 1).chessfield.highlighted {
+  background: linear-gradient(
+    to right,
+    var(--chessfield-dark) 0%,
+    $main-theme-color 100%
+  );
+}
+
+#field-a8 {
+  border-top-left-radius: var(--chessboard-border-radius);
+}
+
+#field-h8 {
+  border-top-right-radius: var(--chessboard-border-radius);
+}
+
+#field-a1 {
+  border-bottom-left-radius: var(--chessboard-border-radius);
+}
+
+#field-h1 {
+  border-bottom-right-radius: var(--chessboard-border-radius);
+}
+
+.chess-piece {
+  width: 80%;
+  height: 80%;
+}
+
+.chesspiece-svg-wrapper {
+  width: 100%;
+}
