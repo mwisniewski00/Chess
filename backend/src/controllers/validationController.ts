@@ -4,37 +4,43 @@ import getErrorMessage from "../helpers/getErrorMessage";
 require("dotenv").config();
 
 const validationController = {
-    checkUsernameAvailability: async (req: Request, res: Response) => {
-        const { username } = req.query;
-      
-        try {
-          const user = await User.findOne({ username: username });
-          if (user) {
-            res.json({ usernameTaken: true });
-          } else {
-            res.json({ usernameTaken: false });
-          }
-        } catch (error) {
-          console.log(getErrorMessage(error));
-          res.status(500).json({ message: getErrorMessage(error) });
-        }
-      },
+  checkUsernameAvailability: async (req: Request, res: Response) => {
+    const { username } = req.query;
+    console.log(username);
 
-      checkEmailAvailability: async (req: Request, res: Response) => {
-        const { email } = req.query;
-      
-        try {
-          const user = await User.findOne({ email: email });
-          if (user) {
-            res.json({ emailTaken: true });
-          } else {
-            res.json({ emailTaken: false });
-          }
-        } catch (error) {
-          console.log(getErrorMessage(error));
-          res.status(500).json({ message: getErrorMessage(error) });
-        }
-      },
-}
+    if (!username)
+      return res.status(400).json({ error: "No username provided" });
+
+    try {
+      const user = await User.findOne({ username: username });
+      if (user) {
+        res.status(409).json({ error: "Username taken" });
+      } else {
+        res.sendStatus(200);
+      }
+    } catch (error) {
+      console.log(getErrorMessage(error));
+      res.status(500).json({ message: getErrorMessage(error) });
+    }
+  },
+
+  checkEmailAvailability: async (req: Request, res: Response) => {
+    const { email } = req.query;
+
+    if (!email) return res.status(400).json({ error: "No email provided" });
+
+    try {
+      const user = await User.findOne({ email: email });
+      if (user) {
+        res.status(409).json({ error: "Email taken" });
+      } else {
+        res.sendStatus(200);
+      }
+    } catch (error) {
+      console.log(getErrorMessage(error));
+      res.status(500).json({ message: getErrorMessage(error) });
+    }
+  },
+};
 
 export default validationController;

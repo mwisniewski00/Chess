@@ -15,12 +15,12 @@ const registerController = {
       const accessToken = jwt.sign(
         { username: username },
         process.env.ACCESS_TOKEN_SECRET as Secret,
-        { expiresIn: "10s" },
+        { expiresIn: "1d" },
       );
       const refreshToken = jwt.sign(
         { username: username },
         process.env.REFRESH_TOKEN_SECRET as Secret,
-        { expiresIn: "30s" },
+        { expiresIn: "7d" },
       );
 
       const user = await User.create({
@@ -34,7 +34,7 @@ const registerController = {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000 * 7,
       });
 
       return res.json({

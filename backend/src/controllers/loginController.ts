@@ -20,12 +20,12 @@ const loginController = {
         const accessToken = jwt.sign(
           { username: user.username },
           process.env.ACCESS_TOKEN_SECRET as Secret,
-          { expiresIn: "10s" },
+          { expiresIn: "1d" },
         );
         const refreshToken = jwt.sign(
           { username: user.username },
           process.env.REFRESH_TOKEN_SECRET as Secret,
-          { expiresIn: "30s" },
+          { expiresIn: "7d" },
         );
 
         user.refreshToken = refreshToken;
@@ -35,7 +35,7 @@ const loginController = {
           httpOnly: true,
           sameSite: "none",
           secure: true,
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 24 * 60 * 60 * 1000 * 7,
         });
 
         return res.json({
