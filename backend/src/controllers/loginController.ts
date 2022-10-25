@@ -49,7 +49,7 @@ const loginController = {
         });
       }
 
-      return res.json({ error: { userFound: false } });
+      return res.status(401).json({ error: { userFound: false } });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

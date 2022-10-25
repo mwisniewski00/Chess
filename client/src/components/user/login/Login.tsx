@@ -1,9 +1,7 @@
 import { useState } from "react";
 import "./Login.scss";
-import CircularProgress from "@mui/material/CircularProgress";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import { LoginForm } from "./form/LoginForm";
+import StatusInfo from "components/shared/status-info/StatusInfo";
 
 export type Status = "idle" | "pending" | "resolved" | "rejected";
 
@@ -29,32 +27,7 @@ export const Login: React.FC = () => {
           Lorem ipsum dolor, sit amet consectetur.
         </div>
       </div>
-      <div className="login-status">
-        {status === "pending" && (
-          <div className="login-status__pending">
-            {message.pending}
-            <div className="progress-animation">
-              <CircularProgress size={26} color="inherit" />
-            </div>
-          </div>
-        )}
-        {status === "resolved" && (
-          <div className="login-status__resolved">
-            {message.resolved}
-            <div className="success-icon">
-              <DoneIcon color="inherit" />
-            </div>
-          </div>
-        )}
-        {status === "rejected" && (
-          <div className="login-status__rejected">
-            {message.rejected}
-            <div className="error-icon">
-              <CloseIcon color="inherit" />
-            </div>
-          </div>
-        )}
-      </div>
+      <StatusInfo status={status} message={message} componentName={"login"} />
       <LoginForm
         setStatus={setStatus}
         message={message}

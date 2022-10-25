@@ -4,6 +4,7 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import StatusInfo from "components/shared/status-info/StatusInfo";
 
 export type Status = "idle" | "pending" | "resolved" | "rejected";
 
@@ -29,32 +30,11 @@ export const Registration: React.FC = () => {
           Lorem ipsum dolor, sit amet consectetur.
         </div>
       </div>
-      <div className="registration-status">
-        {status === "pending" && (
-          <div className="registration-status__pending">
-            Please wait...
-            <div className="progress-animation">
-              <CircularProgress size={26} color="inherit" />
-            </div>
-          </div>
-        )}
-        {status === "resolved" && (
-          <div className="registration-status__resolved">
-            Registration successful!
-            <div className="success-icon">
-              <DoneIcon color="inherit" />
-            </div>
-          </div>
-        )}
-        {status === "rejected" && (
-          <div className="registration-status__rejected">
-            Something went wrong...
-            <div className="error-icon">
-              <CloseIcon color="inherit" />
-            </div>
-          </div>
-        )}
-      </div>
+      <StatusInfo
+        status={status}
+        message={message}
+        componentName={"registration"}
+      />
       <RegistrationForm
         setStatus={setStatus}
         message={message}
