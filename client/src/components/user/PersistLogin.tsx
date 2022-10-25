@@ -26,6 +26,7 @@ const PersistLogin: React.FC = () => {
     } else {
       setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <>{isLoading ? <div>Loading...</div> : <Outlet />}</>;

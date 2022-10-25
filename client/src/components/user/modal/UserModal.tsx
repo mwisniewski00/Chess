@@ -6,11 +6,11 @@ import { Registration } from "../registration/Registration";
 import "./UserModal.scss";
 
 interface UserModalProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-export const UserModal: React.FC<UserModalProps> = ({ open, setOpen }) => {
+export const UserModal: React.FC<UserModalProps> = ({ isOpen, setIsOpen }) => {
   const [tab, setTab] = useState<"login" | "register">("login");
 
   const changeTab = () => {
@@ -22,15 +22,20 @@ export const UserModal: React.FC<UserModalProps> = ({ open, setOpen }) => {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setIsOpen(false);
   };
 
   return (
-    <Dialog PaperProps={{
-      style: {
-        backgroundColor: 'transparent',
-      },
-    }} className="dialog" open={open} onClose={handleClose}>
+    <Dialog
+      PaperProps={{
+        style: {
+          backgroundColor: "transparent",
+        },
+      }}
+      className="dialog"
+      open={isOpen}
+      onClose={handleClose}
+    >
       <DialogContent className="dialog-content">
         {tab === "login" && (
           <div className="log-in">
@@ -39,7 +44,12 @@ export const UserModal: React.FC<UserModalProps> = ({ open, setOpen }) => {
               <div className="switch-tabs-text__left">
                 Don't have an account?
               </div>
-              <div onClick={() => changeTab()} className="switch-tabs-text__right">Sign up!</div>
+              <div
+                onClick={() => changeTab()}
+                className="switch-tabs-text__right"
+              >
+                Sign up!
+              </div>
             </div>
           </div>
         )}
@@ -50,7 +60,12 @@ export const UserModal: React.FC<UserModalProps> = ({ open, setOpen }) => {
               <div className="switch-tabs-text__left">
                 Already got an account?
               </div>
-              <div onClick={() => changeTab()} className="switch-tabs-text__right">Sign in!</div>
+              <div
+                onClick={() => changeTab()}
+                className="switch-tabs-text__right"
+              >
+                Sign in!
+              </div>
             </div>
           </div>
         )}

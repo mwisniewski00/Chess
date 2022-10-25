@@ -1,10 +1,11 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { NavLink } from "./nav-link/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import { UserModal } from "../../user/modal/UserModal";
 import useLogout from "hooks/useLogout";
 import useAuth from "hooks/useAuth";
+import useUserModal from "hooks/useUserModal";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";
@@ -14,6 +15,7 @@ export const Navbar: React.FC = () => {
   const logout = useLogout();
   const navigate = useNavigate();
   const { auth } = useAuth();
+  const { isOpen, setIsOpen } = useUserModal();
 
   const signOut = () => {
     logout();
@@ -68,13 +70,10 @@ export const Navbar: React.FC = () => {
         )}
         {!auth.username && (
           <div className="linkContainer">
-            <div
-              onClick={() => setOpenModal(true)}
-              className="navbar__menu__item"
-            >
+            <div onClick={() => setIsOpen(true)} className="navbar__menu__item">
               Login / Register
             </div>
-            <UserModal open={openModal} setOpen={setOpenModal} />
+            <UserModal isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         )}
         {auth.username && (

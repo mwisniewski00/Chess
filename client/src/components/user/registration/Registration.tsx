@@ -1,9 +1,6 @@
 import "./Registration.scss";
 import { RegistrationForm } from "./form/RegistrationForm";
 import { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import StatusInfo from "components/shared/status-info/StatusInfo";
 
 export type Status = "idle" | "pending" | "resolved" | "rejected";
