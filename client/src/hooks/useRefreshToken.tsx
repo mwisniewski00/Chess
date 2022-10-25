@@ -1,7 +1,10 @@
 import axios from "api/axios";
+import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
+  const navigate = useNavigate();
+
   const { auth, setAuth } = useAuth();
 
   const refresh = async () => {
@@ -12,10 +15,18 @@ const useRefreshToken = () => {
 
       console.log("Refreshed token, response: ", response);
 
-      setAuth({ ...auth, token: response.data.accessToken, ...response.data.userInfo });
+      setAuth({
+        ...auth,
+        token: response.data.accessToken,
+        ...response.data.userInfo,
+      });
 
       return response.data.accessToken;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        setAuth({});
+        navigate("/home");
+      }
       console.log(error);
       return null;
     }
