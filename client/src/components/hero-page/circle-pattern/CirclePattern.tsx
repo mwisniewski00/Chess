@@ -13,7 +13,7 @@ export const CirclePattern: React.FC<CirclePatternProps> = ({
     <div className="pattern-container">
       {[...Array(height)].map((x, i) => (
         <div className="pattern-row" key={i}>
-        {[...Array(width)].map((x, i) => (
+          {[...Array(width)].map((x, i) => (
             <div className="circle" key={i}></div>
           ))}
         </div>

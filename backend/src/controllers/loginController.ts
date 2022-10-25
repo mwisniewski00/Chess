@@ -20,16 +20,15 @@ const loginController = {
         const accessToken = jwt.sign(
           { username: user.username },
           process.env.ACCESS_TOKEN_SECRET as Secret,
-          { expiresIn: "30s" },
+          { expiresIn: "10s" },
         );
         const refreshToken = jwt.sign(
           { username: user.username },
           process.env.REFRESH_TOKEN_SECRET as Secret,
-          { expiresIn: "1d" },
+          { expiresIn: "30s" },
         );
 
         user.refreshToken = refreshToken;
-        console.log(refreshToken);
         await User.findOneAndUpdate({ email }, user);
 
         res.cookie("jwt", refreshToken, {
@@ -37,7 +36,6 @@ const loginController = {
           sameSite: "none",
           secure: true,
           maxAge: 24 * 60 * 60 * 1000,
-          // secure: true,
         });
 
         return res.json({

@@ -31,18 +31,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     setStatus("pending");
     try {
       const response = await axios.post("/users/login", values, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       console.log(response);
 
-      setAuth({
-        token: response.data.token,
-        ...response.data.userInfo
-      });
-
       setMessage({ ...message, resolved: "Logged in successfully!" });
       setStatus("resolved");
+
+      setTimeout(() => {
+        //set auth with trigger rerender
+        setAuth({
+          token: response.data.token,
+          ...response.data.userInfo,
+        });
+      }, 2000);
     } catch (error: any) {
       if (error.response.status === 401) {
         setMessage({ ...message, rejected: "Invalid user data" });

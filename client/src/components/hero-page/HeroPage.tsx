@@ -9,7 +9,6 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 export const HeroPage: React.FC = () => {
   const axiosPrivate = useAxiosPrivate();
 
-
   const test = async () => {
     try {
       const response = await axiosPrivate.get("/users");
