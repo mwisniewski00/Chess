@@ -3,20 +3,9 @@ import "./HeroPage.scss";
 import boardImg from "./board1.png";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
-import useAxiosPrivate from "hooks/useAxiosPrivate";
+import HeroButton from "./hero-button/HeroButton";
 
 export const HeroPage: React.FC = () => {
-  const axiosPrivate = useAxiosPrivate();
-
-  const test = async () => {
-    try {
-      const response = await axiosPrivate.get("/users");
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const scope = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -73,9 +62,7 @@ export const HeroPage: React.FC = () => {
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste,
           doloremque consectetur distinctio odio a expedita sapiente.
         </div>
-        <div className="hero-button">
-          <button onClick={() => test()}>Start Now</button>
-        </div>
+        <HeroButton />
       </div>
       <div className="circle-pattern__left">
         <CirclePattern height={5} width={19} />

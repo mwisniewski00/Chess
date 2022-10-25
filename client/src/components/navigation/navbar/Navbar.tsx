@@ -40,8 +40,6 @@ export const Navbar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  const [openModal, setOpenModal] = useState(false);
-
   return (
     <div className="navbar">
       <div className="navbar__logo__section">
