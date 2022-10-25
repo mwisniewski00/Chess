@@ -1,25 +1,32 @@
 @import "variables.scss";
 
 .form {
+  width: 100%;
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  button {
+    margin-top: 20px;
+    height: 40px;
     width: 100%;
-    .inputs {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
+    background-color: transparent;
+    border: 2px solid $main-theme-color;
+    border-radius: 10px;
+    color: $main-theme-color;
+    font-weight: 600;
+    &:hover {
+      cursor: pointer;
     }
-    button {
-        margin-top: 20px;
-        height: 40px;
-        width: 100%;
-        background-color: transparent;
-        border: 2px solid $main-theme-color;
-        border-radius: 10px;
-        color: $main-theme-color;
-        font-weight: 600;
-        &:hover {
-            cursor: pointer;
-        }
+  }
+  button:disabled,
+  button[disabled] {
+    color: gray;
+    &:hover {
+      cursor: default;
     }
+  }
 }

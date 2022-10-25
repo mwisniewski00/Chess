@@ -3,7 +3,6 @@ import "./HeroPage.scss";
 import boardImg from "./board1.png";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
-import useRefreshToken from "hooks/useRefreshToken";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 export const HeroPage: React.FC = () => {

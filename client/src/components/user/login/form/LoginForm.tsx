@@ -68,23 +68,30 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       }}
       validationSchema={loginSchema}
     >
-      <Form className="form">
-        <div className="inputs">
-          <CustomInput
-            icon={EmailIcon}
-            type="text"
-            name="email"
-            placeholder="Enter Email"
-          />
-          <CustomInput
-            icon={LockIcon}
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-          />
-        </div>
-        <button type="submit">Login</button>
-      </Form>
+      {formik => (
+        <Form className="form">
+          <div className="inputs">
+            <CustomInput
+              icon={EmailIcon}
+              type="text"
+              name="email"
+              placeholder="Enter Email"
+            />
+            <CustomInput
+              icon={LockIcon}
+              type="password"
+              name="password"
+              placeholder="Enter Password"
+            />
+          </div>
+          <button
+            disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+            type="submit"
+          >
+            Login
+          </button>
+        </Form>
+      )}
     </Formik>
   );
 };

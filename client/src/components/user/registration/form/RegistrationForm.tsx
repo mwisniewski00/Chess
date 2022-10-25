@@ -69,35 +69,42 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       }}
       validationSchema={registrationSchema}
     >
-      <Form className="form">
-        <div className="inputs">
-          <CustomInput
-            icon={PersonIcon}
-            type="text"
-            name="username"
-            placeholder="Enter Username"
-          />
-          <CustomInput
-            icon={EmailIcon}
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-          />
-          <CustomInput
-            icon={LockIcon}
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-          />
-          <CustomInput
-            icon={LockIcon}
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-          />
-        </div>
-        <button type="submit">Register</button>
-      </Form>
+      {formik => (
+        <Form className="form">
+          <div className="inputs">
+            <CustomInput
+              icon={PersonIcon}
+              type="text"
+              name="username"
+              placeholder="Enter Username"
+            />
+            <CustomInput
+              icon={EmailIcon}
+              type="email"
+              name="email"
+              placeholder="Enter Email"
+            />
+            <CustomInput
+              icon={LockIcon}
+              type="password"
+              name="password"
+              placeholder="Enter Password"
+            />
+            <CustomInput
+              icon={LockIcon}
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+            />
+          </div>
+          <button
+            disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+            type="submit"
+          >
+            Register
+          </button>
+        </Form>
+      )}
     </Formik>
   );
 };
