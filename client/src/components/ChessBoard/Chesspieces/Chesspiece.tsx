@@ -1,10 +1,10 @@
-import { GameState } from "../../Game/GameView";
+import { GameStateObject } from "@chessgame/types/game";
 import CHESS_PIECES from "./";
 
 interface ChesspieceProps {
   column: string;
   row: number;
-  gameState: GameState;
+  gameState: GameStateObject;
 }
 
 export default function Chesspiece({
