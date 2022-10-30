@@ -18,7 +18,7 @@ export class MovesGenerator {
     return `${mapColumnIndexToLetter(column)}${row + 1}`;
   }
 
-  private getPossiblePawnMoves(row: number, column: number, color: Colors) {
+  private getPossiblePawnMoves(row: number, column: number, color: Colors): string[] {
     const colorMultiplier = color === Colors.WHITE ? -1 : 1;
     const possibleMoves: string[] = [];
     const enemyColor = this.getEnemyColor(color);
@@ -52,16 +52,177 @@ export class MovesGenerator {
     return possibleMoves;
   }
 
+  private getPossibleKnightMoves(row: number, column: number, color: number){
+    const possibleMoves: string[] = [];
+    const patterns = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [-1, 2], [1, -2], [-1, -2]]
+    
+    for(let n in patterns){
+      const nextRow: number = row + patterns[n][0];
+      const nextColumn: number = column + patterns[n][1]
+
+      if (nextRow >= 0 && 
+        nextRow <= 7 &&
+        nextColumn >= 0 &&
+        nextColumn <= 7 &&
+        this.gameState[nextRow][nextColumn]?.color !== color
+        ) {
+          possibleMoves.push(this.indexesToField(nextRow, nextColumn))
+        }
+    }
+
+    return possibleMoves
+  }
+
+  private getPossibleKingMoves(row: number, column: number, color: number){
+    const possibleMoves: string[] = [];
+    const patterns = [[0, 1], [1, 0], [1, 1], [-1, -1], [0, -1], [-1, 0], [-1, 1], [1, -1]]
+    
+    for(let n in patterns){
+      const nextRow: number = row + patterns[n][0];
+      const nextColumn: number = column + patterns[n][1]
+
+      if (nextRow >= 0 && 
+        nextRow <= 7 &&
+        nextColumn >= 0 &&
+        nextColumn <= 7 &&
+        this.gameState[nextRow][nextColumn]?.color !== color
+        ) {
+          possibleMoves.push(this.indexesToField(nextRow, nextColumn))
+        }
+    }
+
+    return possibleMoves
+  }
+
+  private getPossibleRookMoves(row: number, column: number, color: number){
+    const possibleMoves: string[] = [];
+    const enemyColor = this.getEnemyColor(color);
+    const patterns = [[0, 1], [1, 0], [-1, 0], [0, -1]]
+    
+    for(let n in patterns){
+      let nextRow: number = row + patterns[n][0];
+      let nextColumn: number = column + patterns[n][1];
+      while(true){
+        if (nextRow >= 0 && 
+          nextRow <= 7 &&
+          nextColumn >= 0 &&
+          nextColumn <= 7
+          ) {
+            if(this.gameState[nextRow][nextColumn]?.color === enemyColor){
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+              break;
+            } else if(this.gameState[nextRow][nextColumn]?.color === color){
+                break;
+            } else {
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+            }
+          } else {
+            break
+          }
+          nextRow += patterns[n][0];
+          nextColumn += patterns[n][1];
+      }
+    }
+
+    return possibleMoves
+  }
+
+  private getPossibleBishopMoves(row: number, column: number, color: number){
+    const possibleMoves: string[] = [];
+    const enemyColor = this.getEnemyColor(color);
+    const patterns = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+    
+    for(let n in patterns){
+      let nextRow: number = row + patterns[n][0];
+      let nextColumn: number = column + patterns[n][1];
+      while(true){
+        if (nextRow >= 0 && 
+          nextRow <= 7 &&
+          nextColumn >= 0 &&
+          nextColumn <= 7
+          ) {
+            if(this.gameState[nextRow][nextColumn]?.color === enemyColor){
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+              break;
+            } else if(this.gameState[nextRow][nextColumn]?.color === color){
+                break;
+            } else {
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+            }
+          } else {
+            break
+          }
+          nextRow += patterns[n][0];
+          nextColumn += patterns[n][1];
+      }
+    }
+
+    return possibleMoves
+  }
+
+  private getPossibleQueenMoves(row: number, column: number, color: number){
+    const possibleMoves: string[] = [];
+    const enemyColor = this.getEnemyColor(color);
+    const patterns = [[1, 1], [1, -1], [-1, 1], [-1, -1], [0, 1], [1, 0], [-1, 0], [0, -1]]
+    
+    for(let n in patterns){
+      let nextRow: number = row + patterns[n][0];
+      let nextColumn: number = column + patterns[n][1];
+      while(true){
+        if (nextRow >= 0 && 
+          nextRow <= 7 &&
+          nextColumn >= 0 &&
+          nextColumn <= 7
+          ) {
+            if(this.gameState[nextRow][nextColumn]?.color === enemyColor){
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+              break;
+            } else if(this.gameState[nextRow][nextColumn]?.color === color){
+                break;
+            } else {
+              possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+            }
+          } else {
+            break
+          }
+          nextRow += patterns[n][0];
+          nextColumn += patterns[n][1];
+      }
+    }
+
+    return possibleMoves
+  }
+
   private getPossibleMoves(
     row: number,
     column: number,
     field: GameStateField | null,
   ) {
     if (!field) return [];
-    if (field.piece === ChessPieces.PAWN) {
-      return this.getPossiblePawnMoves(row, column, field.color);
+
+    switch(field.piece){
+      case ChessPieces.PAWN: {
+        return this.getPossiblePawnMoves(row, column, field.color);
+      };
+      case ChessPieces.KING: {
+        return this.getPossibleKingMoves(row, column, field.color);
+      };
+      case ChessPieces.QUEEN: {
+        return this.getPossibleQueenMoves(row, column, field.color)
+      };
+      case ChessPieces.BISHOP: {
+        return this.getPossibleBishopMoves(row, column, field.color)
+      };
+      case ChessPieces.ROOK: {
+        return this.getPossibleRookMoves(row, column, field.color)
+      };
+      case ChessPieces.KNIGHT: {
+        return this.getPossibleKnightMoves(row, column, field.color)
+      }
+      default: {
+        return [];
+      }
     }
-    return [];
   }
 
   public getAllPossibleMoves() {
