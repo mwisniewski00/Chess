@@ -1,24 +1,28 @@
 import "./chessboard.scss";
-import { GameState } from "../Game/GameView";
 import Chesspiece from "./Chesspieces/Chesspiece";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { GameStateObject, PossibleMoves } from "@chessgame/types/game";
 
 interface ChessboardProps {
-  gameState: GameState;
+  gameState: GameStateObject;
   movePiece: (from: string, to: string) => void;
+  possibleMoves: PossibleMoves;
 }
 
-export default function Chessboard({ gameState, movePiece }: ChessboardProps) {
+export default function Chessboard({
+  gameState,
+  movePiece,
+  possibleMoves,
+}: ChessboardProps) {
   const rows = Array.from({ length: 8 }, (_, i) => i + 1).reverse();
   const columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);
-  const possibleMoves = useMemo(() => ["e2", "d5", "b4", "c2", "g2"], []);
 
   const getCursorType = useCallback(
     (field: string) => {
       if (selectedPiece) {
-        if (possibleMoves.includes(field)) return "pointer";
+        if (possibleMoves[selectedPiece].includes(field)) return "pointer";
         if (selectedPiece === field) return "default";
         return "not-allowed";
       }
@@ -30,7 +34,10 @@ export default function Chessboard({ gameState, movePiece }: ChessboardProps) {
   const isHighlighted = useCallback(
     (field: string) => {
       if (selectedPiece) {
-        return selectedPiece !== field && possibleMoves.includes(field);
+        return (
+          selectedPiece !== field &&
+          possibleMoves[selectedPiece].includes(field)
+        );
       }
       return false;
     },
@@ -47,7 +54,7 @@ export default function Chessboard({ gameState, movePiece }: ChessboardProps) {
       setSelectedPiece(id);
     }
     if (selectedPiece) {
-      if (possibleMoves.includes(id)) {
+      if (possibleMoves[selectedPiece].includes(id)) {
         movePiece(selectedPiece, id);
       }
       setSelectedPiece(null);
