@@ -1,22 +1,22 @@
-import axios from "api/axios";
-import useAuth from "./useAuth"
-
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 const useLogout = () => {
-    const { setAuth } = useAuth();
+  const { setAuth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
-    const logout = async () => {
-        setAuth({});
-        try {
-            await axios.delete("/users/logout", {
-                withCredentials: true, 
-            });
-        } catch (error) {
-            console.log(error);
-        }
+  const logout = async () => {
+    setAuth({});
+    try {
+      await axiosPrivate.delete("/users/logout", {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    return logout;
-}
+  return logout;
+};
 
 export default useLogout;

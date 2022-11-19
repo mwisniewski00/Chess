@@ -34,7 +34,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(response);
 
       setMessage({ ...message, resolved: "Logged in successfully!" });
       setStatus("resolved");
@@ -47,6 +46,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         });
       }, 2000);
     } catch (error: any) {
+      console.error(error);
       if (error.response.status === 401) {
         setMessage({ ...message, rejected: "Invalid user data" });
         setStatus("rejected");

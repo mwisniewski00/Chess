@@ -11,10 +11,9 @@ const PersistLogin: React.FC = () => {
   useLayoutEffect(() => {
     const verifyRefreshToken = async () => {
       try {
-        console.log("Verifying refresh token");
         await refresh();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

@@ -6,7 +6,6 @@ require("dotenv").config();
 const validationController = {
   checkUsernameAvailability: async (req: Request, res: Response) => {
     const { username } = req.query;
-    console.log(username);
 
     if (!username)
       return res.status(400).json({ error: "No username provided" });

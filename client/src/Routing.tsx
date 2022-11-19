@@ -11,7 +11,6 @@ export const Routing: React.FC = () => {
       <Route element={<PersistLogin />}>
         <Route path="/home" element={<HeroPage />} />
 
-        {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/lobby" element={<Lobby />} />
           <Route path="/profile" element={<Profile />} />

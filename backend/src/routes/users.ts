@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", verifyJWT, usersController.getUsers);
 
-router.delete("/logout", logoutController.handleLogout);
+router.delete("/logout", verifyJWT, logoutController.handleLogout);
 
 router.get("/refresh-token", refreshTokenController.handleRefreshToken);
 

@@ -32,13 +32,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const handleRegistration = async (values: Values) => {
     setMessage({ ...message, pending: "Please wait..." });
     setStatus("pending");
-    console.log(values);
     try {
       const response = await axios.post("/users/register", values, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(response);
       setMessage({ ...message, resolved: "Registration successful!" });
       setStatus("resolved");
 
@@ -50,7 +48,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         });
       }, 2000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setMessage({ ...message, rejected: "Something went wrong..." });
       setStatus("rejected");
     }

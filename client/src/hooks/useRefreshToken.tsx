@@ -13,8 +13,6 @@ const useRefreshToken = () => {
         withCredentials: true, //sends http only cookies
       });
 
-      console.log("Refreshed token, response: ", response);
-
       setAuth({
         ...auth,
         token: response.data.accessToken,
@@ -27,7 +25,7 @@ const useRefreshToken = () => {
         setAuth({});
         navigate("/home");
       }
-      console.log(error);
+      console.error(error);
       return null;
     }
   };

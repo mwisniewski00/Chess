@@ -1,48 +1,46 @@
 @import "../../../variables.scss";
 
 .custom-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .input-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
     width: 100%;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    .input-container {
-        display: flex;
-        justify-content: center;
-        position: relative;
-        width: 100%;
-        input {
-            width: 100%;
-            outline: none;
-            border: none;
-            background-color: $dark-background-contrast;
-            color: white;
-            padding: 10px 10px;
-            padding-left: 50px;
-            // border: 2px solid rgb(174, 174, 174);
-            border-radius: 10px;
-        }
-        input:focus {
-            border: 2px solid $main-theme-color;
-        }
-        .input-error {
-            border: 2px solid red;
-        }
-        .input-correct {
-            // border: 2px solid green;
-            border: 2px solid $main-theme-color;
-        }
-        .icon {
-            color: $main-theme-color;
-            position: absolute;
-            top: 7px;
-            left: 11px;
-        }
+    input {
+      width: 100%;
+      outline: none;
+      border: none;
+      background-color: $dark-background-contrast;
+      color: white;
+      padding: 10px 10px;
+      padding-left: 50px;
+      border-radius: 10px;
     }
-    .error {
-        width: 100%;
-        text-align: center;
-        color: red;
-        margin-top: 2px;
-        font-size: 0.85rem;
+    input:focus {
+      border: 2px solid $main-theme-color;
     }
+    .input-error {
+      border: 2px solid red;
+    }
+    .input-correct {
+      border: 2px solid $main-theme-color;
+    }
+    .icon {
+      color: $main-theme-color;
+      position: absolute;
+      top: 7px;
+      left: 11px;
+    }
+  }
+  .error {
+    width: 100%;
+    text-align: center;
+    color: red;
+    margin-top: 2px;
+    font-size: 0.85rem;
+  }
 }

@@ -6,11 +6,8 @@ require("dotenv").config();
 
 const refreshTokenController = {
   handleRefreshToken: async (req: Request, res: Response) => {
-    console.log(req.cookies);
-
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(401);
-    console.log(cookies.jwt);
     const refreshToken = cookies.jwt;
 
     try {
@@ -28,7 +25,6 @@ const refreshTokenController = {
             process.env.ACCESS_TOKEN_SECRET as Secret,
             { expiresIn: "1d" },
           );
-          console.log("Refreshed Token for:", decoded.username, accessToken);
           res.json({
             accessToken,
             userInfo: {
