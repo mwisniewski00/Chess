@@ -3,9 +3,10 @@ import "./HeroPage.scss";
 import boardImg from "./board1.png";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
+import HeroButton from "./hero-button/HeroButton";
 
 export const HeroPage: React.FC = () => {
-  const scope = useRef<HTMLDivElement | null>(null);
+  const scope = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const animation = gsap.context(() => {
@@ -61,9 +62,7 @@ export const HeroPage: React.FC = () => {
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste,
           doloremque consectetur distinctio odio a expedita sapiente.
         </div>
-        <div className="hero-button">
-          <button>Start Now</button>
-        </div>
+        <HeroButton />
       </div>
       <div className="circle-pattern__left">
         <CirclePattern height={5} width={19} />

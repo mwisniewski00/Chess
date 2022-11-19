@@ -1,13 +1,23 @@
+import RequireAuth from "components/navigation/RequireAuth";
+import PersistLogin from "components/user/PersistLogin";
+import Profile from "components/user/profile/Profile";
 import { Routes, Route, Navigate } from "react-router-dom";
-import App from "./App";
-import { GameView } from "./components/Game/GameView";
+import { HeroPage } from "./components/hero-page/HeroPage";
+import { Lobby } from "./components/lobby/Lobby";
 
 export const Routing: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/lobby" element={<GameView />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route element={<PersistLogin />}>
+        <Route path="/home" element={<HeroPage />} />
+
+        <Route element={<RequireAuth />}>
+          <Route path="/lobby" element={<Lobby />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      </Route>
     </Routes>
   );
 };
