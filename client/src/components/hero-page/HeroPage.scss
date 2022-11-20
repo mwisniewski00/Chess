@@ -9,8 +9,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 240px;
+    margin-top: 35vh;
     margin-left: 65px;
+    padding-right: 65px;
     max-width: 650px;
     .hero-text {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -23,6 +24,25 @@
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       font-size: 0.95rem;
       color: $text-grey;
+    }
+    @media (max-width: 600px) {
+      margin-left: 35px;
+      padding-right: 35px;
+      margin-top: 30vh;
+      .hero-text {
+        font-size: 2.3rem;
+      }
+      .hero-sub-text {
+        font-size: 0.8rem;
+      }
+    }
+    @media (max-width: 400px) {
+      .hero-text {
+        font-size: 1.9rem;
+      }
+      .hero-sub-text {
+        font-size: 0.8rem;
+      }
     }
   }
   .circle-pattern__left {
@@ -41,5 +61,22 @@
     position: absolute;
     top: 25%;
     right: 4%;
+
+    @media (max-width: 1350px) {
+      max-width: 450px;
+      top: 35%;
+      right: 3%;
+    }
+    @media (max-width: 1130px) {
+      max-width: 380px;
+      top: 35%;
+      right: 2%;
+    }
+    @media (max-width: 1040px) {
+      display: none;
+    }
+    @media (min-width: 1800px) {
+      top: 30%;
+    }
   }
 }

@@ -1,6 +1,9 @@
 @import "../../../variables.scss";
 
 .pattern-container {
+  position: relative;
+  pointer-events: none;
+  z-index: 6;
   display: flex;
   flex-direction: column;
   gap: 15px;

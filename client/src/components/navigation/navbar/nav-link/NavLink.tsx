@@ -5,11 +5,17 @@ interface NavLinkProps {
   link: string;
   text: string;
   selected: boolean;
+  setIsBurgerMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const NavLink: React.FC<NavLinkProps> = ({ link, text, selected }) => {
+export const NavLink: React.FC<NavLinkProps> = ({
+  link,
+  text,
+  selected,
+  setIsBurgerMenuOpen,
+}) => {
   return (
-    <div className="linkContainer">
+    <div onClick={() => setIsBurgerMenuOpen(false)} className="linkContainer">
       <Link
         to={link}
         className={`navbar__menu__item ${selected ? "item__selected" : ""}`}
