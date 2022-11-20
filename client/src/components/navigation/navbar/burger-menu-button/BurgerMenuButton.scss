@@ -1,0 +1,15 @@
+.burger-menu-button {
+  display: none;
+  margin-right: 30px;
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  @media (max-width: 400px) {
+    margin-right: 10px;
+  }
+
+  .icon {
+    color: rgb(208, 208, 208);
+  }
+}
