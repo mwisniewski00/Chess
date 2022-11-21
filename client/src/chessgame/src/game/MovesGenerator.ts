@@ -60,15 +60,15 @@ export class MovesGenerator {
     row: number,
     column: number,
     color: number,
-    patterns: number[][],
+    patterns: any,
+    oneMove: boolean = false,
   ) {
     const possibleMoves: string[] = [];
     const enemyColor = this.getEnemyColor(color);
 
-    patterns.forEach(pattern => {
-      const nextRow = row + pattern[0];
-      const nextColumn = column + pattern[1];
-      // eslint-disable-next-line no-constant-condition
+    for (let n in patterns) {
+      let nextRow: number = row + patterns[n][0];
+      let nextColumn: number = column + patterns[n][1];
       while (true) {
         if (
           nextRow >= 0 &&
@@ -82,13 +82,20 @@ export class MovesGenerator {
           } else if (this.gameState[nextRow][nextColumn]?.color === color) {
             break;
           } else {
-            break;
+            possibleMoves.push(this.indexesToField(nextRow, nextColumn));
           }
+        } else {
+          break;
+        }
+        nextRow += patterns[n][0];
+        nextColumn += patterns[n][1];
+        if (oneMove) {
+          break;
         }
       }
+    }
 
-      return possibleMoves;
-    });
+    return possibleMoves;
   }
 
   private getPossibleMoves(
@@ -103,16 +110,22 @@ export class MovesGenerator {
         return this.getPossiblePawnMoves(row, column, field.color);
       }
       case ChessPieces.KING: {
-        return this.getPossibleFigureMoves(row, column, field.color, [
-          [0, 1],
-          [1, 0],
-          [1, 1],
-          [-1, -1],
-          [0, -1],
-          [-1, 0],
-          [-1, 1],
-          [1, -1],
-        ]);
+        return this.getPossibleFigureMoves(
+          row,
+          column,
+          field.color,
+          [
+            [0, 1],
+            [1, 0],
+            [1, 1],
+            [-1, -1],
+            [0, -1],
+            [-1, 0],
+            [-1, 1],
+            [1, -1],
+          ],
+          true,
+        );
       }
       case ChessPieces.QUEEN: {
         return this.getPossibleFigureMoves(row, column, field.color, [
@@ -143,16 +156,22 @@ export class MovesGenerator {
         ]);
       }
       case ChessPieces.KNIGHT: {
-        return this.getPossibleFigureMoves(row, column, field.color, [
-          [2, 1],
-          [2, -1],
-          [-2, 1],
-          [-2, -1],
-          [1, 2],
-          [-1, 2],
-          [1, -2],
-          [-1, -2],
-        ]);
+        return this.getPossibleFigureMoves(
+          row,
+          column,
+          field.color,
+          [
+            [2, 1],
+            [2, -1],
+            [-2, 1],
+            [-2, -1],
+            [1, 2],
+            [-1, 2],
+            [1, -2],
+            [-1, -2],
+          ],
+          true,
+        );
       }
       default: {
         return [];

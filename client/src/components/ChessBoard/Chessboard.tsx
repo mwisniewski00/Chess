@@ -1,7 +1,7 @@
 import "./chessboard.scss";
 import Chesspiece from "./Chesspieces/Chesspiece";
 import { useState, useCallback } from "react";
-import { GameStateObject, PossibleMoves } from "@chessgame/types/game";
+import { GameStateObject, PossibleMoves } from "../../chessgame/src/types/game";
 
 interface ChessboardProps {
   gameState: GameStateObject;
@@ -64,7 +64,7 @@ export default function Chessboard({
   return (
     <div id="chessboard">
       {rows.map(row => (
-        <div>
+        <div key={row}>
           {columns.map(column => {
             const field = `${column}${row}`;
             return (

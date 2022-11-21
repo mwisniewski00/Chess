@@ -1,4 +1,4 @@
-import { GameStateObject } from "@chessgame/types/game";
+import { GameStateObject } from "../../../chessgame/src/types/game";
 import CHESS_PIECES from "./";
 
 interface ChesspieceProps {
