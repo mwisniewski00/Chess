@@ -26,6 +26,7 @@ export const Navbar: React.FC = () => {
   const [selectedLinks, setSelectedLinks] = useState<SelectedLinks>({
     home: "not-selected",
     lobby: "not-selected",
+    game: "not-selected",
     profile: "not-selected",
   });
 
@@ -65,6 +66,14 @@ export const Navbar: React.FC = () => {
             link="/lobby"
             text="Lobby"
             selected={selectedLinks.lobby === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+          />
+        )}
+        {auth.username && (
+          <NavLink
+            link="/game"
+            text="Game"
+            selected={selectedLinks.game === "selected"}
             setIsBurgerMenuOpen={setIsBurgerMenuOpen}
           />
         )}

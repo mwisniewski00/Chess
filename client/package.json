@@ -3,12 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.9",
-    "@types/axios": "^0.14.0",
-    "@types/gsap": "^3.0.0",
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
@@ -24,8 +20,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "eslintConfig": {
@@ -51,9 +47,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "react-app-alias-ex": "^2.1.0",
-    "react-app-rewired": "^2.2.1"
   }
 }
