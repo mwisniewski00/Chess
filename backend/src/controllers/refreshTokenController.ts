@@ -23,7 +23,7 @@ const refreshTokenController = {
           const accessToken = jwt.sign(
             { username: decoded.username },
             process.env.ACCESS_TOKEN_SECRET as Secret,
-            { expiresIn: "1d" },
+            { expiresIn: "15m" },
           );
           res.json({
             accessToken,

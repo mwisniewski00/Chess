@@ -15,7 +15,7 @@ const registerController = {
       const accessToken = jwt.sign(
         { username: username },
         process.env.ACCESS_TOKEN_SECRET as Secret,
-        { expiresIn: "1d" },
+        { expiresIn: "15m" },
       );
       const refreshToken = jwt.sign(
         { username: username },
