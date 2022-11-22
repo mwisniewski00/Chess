@@ -6,6 +6,7 @@ import { UserModal } from "../../user/modal/UserModal";
 import useLogout from "hooks/useLogout";
 import useAuth from "hooks/useAuth";
 import useUserModal from "hooks/useUserModal";
+import BurgerMenuButton from "./burger-menu-button/BurgerMenuButton";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";
@@ -25,6 +26,7 @@ export const Navbar: React.FC = () => {
   const [selectedLinks, setSelectedLinks] = useState<SelectedLinks>({
     home: "not-selected",
     lobby: "not-selected",
+    game: "not-selected",
     profile: "not-selected",
   });
 
@@ -40,23 +42,39 @@ export const Navbar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
+  const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
+
   return (
     <div className="navbar">
       <div className="navbar__logo__section">
         <div className="navbar__logo"></div>
         <div className="navbar__title">ChessMasters</div>
       </div>
-      <div className="navbar__menu">
+      <div
+        className={
+          isBurgerMenuOpen ? "navbar__menu burger-menu-active" : "navbar__menu"
+        }
+      >
         <NavLink
           link="/"
           text="Home"
           selected={selectedLinks.home === "selected"}
+          setIsBurgerMenuOpen={setIsBurgerMenuOpen}
         />
         {auth.username && (
           <NavLink
             link="/lobby"
             text="Lobby"
             selected={selectedLinks.lobby === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+          />
+        )}
+        {auth.username && (
+          <NavLink
+            link="/game"
+            text="Game"
+            selected={selectedLinks.game === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
           />
         )}
         {auth.username && (
@@ -64,10 +82,14 @@ export const Navbar: React.FC = () => {
             link="/profile"
             text="Profile"
             selected={selectedLinks.profile === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
           />
         )}
         {!auth.username && (
-          <div className="linkContainer">
+          <div
+            onClick={() => setIsBurgerMenuOpen(false)}
+            className="linkContainer"
+          >
             <div onClick={() => setIsOpen(true)} className="navbar__menu__item">
               Login / Register
             </div>
@@ -75,13 +97,20 @@ export const Navbar: React.FC = () => {
           </div>
         )}
         {auth.username && (
-          <div className="linkContainer">
+          <div
+            onClick={() => setIsBurgerMenuOpen(false)}
+            className="linkContainer"
+          >
             <div onClick={() => signOut()} className="navbar__menu__item">
               Logout
             </div>
           </div>
         )}
       </div>
+      <BurgerMenuButton
+        isBurgerMenuOpen={isBurgerMenuOpen}
+        setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+      />
     </div>
   );
 };

@@ -30,6 +30,8 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, setIsOpen }) => {
       PaperProps={{
         style: {
           backgroundColor: "transparent",
+          padding: 0,
+          margin: 0,
         },
       }}
       className="dialog"

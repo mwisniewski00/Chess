@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Chessboard from "../ChessBoard/Chessboard";
 import "./game.scss";
-import Game from "@chessgame/game/Game";
-import { GameStateObject, PossibleMoves } from "@chessgame/types/game";
+import Game from "../../chessgame/src/game/Game";
+import { GameStateObject, PossibleMoves } from "../../chessgame/src/types/game";
 const game = new Game();
 
 export function GameView() {
