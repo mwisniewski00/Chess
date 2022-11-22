@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "../models/User";
-import getErrorMessage from "../helpers/getErrorMessage";
+import User from "../../models/User";
+import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 
 const validationController = {
