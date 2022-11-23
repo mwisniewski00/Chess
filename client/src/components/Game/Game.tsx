@@ -47,7 +47,7 @@ export const Game: React.FC = () => {
 
   return (
     <div>
-      <GameView />
+      <GameView game={game} color={color} />
     </div>
   );
 };

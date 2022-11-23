@@ -14,8 +14,8 @@ export const Routing: React.FC = () => {
 
         <Route element={<RequireAuth />}>
           <Route path="/lobby" element={<Lobby />} />
-          <Route path="/profile/:username" element={<Profile />} />
-          <Route path="/game/:id" element={<Game />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/:id" element={<Game />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/home" replace />} />

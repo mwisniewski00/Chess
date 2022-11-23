@@ -10,7 +10,7 @@ export const Lobby: React.FC = () => {
     try {
       const initiatedGame = await axiosPrivate.post("/games");
       // console.log(initiatedGame);
-      navigate(`/game/${initiatedGame.data.id}`);
+      navigate(`/${initiatedGame.data.id}`);
     } catch (error) {
       console.error(error);
     }
