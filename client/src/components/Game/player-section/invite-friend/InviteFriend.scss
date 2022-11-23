@@ -1,0 +1,18 @@
+@import "variables.scss";
+
+.invite-friend {
+  padding: 20px 10px;
+  background-color: $dark-background-contrast;
+  .invite-friend__text {
+  }
+
+  .invite-friend__link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    .invite-friend__link {
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -38,7 +38,7 @@ const joinGameController = {
 
       const updatedGame = await Game.findByIdAndUpdate(gameId, game);
 
-      res.status(200).json({ game });
+      res.status(200).json({ game: updatedGame });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

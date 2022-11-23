@@ -1,0 +1,10 @@
+.player-window {
+  display: flex;
+  gap: 5px;
+  img {
+    height: 40px;
+  }
+  .player-window__info {
+    display: flex;
+  }
+}
