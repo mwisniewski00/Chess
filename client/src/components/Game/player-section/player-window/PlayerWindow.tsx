@@ -12,7 +12,7 @@ const PlayerWindow: React.FC<PlayerWindowProps> = ({ player }) => {
       <img src={defaultAvatar} alt="player_avatar"></img>
       <div className="player-window__info">
         <div className="player-window__name">{player.username}</div>
-        <div className="player-window__rating">1000</div>
+        <div className="player-window__rating">(1000)</div>
       </div>
     </div>
   );
