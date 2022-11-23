@@ -12,6 +12,6 @@ router.get("/:id", verifyJWT, gamesController.handleGetGameById);
 
 router.post("/", verifyJWT, createGameController.handleCreateGame);
 
-router.put("/join-game/:id", verifyJWT, joinGameController.handleJoinGame);
+router.put("/join/:id", verifyJWT, joinGameController.handleJoinGame);
 
 export default router;

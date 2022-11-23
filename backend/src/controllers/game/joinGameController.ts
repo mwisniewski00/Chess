@@ -1,18 +1,27 @@
 import { Response, Request } from "express";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import Game from "../../models/Game";
 
 const joinGameController = {
-  handleJoinGame: async (req: Request, res: Response) => {
+  handleJoinGame: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const gameId = req.params.id;
-    const player = req.body;
+    const player = req.user;
 
     try {
+      console.log("PLAYER NAMED: ", player, "WANTS TO JOIN GAME: ", gameId);
+
       const game = await Game.findById(gameId).lean();
-      console.log("Found GAME: ", game);
 
       if (!game) {
         return res.status(404).json({ error: "Game not found" });
+      }
+
+      if (
+        game.playerWhite?.username === player ||
+        game.playerBlack?.username === player
+      ) {
+        return res.status(200).json({ game });
       }
 
       if (game.playerWhite && game.playerBlack) {
@@ -20,20 +29,16 @@ const joinGameController = {
       }
 
       if (game.playerWhite && !game.playerBlack) {
-        game.playerBlack = player;
+        game.playerBlack = { username: player as string };
       }
 
       if (!game.playerWhite) {
-        game.playerWhite = player;
+        game.playerWhite = { username: player as string };
       }
 
       const updatedGame = await Game.findByIdAndUpdate(gameId, game);
 
-      const returnColor =
-        player.username === updatedGame?.playerWhite ? "white" : "black";
-      console.log("returnColor: ", returnColor);
-
-      res.status(200).json({ color: returnColor });
+      res.status(200).json({ game });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });
