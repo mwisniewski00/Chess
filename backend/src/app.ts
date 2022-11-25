@@ -7,6 +7,8 @@ import games from "./routes/games";
 import credentials from "./middleware/credentials";
 import corsOptions from "./config/corsOptions";
 import cookieParser from "cookie-parser";
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
 
@@ -18,6 +20,10 @@ app.use(express.json());
 app.use("/users", users);
 app.use("/games", games);
 
+const server = http.createServer(app);
+
+export const io = new Server(server, { cors: corsOptions });
+
 mongoose
   .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
     useNewUrlParser: true,
@@ -28,7 +34,7 @@ mongoose
       `Connected to MongoDB. Database name: "${response.connections[0].name}"`,
     );
     const port = process.env.PORT || 5000;
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`API server listening at http://localhost:${port}`);
     });
   })

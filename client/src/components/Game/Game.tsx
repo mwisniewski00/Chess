@@ -2,8 +2,10 @@ import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useNavigate, useParams } from "react-router-dom";
 import { GameView } from "./GameView";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useEffect } from "react";
 import IGame from "components/models/IGame";
+import useSocketClient from "hooks/useSocketClient";
+import IPlayerConnected from "components/models/websocket/IPlayerConnected";
 
 export const Game: React.FC = () => {
   const [game, setGame] = useState<IGame>({
@@ -16,21 +18,22 @@ export const Game: React.FC = () => {
   const navigate = useNavigate();
   const auth = useAuth().auth;
   const gameId = useParams().id;
+  const socket = useSocketClient();
 
   useLayoutEffect(() => {
     const joinGame = async () => {
       try {
-        console.log("AUTH: ", auth);
-        console.log("ID: ", gameId);
         const joinAttempt = await axiosPrivate.put(`/games/join/${gameId}`, {
           auth,
         });
-        console.log("JOIN ATTEMPT: ", joinAttempt);
+
         if (joinAttempt.status === 200) {
           setGame({ ...joinAttempt.data.game, id: joinAttempt.data.game._id });
-          if (joinAttempt.data.game.playerWhite === auth.username) {
+          if (joinAttempt.data.game.playerWhite?.username === auth.username) {
             setColor("white");
-          } else if (joinAttempt.data.game.playerBlack === auth.username) {
+          } else if (
+            joinAttempt.data.game.playerBlack?.username === auth.username
+          ) {
             setColor("black");
           }
         }
@@ -44,6 +47,20 @@ export const Game: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    socket.on(`player_connected${gameId}`, (data: IPlayerConnected) => {
+      setGame(prev => ({ ...prev, ...data }));
+    });
+
+    return () => {
+      socket.off("player_connected");
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log("GAME: ", game);
 
   return (
     <div>
