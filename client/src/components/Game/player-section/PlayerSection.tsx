@@ -13,6 +13,8 @@ interface PlayerSectionProps {
 const PlayerSection: React.FC<PlayerSectionProps> = ({ game, color }) => {
   const auth = useAuth().auth;
 
+  console.log(color);
+
   return (
     <div className="player-section">
       {game.playerWhite && game.playerBlack ? (
