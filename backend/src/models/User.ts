@@ -5,10 +5,10 @@ interface IUser {
     email: string;
     password: string;
     refreshToken: string;
-    description: string,
-    avatarUrl: string,
-    registrationDate: Date,
-    lastLoginDate: Date
+    description: string;
+    avatarUrl: string;
+    registrationDate: Date;
+    lastLoginDate: Date;
 }
 
 const userSchema = new Schema<IUser>(
