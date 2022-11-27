@@ -9,4 +9,4 @@ class User {
     lastLoginDate: Date
 }
 
-export default User
+export default User;
