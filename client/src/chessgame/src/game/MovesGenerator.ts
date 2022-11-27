@@ -1,10 +1,15 @@
 import { GameState, GameStateField } from "../types/game";
 import { ChessPieces, Colors } from "../types/common";
-import { mapColumnIndexToLetter } from "../utils";
+import {
+  mapColumnIndexToLetter,
+  indexesToField,
+  mapLetterToColumnIndex,
+} from "../utils";
 
 export class MovesGenerator {
   private gameState: GameState;
   private startingPawnIndexes = { [Colors.BLACK]: 6, [Colors.WHITE]: 1 };
+  private enPassantPossibility: string;
 
   constructor(gameState: GameState) {
     this.gameState = gameState;
@@ -12,10 +17,6 @@ export class MovesGenerator {
 
   private getEnemyColor(color: Colors) {
     return color === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
-  }
-
-  private indexesToField(row: number, column: number) {
-    return `${mapColumnIndexToLetter(column)}${row + 1}`;
   }
 
   private getPossiblePawnMoves(
@@ -31,7 +32,7 @@ export class MovesGenerator {
       return [];
     }
     if (!this.gameState[nextRow][column]) {
-      possibleMoves.push(this.indexesToField(nextRow, column));
+      possibleMoves.push(indexesToField(nextRow, column));
     }
     const rowPlusTwo = row + colorMultiplier * 2;
     if (
@@ -39,19 +40,30 @@ export class MovesGenerator {
       !this.gameState[nextRow][column] &&
       !this.gameState[rowPlusTwo][column]
     ) {
-      possibleMoves.push(this.indexesToField(rowPlusTwo, column));
+      possibleMoves.push(indexesToField(rowPlusTwo, column));
     }
     if (
       column < 7 &&
       this.gameState[nextRow][column + 1]?.color === enemyColor
     ) {
-      possibleMoves.push(this.indexesToField(nextRow, column + 1));
+      possibleMoves.push(indexesToField(nextRow, column + 1));
     }
     if (
       column > 0 &&
       this.gameState[nextRow][column - 1]?.color === enemyColor
     ) {
-      possibleMoves.push(this.indexesToField(nextRow, column - 1));
+      possibleMoves.push(indexesToField(nextRow, column - 1));
+    }
+    if (this.enPassantPossibility !== "-") {
+      const [enPassantColumn] = this.enPassantPossibility.split("");
+      const enPassantColumnIndex = mapLetterToColumnIndex(enPassantColumn);
+      const isPieceColumnNextToEnPassant =
+        Math.abs(enPassantColumnIndex - column) === 1;
+      const isPieceRowNextToEnPassant =
+        color === Colors.WHITE ? row === 4 : row === 3;
+      if (isPieceColumnNextToEnPassant && isPieceRowNextToEnPassant) {
+        possibleMoves.push(this.enPassantPossibility);
+      }
     }
     return possibleMoves;
   }
@@ -77,12 +89,12 @@ export class MovesGenerator {
           nextColumn <= 7
         ) {
           if (this.gameState[nextRow][nextColumn]?.color === enemyColor) {
-            possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+            possibleMoves.push(indexesToField(nextRow, nextColumn));
             break;
           } else if (this.gameState[nextRow][nextColumn]?.color === color) {
             break;
           } else {
-            possibleMoves.push(this.indexesToField(nextRow, nextColumn));
+            possibleMoves.push(indexesToField(nextRow, nextColumn));
           }
         } else {
           break;
@@ -255,7 +267,12 @@ export class MovesGenerator {
     );
   }
 
-  public getAllPossibleMoves(movesNext: Colors, castlingAvailability: string) {
+  public getAllPossibleMoves(
+    movesNext: Colors,
+    castlingAvailability: string,
+    enPassantPossibility: string,
+  ) {
+    this.enPassantPossibility = enPassantPossibility;
     const basicMoves = this.getAllPossibleBasicMoves(movesNext);
     return this.addCastlingMoves(basicMoves, castlingAvailability, movesNext);
   }

@@ -7,7 +7,8 @@ import {
 } from "../types/game";
 import FenValidator from "./FenValidator";
 import { MovesGenerator } from "./MovesGenerator";
-import { mapColumnIndexToLetter, mapLetterToColumnIndex } from "../utils";
+import { indexesToField, mapColumnIndexToLetter } from "../utils";
+import { MoveIndexes } from "./MoveIndexes";
 
 type FenFieldSymbol =
   | "p"
@@ -96,6 +97,7 @@ class Game {
     return movesGenerator.getAllPossibleMoves(
       this.movesNext,
       this.castlingAvailability,
+      this.enPassantPossibility,
     );
   }
 
@@ -144,39 +146,38 @@ class Game {
     );
   }
 
-  private revalidateCastlingAvailability(
-    from_column_index: number,
-    from_row_index: number,
-    to_column_index: number,
-    to_row_index: number,
-  ) {
-    const piece_moving = this.gameState[from_row_index][from_column_index];
+  private revalidateCastlingAvailability(moveIndexes: MoveIndexes) {
+    const piece_moving =
+      this.gameState[moveIndexes.from.row][moveIndexes.from.column];
     if (piece_moving?.piece === ChessPieces.KING) {
       this.removeCastlingFromColor(piece_moving.color);
     }
-    this.removeCastilngIfRookStateChange(from_column_index, from_row_index);
-    this.removeCastilngIfRookStateChange(to_column_index, to_row_index);
+    this.removeCastilngIfRookStateChange(
+      moveIndexes.from.column,
+      moveIndexes.from.row,
+    );
+    this.removeCastilngIfRookStateChange(
+      moveIndexes.to.column,
+      moveIndexes.to.row,
+    );
   }
 
-  private handleCastling(
-    from_column_index: number,
-    from_row_index: number,
-    to_column_index: number,
-    to_row_index: number,
-  ) {
-    const movingPiece = this.gameState[from_row_index][from_column_index];
-    const fieldToLand = this.gameState[to_row_index][to_column_index];
+  private handleCastling(moveIndexes: MoveIndexes) {
+    const movingPiece =
+      this.gameState[moveIndexes.from.row][moveIndexes.from.column];
+    const fieldToLand =
+      this.gameState[moveIndexes.to.row][moveIndexes.to.column];
     const castlingRowIndex = this.movesNext === Colors.WHITE ? 0 : 7;
     let newKingIndex: number | null = null;
     let newRookIndex: number | null = null;
     let oldRookIndex: number | null = null;
     if (fieldToLand?.color === movingPiece?.color) {
-      if (from_column_index === 0 || to_column_index === 0) {
+      if (moveIndexes.from.column === 0 || moveIndexes.to.column === 0) {
         newKingIndex = 2;
         newRookIndex = 3;
         oldRookIndex = 0;
       }
-      if (from_column_index === 7 || to_column_index === 7) {
+      if (moveIndexes.from.column === 7 || moveIndexes.to.column === 7) {
         newKingIndex = 6;
         newRookIndex = 5;
         oldRookIndex = 7;
@@ -192,35 +193,67 @@ class Game {
       movingPiece?.color && this.removeCastlingFromColor(movingPiece?.color);
       return true;
     } else {
-      this.revalidateCastlingAvailability(
-        from_column_index,
-        from_row_index,
-        to_column_index,
-        to_row_index,
-      );
+      this.revalidateCastlingAvailability(moveIndexes);
       return false;
     }
   }
 
-  public move(from: string, to: string) {
+  private handleEnPassantPossibility(moveIndexes: MoveIndexes) {
+    const movingPiece =
+      this.gameState[moveIndexes.from.row][moveIndexes.from.column];
+    const rowDifference = Math.abs(moveIndexes.from.row - moveIndexes.to.row);
+    if (movingPiece?.piece === ChessPieces.PAWN && rowDifference === 2) {
+      const colorMultiplier = this.movesNext === Colors.BLACK ? 1 : -1;
+      const enPassantField = indexesToField(
+        moveIndexes.to.row + 1 * colorMultiplier,
+        moveIndexes.to.column,
+      );
+      this.enPassantPossibility = enPassantField;
+    } else {
+      this.enPassantPossibility = "-";
+    }
+  }
+
+  private handleEnPassantCapture(moveIndexes: MoveIndexes) {
+    const movingPiece =
+      this.gameState[moveIndexes.from.row][moveIndexes.from.column];
+    if (
+      movingPiece?.piece === ChessPieces.PAWN &&
+      moveIndexes.to.field === this.enPassantPossibility
+    ) {
+      const colorMultiplier = this.movesNext === Colors.BLACK ? 1 : -1;
+      delete this.gameState[moveIndexes.to.row + 1 * colorMultiplier][
+        moveIndexes.to.column
+      ];
+    }
+  }
+
+  private getNewPiece(moveIndexes: MoveIndexes, promotion: string) {
+    const movingPiece =
+      this.gameState[moveIndexes.from.row][moveIndexes.from.column];
+    const promotionRow = this.movesNext === Colors.BLACK ? 0 : 7;
+    if (
+      movingPiece?.piece === ChessPieces.PAWN &&
+      moveIndexes.to.row === promotionRow
+    ) {
+      return fenSymbolsToPiecesMapping[
+        this.movesNext === Colors.BLACK
+          ? promotion
+          : promotion.toLocaleUpperCase()
+      ];
+    }
+    return this.gameState[moveIndexes.from.row][moveIndexes.from.column];
+  }
+
+  public move(from: string, to: string, promotion: string = "q") {
     if (this.possibleMoves[from].includes(to)) {
-      const [from_column, from_row] = from.split("");
-      const [to_column, to_row] = to.split("");
-      const from_column_index = mapLetterToColumnIndex(from_column);
-      const from_row_index = Number(from_row) - 1;
-      const to_column_index = mapLetterToColumnIndex(to_column);
-      const to_row_index = Number(to_row) - 1;
-      if (
-        !this.handleCastling(
-          from_column_index,
-          from_row_index,
-          to_column_index,
-          to_row_index,
-        )
-      ) {
-        this.gameState[to_row_index][to_column_index] =
-          this.gameState[from_row_index][from_column_index];
-        delete this.gameState[from_row_index][from_column_index];
+      const moveIndexes = new MoveIndexes(from, to);
+      this.handleEnPassantCapture(moveIndexes);
+      this.handleEnPassantPossibility(moveIndexes);
+      if (!this.handleCastling(moveIndexes)) {
+        const newPiece = this.getNewPiece(moveIndexes, promotion);
+        this.gameState[moveIndexes.to.row][moveIndexes.to.column] = newPiece;
+        delete this.gameState[moveIndexes.from.row][moveIndexes.from.column];
       }
       this.movesNext =
         this.movesNext === Colors.WHITE ? Colors.BLACK : Colors.WHITE;

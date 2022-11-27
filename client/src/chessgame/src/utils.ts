@@ -5,3 +5,7 @@ export function mapColumnIndexToLetter(column: number) {
 export function mapLetterToColumnIndex(letter: string) {
   return letter.charCodeAt(0) - 97;
 }
+
+export function indexesToField(row: number, column: number) {
+  return `${mapColumnIndexToLetter(column)}${row + 1}`;
+}
