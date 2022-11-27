@@ -16,6 +16,18 @@ const usersController = {
       res.status(500).json({ error: getErrorMessage(error) });
     }
   },
+
+  getUser: async (req: IGetUserAuthInfoRequest, res: Response) => {
+    const username = req.user
+    try {
+      const user = await User.findOne({username});
+      const {password, ...userWithoutPassword} = JSON.parse(JSON.stringify(user))
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.log(getErrorMessage(error));
+      res.status(500).json({ error: getErrorMessage(error) });
+    }
+  },
 };
 
 export default usersController;
