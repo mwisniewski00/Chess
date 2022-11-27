@@ -1,7 +1,7 @@
 import { Response } from "express";
-import User from "../models/User";
-import { IGetUserAuthInfoRequest } from "../middleware/verifyJWT";
-import getErrorMessage from "../helpers/getErrorMessage";
+import User from "../../models/User";
+import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
+import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 
 //test route

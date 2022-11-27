@@ -1,11 +1,11 @@
 import express from "express";
 import verifyJWT from "../middleware/verifyJWT";
-import loginController from "../controllers/loginController";
-import logoutController from "../controllers/logoutController";
-import refreshTokenController from "../controllers/refreshTokenController";
-import registerController from "../controllers/registerController";
-import usersController from "../controllers/usersController";
-import validationController from "../controllers/validationController";
+import loginController from "../controllers/user/loginController";
+import logoutController from "../controllers/user/logoutController";
+import refreshTokenController from "../controllers/user/refreshTokenController";
+import registerController from "../controllers/user/registerController";
+import usersController from "../controllers/user/usersController";
+import validationController from "../controllers/user/validationController";
 
 const router = express.Router();
 
