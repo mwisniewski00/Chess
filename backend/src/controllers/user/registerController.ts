@@ -22,12 +22,16 @@ const registerController = {
         process.env.REFRESH_TOKEN_SECRET as Secret,
         { expiresIn: "7d" },
       );
+      const registrationDate = new Date();
+      const lastLoginDate = registrationDate;
 
       const user = await User.create({
         username,
         email,
         password: hashedPassword,
         refreshToken,
+        registrationDate,
+        lastLoginDate
       });
 
       res.cookie("jwt", refreshToken, {
