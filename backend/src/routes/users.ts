@@ -11,8 +11,6 @@ const router = express.Router();
 
 router.get("/", verifyJWT, usersController.getUsers);
 
-router.get("/find", verifyJWT, usersController.getUser)
-
 router.delete("/logout", verifyJWT, logoutController.handleLogout);
 
 router.get("/refresh-token", refreshTokenController.handleRefreshToken);
@@ -24,5 +22,7 @@ router.get("/email-taken", validationController.checkEmailAvailability);
 router.post("/login", loginController.handleLogin);
 
 router.post("/register", registerController.handleRegister);
+
+router.get("/profile/:username", usersController.getUser)
 
 export default router;

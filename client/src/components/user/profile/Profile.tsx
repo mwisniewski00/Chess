@@ -3,9 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { url } from "inspector";
 import { useEffect, useState } from "react";
-import User from "../../../models/User";
+import IUser from "../../../models/IUser";
 import "./Profile.scss"
 
 interface TabPanelProps {
@@ -43,7 +42,7 @@ function a11yProps(index: number) {
 
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState(new User());
+  const [user, setUser] = useState({} as IUser);
   const [value, setValue] = useState(0);
   const axiosPrivate = useAxiosPrivate();
 
@@ -54,9 +53,8 @@ const Profile: React.FC = () => {
   useEffect(() => {
     async function getUser() {
       try{
-        const response = await axiosPrivate.get("users/find", {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,})
+        const username = window.location.pathname.slice(9)
+        const response = await axiosPrivate.get(`users/profile/${username}`)
         if(response.status === 200) setUser(response.data);
       } catch(err){
         console.log(err);
