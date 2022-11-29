@@ -1,4 +1,4 @@
-import { Response, Request } from "express";
+import { Response } from "express";
 import User from "../../models/User";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import getErrorMessage from "../../helpers/getErrorMessage";
@@ -11,18 +11,6 @@ const usersController = {
     try {
       const users = await User.find();
       res.json(users);
-    } catch (error) {
-      console.log(getErrorMessage(error));
-      res.status(500).json({ error: getErrorMessage(error) });
-    }
-  },
-
-  getUser: async (req: Request, res: Response) => {
-    const username = req.params.username;
-    try {
-      const user = await User.findOne({username});
-      const {password, ...userWithoutPassword} = JSON.parse(JSON.stringify(user))
-      res.json(userWithoutPassword);
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

@@ -27,10 +27,8 @@ const loginController = {
           process.env.REFRESH_TOKEN_SECRET as Secret,
           { expiresIn: "7d" },
         );
-        const lastLoginDate = new Date()
 
         user.refreshToken = refreshToken;
-        user.lastLoginDate = lastLoginDate;
         await User.findOneAndUpdate({ email }, user);
 
         res.cookie("jwt", refreshToken, {

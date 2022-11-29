@@ -23,6 +23,4 @@ router.post("/login", loginController.handleLogin);
 
 router.post("/register", registerController.handleRegister);
 
-router.get("/profile/:username", usersController.getUser)
-
 export default router;
