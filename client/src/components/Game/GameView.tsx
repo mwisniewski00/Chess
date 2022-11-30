@@ -4,16 +4,17 @@ import "./GameView.scss";
 import Game from "../../chessgame/src/game/Game";
 import { GameStateObject, PossibleMoves } from "../../chessgame/src/types/game";
 import Chessboard from "./chess-board/Chessboard";
-import IGame from "components/models/IGame";
+import IGame from "components/models/game/IGame";
 import PlayerSection from "./player-section/PlayerSection";
 const testGame = new Game();
 
 interface GameViewProps {
   game: IGame;
+  setGame: React.Dispatch<React.SetStateAction<IGame>>;
   color: string | null;
 }
 
-export function GameView({ game, color }: GameViewProps) {
+export function GameView({ game, setGame, color }: GameViewProps) {
   const [gameState, setGameState] = useState<GameStateObject>(
     testGame.getGameStateObject(),
   );
@@ -37,7 +38,7 @@ export function GameView({ game, color }: GameViewProps) {
           movePiece={movePiece}
           possibleMoves={possibleMoves}
         />
-        <PlayerSection game={game} color={color as string} />
+        <PlayerSection setGame={setGame} game={game} color={color as string} />
       </section>
     </main>
   );
