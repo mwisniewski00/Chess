@@ -1,0 +1,73 @@
+@import "../../../variables.scss";
+
+.profile-page {
+  background-color: $dark-background;
+  color: $main-theme-color;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .profile-content {
+    margin-top: 20vh;
+    width: 75%;
+    max-width: 980px;
+
+    .profile-box {
+      border-radius: 10px;
+      width: 100%;
+      background-color: $dark-background-contrast;
+      min-height: 10rem;
+    }
+
+    .profile-header {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .profile-avatar {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 10px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+
+      .profile-edit {
+        position: relative;
+        right: 0%;
+      }
+
+      .profile-details {
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 1rem;
+
+        .profile-name{
+          font-size: 2.9rem;
+          font-weight: bold;
+        }
+
+        .profile-title{
+          margin-left: 0.5rem;
+        }
+      }
+    }
+
+    .profile-section{
+      margin-top: 4rem;
+      padding: 0 1rem;
+      
+      .profile-tabs-menu{
+        color: $main-theme-color !important
+      }
+    }
+  }
+}
+
+.MuiTabs-indicator{ background-color: $main-theme-color !important;} 

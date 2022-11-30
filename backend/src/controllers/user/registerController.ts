@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
-import User from "../models/User";
-import getErrorMessage from "../helpers/getErrorMessage";
+import User from "../../models/User";
+import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 
 const registerController = {
@@ -15,19 +15,23 @@ const registerController = {
       const accessToken = jwt.sign(
         { username: username },
         process.env.ACCESS_TOKEN_SECRET as Secret,
-        { expiresIn: "1d" },
+        { expiresIn: "15m" },
       );
       const refreshToken = jwt.sign(
         { username: username },
         process.env.REFRESH_TOKEN_SECRET as Secret,
         { expiresIn: "7d" },
       );
+      const registrationDate = new Date();
+      const lastLoginDate = registrationDate;
 
       const user = await User.create({
         username,
         email,
         password: hashedPassword,
         refreshToken,
+        registrationDate,
+        lastLoginDate
       });
 
       res.cookie("jwt", refreshToken, {

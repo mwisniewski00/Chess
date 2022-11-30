@@ -5,6 +5,10 @@ interface IUser {
     email: string;
     password: string;
     refreshToken: string;
+    description: string;
+    avatarUrl: string;
+    registrationDate: Date;
+    lastLoginDate: Date;
 }
 
 const userSchema = new Schema<IUser>(
@@ -35,6 +39,22 @@ const userSchema = new Schema<IUser>(
     refreshToken: {
       type: String,
     },
+    description: {
+      type: String,
+      maxLength: 255
+    },
+    avatarUrl: { 
+      type: String,
+      match: [
+        /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/, 
+        "Incorrect URL"]
+    },
+    registrationDate: {
+      type: Date
+    },
+    lastLoginDate: {
+      type: Date
+    }
   },
   { collection: "users" }
 );
