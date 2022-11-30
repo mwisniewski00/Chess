@@ -32,16 +32,32 @@ const joinGameController = {
       // black player joins for the first time
       if (game.playerWhite && !game.playerBlack) {
         game.playerBlack = { username: player as string };
+        game.chat.push({
+          message: `${game.playerBlack.username} joined as Black!`,
+          author: null,
+        });
+        await Game.findByIdAndUpdate(gameId, game);
         io.emit(`player_connected${gameId}`, { playerBlack: game.playerBlack });
+        io.emit(`new_message${gameId}`, {
+          message: `${game.playerBlack.username} joined as Black!`,
+          author: null,
+        });
       }
 
       // white player joins for the first time
       if (!game.playerWhite) {
         game.playerWhite = { username: player as string };
+        game.chat.push({
+          message: `${game.playerWhite.username} joined as White!`,
+          author: null,
+        });
+        await Game.findByIdAndUpdate(gameId, game);
         io.emit(`player_connected${gameId}`, { playerWhite: game.playerWhite });
+        io.emit(`new_message${gameId}`, {
+          message: `${game.playerWhite.username} joined as White!`,
+          author: null,
+        });
       }
-
-      await Game.findByIdAndUpdate(gameId, game);
 
       res.status(200).json({ game });
     } catch (error) {

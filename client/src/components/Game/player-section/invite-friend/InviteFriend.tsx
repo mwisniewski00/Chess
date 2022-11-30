@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./InviteFriend.scss";
 import LinkIcon from "@mui/icons-material/Link";
 import DoneIcon from "@mui/icons-material/Done";

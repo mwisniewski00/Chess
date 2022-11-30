@@ -3,7 +3,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useNavigate, useParams } from "react-router-dom";
 import { GameView } from "./GameView";
 import { useLayoutEffect, useState, useEffect } from "react";
-import IGame from "components/models/IGame";
+import IGame from "components/models/game/IGame";
 import useSocketClient from "hooks/useSocketClient";
 import IPlayerConnected from "components/models/websocket/IPlayerConnected";
 
@@ -12,6 +12,7 @@ export const Game: React.FC = () => {
     id: "",
     playerWhite: null,
     playerBlack: null,
+    chat: [],
   });
   const [color, setColor] = useState<string | null>(null);
   const axiosPrivate = useAxiosPrivate();
@@ -49,22 +50,26 @@ export const Game: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    socket.on(`player_connected${gameId}`, (data: IPlayerConnected) => {
-      setGame(prev => ({ ...prev, ...data }));
+    socket.on(`player_connected${gameId}`, (player: IPlayerConnected) => {
+      setGame(prev => ({ ...prev, ...player }));
     });
 
     return () => {
-      socket.off("player_connected");
+      socket.off(`player_connected${gameId}`);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("GAME: ", game);
+  // console.log("GAME: ", game);
 
   return (
     <div>
-      <GameView game={game} color={color} />
+      {game.id !== "" && color ? (
+        <GameView setGame={setGame} game={game} color={color} />
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 };
