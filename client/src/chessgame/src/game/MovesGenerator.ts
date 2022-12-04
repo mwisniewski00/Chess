@@ -4,12 +4,17 @@ import {
   mapColumnIndexToLetter,
   indexesToField,
   mapLetterToColumnIndex,
+  fieldToIndexes,
 } from "../utils";
+import { MoveMaker } from "./MoveMaker";
 
 export class MovesGenerator {
   private gameState: GameState;
   private startingPawnIndexes = { [Colors.BLACK]: 6, [Colors.WHITE]: 1 };
   private enPassantPossibility: string;
+  private castlingAvailability: string;
+  private movesNext = Colors.WHITE;
+  private kingField = "";
 
   constructor(gameState: GameState) {
     this.gameState = gameState;
@@ -122,6 +127,9 @@ export class MovesGenerator {
         return this.getPossiblePawnMoves(row, column, field.color);
       }
       case ChessPieces.KING: {
+        if (field.color === this.movesNext) {
+          this.kingField = indexesToField(row, column);
+        }
         return this.getPossibleFigureMoves(
           row,
           column,
@@ -202,23 +210,24 @@ export class MovesGenerator {
 
   private addCastlingMoves(
     allPossibleMoves: object,
-    castlingAvailability: string,
     movesNext: Colors,
+    possibleEnemyMoves: {},
   ) {
     const movesToUpdate = { ...allPossibleMoves };
-    if (castlingAvailability.length) {
+    if (this.castlingAvailability.length) {
       const rowToCheck = movesNext === Colors.WHITE ? 0 : 7;
-      const possibleEnemyMoves = this.getAllPossibleBasicMoves(
-        this.getEnemyColor(movesNext),
-      );
       const isQueenSidePossible =
-        castlingAvailability.includes(movesNext === Colors.WHITE ? "Q" : "q") &&
+        this.castlingAvailability.includes(
+          movesNext === Colors.WHITE ? "Q" : "q",
+        ) &&
         this.areFieldsBetweenPiecesInRowEmpty(rowToCheck, 1, 4) &&
-        !this.willFieldBeAttacked(`c${rowToCheck + 1}`, possibleEnemyMoves);
+        !this.isFieldAttacked(`c${rowToCheck + 1}`, possibleEnemyMoves);
       const isKingSidePossible =
-        castlingAvailability.includes(movesNext === Colors.BLACK ? "K" : "k") &&
+        this.castlingAvailability.includes(
+          movesNext === Colors.WHITE ? "K" : "k",
+        ) &&
         this.areFieldsBetweenPiecesInRowEmpty(rowToCheck, 5, 7) &&
-        !this.willFieldBeAttacked(`g${rowToCheck + 1}`, possibleEnemyMoves);
+        !this.isFieldAttacked(`g${rowToCheck + 1}`, possibleEnemyMoves);
 
       const rookColumns = [
         ...(isQueenSidePossible ? ["a"] : []),
@@ -261,10 +270,40 @@ export class MovesGenerator {
     return allPossibleMoves;
   }
 
-  private willFieldBeAttacked(field: string, enemyMoves: object) {
+  private isFieldAttacked(field: string, enemyMoves: object) {
     return Object.values(enemyMoves).some(moves =>
       (moves as string[]).includes(field),
     );
+  }
+
+  private filterIllegalInCheckMoves(allMoves: {}) {
+    const allFields = Object.keys(allMoves);
+    const moveMaker = new MoveMaker(
+      this.gameState,
+      this.enPassantPossibility,
+      this.movesNext,
+      this.castlingAvailability,
+    );
+    allFields.forEach(field => {
+      const moves = allMoves[field];
+      const [column_from, row_from] = fieldToIndexes(field);
+      const newMoves = moves.filter(move => {
+        const newKingField =
+          this.gameState[row_from][column_from]?.piece === ChessPieces.KING
+            ? move
+            : this.kingField;
+        const { gameState } = moveMaker.move(field, move);
+        const initialGameState = this.gameState;
+        this.gameState = gameState;
+        const currentEnemyMoves = this.getAllPossibleBasicMoves(
+          this.getEnemyColor(this.movesNext),
+        );
+        this.gameState = initialGameState;
+        return !this.isFieldAttacked(newKingField, currentEnemyMoves);
+      });
+      allMoves[field] = newMoves;
+    });
+    return allMoves;
   }
 
   public getAllPossibleMoves(
@@ -273,7 +312,26 @@ export class MovesGenerator {
     enPassantPossibility: string,
   ) {
     this.enPassantPossibility = enPassantPossibility;
+    this.castlingAvailability = castlingAvailability;
+    this.movesNext = movesNext;
     const basicMoves = this.getAllPossibleBasicMoves(movesNext);
-    return this.addCastlingMoves(basicMoves, castlingAvailability, movesNext);
+    const enemyBasicMoves = this.getAllPossibleBasicMoves(
+      this.getEnemyColor(movesNext),
+    );
+    const movesWithCastling = this.addCastlingMoves(
+      basicMoves,
+      movesNext,
+      enemyBasicMoves,
+    );
+    const isCheck = this.isFieldAttacked(this.kingField, enemyBasicMoves);
+    const allMoves = this.filterIllegalInCheckMoves(movesWithCastling);
+    const isCheckMate =
+      isCheck &&
+      Object.values(allMoves).every(moves => (moves as string[]).length === 0);
+    return {
+      allMoves: this.filterIllegalInCheckMoves(movesWithCastling),
+      isCheck,
+      isCheckMate,
+    };
   }
 }

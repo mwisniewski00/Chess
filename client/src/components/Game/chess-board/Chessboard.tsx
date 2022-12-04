@@ -1,10 +1,10 @@
 import "./Chessboard.scss";
-import Chesspiece from "./chesspieces/Chesspiece";
 import { useState, useCallback } from "react";
 import {
   GameStateObject,
   PossibleMoves,
 } from "../../../chessgame/src/types/game";
+import Chesspiece from "./chesspieces/Chesspiece";
 
 interface ChessboardProps {
   gameState: GameStateObject;

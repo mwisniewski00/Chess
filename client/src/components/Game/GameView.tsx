@@ -6,6 +6,7 @@ import { GameStateObject, PossibleMoves } from "../../chessgame/src/types/game";
 import Chessboard from "./chess-board/Chessboard";
 import IGame from "components/models/game/IGame";
 import PlayerSection from "./player-section/PlayerSection";
+import { PromotionDialog } from "./dialogs/PromotionDialog";
 const testGame = new Game();
 
 interface GameViewProps {
@@ -22,17 +23,40 @@ export function GameView({ game, setGame, color }: GameViewProps) {
     testGame.possibleMoves,
   );
 
+  const [promotionDialogState, setPromotionDialogState] = useState({
+    open: false,
+    from: "",
+    to: "",
+  });
+
+  const makeMove = (from: string, to: string, promotion: string = "q") => {
+    game.move(from, to, promotion);
+    setGameState(game.getGameStateObject());
+    setPossibleMoves(game.possibleMoves);
+  };
+
   const movePiece = (from: string, to: string) => {
     if (gameState[from]) {
-      testGame.move(from, to);
-      setGameState(testGame.getGameStateObject());
-      setPossibleMoves(testGame.possibleMoves);
+      if (game.isPromotionMove(from, to)) {
+        setPromotionDialogState({ open: true, from, to });
+      } else {
+        makeMove(from, to);
+      }
     }
   };
 
+  const onPromotionChoice = (piece: string) => {
+    makeMove(promotionDialogState.from, promotionDialogState.to, piece);
+    setPromotionDialogState({ open: false, from: "", to: "" });
+  };
+
   return (
-    <main>
-      <section>
+    <main id="game__view">
+      <PromotionDialog
+        isOpen={promotionDialogState.open}
+        onPromotionChoice={onPromotionChoice}
+      />
+      <section className="chessboard__section">
         <Chessboard
           gameState={gameState}
           movePiece={movePiece}
