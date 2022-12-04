@@ -25,4 +25,6 @@ router.post("/register", registerController.handleRegister);
 
 router.get("/profile/:username", usersController.getUser)
 
+router.put("/profile", verifyJWT, usersController.editUser)
+
 export default router;
