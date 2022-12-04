@@ -40,6 +40,9 @@
       .profile-edit {
         position: relative;
         right: 0%;
+          &:hover {
+            cursor: pointer;
+          }
       }
 
       .profile-details {

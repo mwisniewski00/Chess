@@ -6,6 +6,8 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from "react";
 import IUser from "../../../models/IUser";
 import "./Profile.scss"
+import useUserModal from "hooks/useUserModal";
+import {EditUserModal} from "../modals/edit/EditUserModal";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,6 +47,7 @@ const Profile: React.FC = () => {
   const [user, setUser] = useState({} as IUser);
   const [value, setValue] = useState(0);
   const axiosPrivate = useAxiosPrivate();
+  const { isOpen, setIsOpen } = useUserModal()
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -72,7 +75,7 @@ const Profile: React.FC = () => {
             <div className="profile-name"> {user.username} </div>
             <div className="profile-title"> Grand Master </div>
           </div>
-          <a className="profile-edit"> Edit </a>
+          <div onClick={() => setIsOpen(true)} className="profile-edit"> Edit </div>
         </div>
 
         <div className="profile-section profile-box">
@@ -101,6 +104,9 @@ const Profile: React.FC = () => {
         </div>
     
       </div>
+
+      <EditUserModal isOpen={isOpen} setIsOpen={setIsOpen} userData={user}/>
+
     </div>
   )
 }
