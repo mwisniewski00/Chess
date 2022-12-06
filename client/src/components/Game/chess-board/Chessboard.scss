@@ -4,15 +4,15 @@
   --chessfield-light: #e9ecef;
   --chessfield-dark: #6c757d;
   --chessfield-highlighted: #76520e;
-  --chessboard-border-radius: 15px;
 }
 
 #chessboard {
-  width: 100%;
+  position: relative;
+  top: 40px;
+  width: 40%;
+  min-width: 300px;
   aspect-ratio: 1 / 1;
   background-color: black;
-  border-radius: var(--chessboard-border-radius);
-  box-shadow: 10px 10px 10px #495057;
 }
 
 #chessboard > div {

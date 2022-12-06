@@ -1,14 +1,9 @@
+import IAuth from "components/models/IAuth";
 import { createContext, useState, ReactNode } from "react";
 
-interface Auth {
-  token?: string;
-  username?: string;
-  email?: string;
-}
-
 interface IAuthContext {
-  auth: Auth;
-  setAuth: (auth: Auth) => void;
+  auth: IAuth;
+  setAuth: (auth: IAuth) => void;
 }
 
 const AuthContext = createContext<IAuthContext>({
@@ -21,7 +16,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<Auth>({});
+  const [auth, setAuth] = useState<IAuth>({});
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
