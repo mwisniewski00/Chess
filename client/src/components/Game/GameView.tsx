@@ -7,7 +7,9 @@ import Chessboard from "./chess-board/Chessboard";
 import IGame from "components/models/game/IGame";
 import PlayerSection from "./player-section/PlayerSection";
 import { PromotionDialog } from "./dialogs/PromotionDialog";
-const testGame = new Game();
+const testGame = new Game(
+  "rnbqk1nr/p2p1ppp/3b4/1pp1p3/4P1P1/2N2N2/PPPP1P1P/1RBQKB1R b Kkq - 0 1",
+);
 
 interface GameViewProps {
   game: IGame;
@@ -33,6 +35,7 @@ export function GameView({ game, setGame, color }: GameViewProps) {
     testGame.move(from, to, promotion);
     setGameState(testGame.getGameStateObject());
     setPossibleMoves(testGame.possibleMoves);
+    console.log(testGame.generateFen());
   };
 
   const movePiece = (from: string, to: string) => {
