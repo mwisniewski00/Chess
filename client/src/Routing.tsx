@@ -4,7 +4,7 @@ import Profile from "components/user/profile/Profile";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HeroPage } from "./components/hero-page/HeroPage";
 import { Lobby } from "./components/lobby/Lobby";
-import Game from "components/game/Game";
+import Game from "./components/Game/Game";
 
 export const Routing: React.FC = () => {
   return (
