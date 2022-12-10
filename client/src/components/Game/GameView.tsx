@@ -30,14 +30,14 @@ export function GameView({ game, setGame, color }: GameViewProps) {
   });
 
   const makeMove = (from: string, to: string, promotion: string = "q") => {
-    game.move(from, to, promotion);
-    setGameState(game.getGameStateObject());
-    setPossibleMoves(game.possibleMoves);
+    testGame.move(from, to, promotion);
+    setGameState(testGame.getGameStateObject());
+    setPossibleMoves(testGame.possibleMoves);
   };
 
   const movePiece = (from: string, to: string) => {
     if (gameState[from]) {
-      if (game.isPromotionMove(from, to)) {
+      if (testGame.isPromotionMove(from, to)) {
         setPromotionDialogState({ open: true, from, to });
       } else {
         makeMove(from, to);

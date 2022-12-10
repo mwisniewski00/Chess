@@ -50,15 +50,16 @@ class Game {
   fullMoveNumber: number;
   possibleMoves: PossibleMoves;
   isCheck: boolean;
+  isCheckmate: boolean;
+  isStalemate: boolean;
+  isInsufficientMaterial: boolean;
   private START_GAME_FEN =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
   constructor(fen?: string) {
     this.fen = fen || this.START_GAME_FEN;
     this.fenToGameState(this.fen);
-    const { allMoves, isCheck } = this.getAllPossibleMoves();
-    this.possibleMoves = allMoves;
-    this.isCheck = isCheck;
+    this.getAllPossibleMoves();
   }
 
   private parseGameStateRowFen = (gameRowFen: string) => {
@@ -99,11 +100,22 @@ class Game {
 
   private getAllPossibleMoves() {
     const movesGenerator = new MovesGenerator(this.gameState);
-    return movesGenerator.getAllPossibleMoves(
+    const {
+      allMoves,
+      isCheck,
+      isCheckmate,
+      isStalemate,
+      isInsufficientMaterial,
+    } = movesGenerator.getAllPossibleMoves(
       this.movesNext,
       this.castlingAvailability,
       this.enPassantPossibility,
     );
+    this.isCheck = isCheck;
+    this.isCheckmate = isCheckmate;
+    this.isStalemate = isStalemate;
+    this.isInsufficientMaterial = isInsufficientMaterial;
+    this.possibleMoves = allMoves;
   }
 
   public getGameStateObject(): GameStateObject {
@@ -130,6 +142,16 @@ class Game {
     );
   }
 
+  public isDraw() {
+    if (this.isStalemate) {
+      return { isDraw: true, reason: "Stalemate" };
+    }
+    if (this.isInsufficientMaterial) {
+      return { isDraw: true, reason: "Insufficient Material" };
+    }
+    return { isDraw: false };
+  }
+
   public move(from: string, to: string, promotion: string = "q") {
     if (this.possibleMoves[from].includes(to)) {
       const moveMaker = new MoveMaker(
@@ -145,9 +167,7 @@ class Game {
       this.castlingAvailability = castlingAvailability;
       this.movesNext =
         this.movesNext === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
-      const { allMoves, isCheck } = this.getAllPossibleMoves();
-      this.possibleMoves = allMoves;
-      this.isCheck = isCheck;
+      this.getAllPossibleMoves();
       return true;
     }
     return false;

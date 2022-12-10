@@ -199,13 +199,18 @@ export class MovesGenerator {
     }
   }
 
-  private areFieldsBetweenPiecesInRowEmpty(
+  private areFieldsBetweenPiecesInRowEmptyAndNotAttacked(
     row: number,
     column1: number,
     column2: number,
+    enemyMoves: {},
   ) {
     const fieldsToCheck = this.gameState[row].slice(column1, column2);
-    return fieldsToCheck.every(field => !field);
+    return fieldsToCheck.every(
+      (field, index) =>
+        !field &&
+        !this.isFieldAttacked(indexesToField(row, index + column1), enemyMoves),
+    );
   }
 
   private addCastlingMoves(
@@ -220,14 +225,22 @@ export class MovesGenerator {
         this.castlingAvailability.includes(
           movesNext === Colors.WHITE ? "Q" : "q",
         ) &&
-        this.areFieldsBetweenPiecesInRowEmpty(rowToCheck, 1, 4) &&
-        !this.isFieldAttacked(`c${rowToCheck + 1}`, possibleEnemyMoves);
+        this.areFieldsBetweenPiecesInRowEmptyAndNotAttacked(
+          rowToCheck,
+          1,
+          4,
+          possibleEnemyMoves,
+        );
       const isKingSidePossible =
         this.castlingAvailability.includes(
           movesNext === Colors.WHITE ? "K" : "k",
         ) &&
-        this.areFieldsBetweenPiecesInRowEmpty(rowToCheck, 5, 7) &&
-        !this.isFieldAttacked(`g${rowToCheck + 1}`, possibleEnemyMoves);
+        this.areFieldsBetweenPiecesInRowEmptyAndNotAttacked(
+          rowToCheck,
+          5,
+          7,
+          possibleEnemyMoves,
+        );
 
       const rookColumns = [
         ...(isQueenSidePossible ? ["a"] : []),
@@ -306,6 +319,74 @@ export class MovesGenerator {
     return allMoves;
   }
 
+  private isInsufficientMaterial() {
+    const flattenGameState = this.gameState.flat();
+    const starterGameSituation = {
+      black: {
+        bishops: 0,
+        knights: 0,
+        otherPieces: 0,
+      },
+      white: {
+        bishops: 0,
+        knights: 0,
+        otherPieces: 0,
+      },
+    };
+    const gameSituation = flattenGameState.reduce((acc, curr) => {
+      if (curr) {
+        const { color, piece } = curr;
+        if (piece === ChessPieces.KING) {
+          return acc;
+        }
+        const colorToUpdate = color === Colors.BLACK ? "black" : "white";
+        if (piece === ChessPieces.KNIGHT) {
+          return {
+            ...acc,
+            [colorToUpdate]: {
+              ...acc[colorToUpdate],
+              knights: acc[colorToUpdate].knights + 1,
+            },
+          };
+        } else if (piece === ChessPieces.BISHOP) {
+          return {
+            ...acc,
+            [colorToUpdate]: {
+              ...acc[colorToUpdate],
+              bishops: acc[colorToUpdate].bishops + 1,
+            },
+          };
+        } else {
+          return {
+            ...acc,
+            [colorToUpdate]: {
+              ...acc[colorToUpdate],
+              otherPieces: acc[colorToUpdate].otherPieces + 1,
+            },
+          };
+        }
+      }
+      return acc;
+    }, starterGameSituation);
+    const areOtherPiecesPresent =
+      gameSituation.black.otherPieces > 0 ||
+      gameSituation.white.otherPieces > 0;
+    if (areOtherPiecesPresent) {
+      return false;
+    }
+    const blackMinorPieces =
+      gameSituation.black.bishops + gameSituation.black.knights;
+    const whiteMinorPieces =
+      gameSituation.white.bishops + gameSituation.white.knights;
+    if (blackMinorPieces <= 1 && whiteMinorPieces <= 1) {
+      return true;
+    }
+    return (
+      (gameSituation.white.knights === 2 && blackMinorPieces === 0) ||
+      (gameSituation.black.knights === 2 && whiteMinorPieces === 0)
+    );
+  }
+
   public getAllPossibleMoves(
     movesNext: Colors,
     castlingAvailability: string,
@@ -325,13 +406,18 @@ export class MovesGenerator {
     );
     const isCheck = this.isFieldAttacked(this.kingField, enemyBasicMoves);
     const allMoves = this.filterIllegalInCheckMoves(movesWithCastling);
-    const isCheckMate =
-      isCheck &&
-      Object.values(allMoves).every(moves => (moves as string[]).length === 0);
+    const canPlayerMove = Object.values(allMoves).some(
+      moves => (moves as string[]).length,
+    );
+    const isCheckmate = isCheck && !canPlayerMove;
+    const isStalemate = !isCheck && !canPlayerMove;
+    const isInsufficientMaterial = this.isInsufficientMaterial();
     return {
       allMoves: this.filterIllegalInCheckMoves(movesWithCastling),
       isCheck,
-      isCheckMate,
+      isCheckmate,
+      isStalemate,
+      isInsufficientMaterial,
     };
   }
 }
