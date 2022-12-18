@@ -36,9 +36,12 @@ class FenValidator {
     return /^([a-h][36])$|^-$/.test(enPassantPossibility);
   };
 
-  private static validateMovesCount = (movesCount: string) => {
-    const movesValue = parseInt(movesCount, 10);
-    return !isNaN(movesValue) && movesValue >= 0;
+  private static validateHalfMoveClock = (halfMoveClock: string) => {
+    return /^([0-9]|[1-9][0-9])$/.test(halfMoveClock);
+  };
+
+  private static validateFullMoveCounter = (fullMoveCounter: string) => {
+    return /^([1-9][0-9]?)$/.test(fullMoveCounter);
   };
 
   public static validateFen(fen: string) {
@@ -58,8 +61,8 @@ class FenValidator {
       this.validateMovesNext(movesNext) &&
       this.validateCastlingAvaliability(castlingAvailability) &&
       this.validateEnPassantPossibility(enPassantPossibility) &&
-      this.validateMovesCount(halfMoveClock) &&
-      this.validateMovesCount(fullMoveCounter)
+      this.validateHalfMoveClock(halfMoveClock) &&
+      this.validateFullMoveCounter(fullMoveCounter)
     );
   }
 }

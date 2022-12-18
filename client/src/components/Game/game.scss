@@ -1,0 +1,21 @@
+@import "../../variables.scss";
+
+body {
+  background-color: $dark-background;
+  margin: 0;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+}
+
+section {
+  width: 35%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px;
+  margin: auto;
+}

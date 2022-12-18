@@ -1,5 +1,4 @@
 import { Response, Request } from "express";
-import { nanoid } from "nanoid";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import Game from "../../models/Game";
 
@@ -7,7 +6,6 @@ const createGameController = {
   handleCreateGame: async (req: Request, res: Response) => {
     try {
       const game = await Game.create({
-        _id: nanoid(8),
         playerWhite: null,
         playerBlack: null,
       });

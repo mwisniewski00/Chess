@@ -1,4 +1,4 @@
-import { Colors } from "../types/common";
+import { ChessPieces, Colors } from "../types/common";
 import {
   GameState,
   GameStateObject,
@@ -7,10 +7,7 @@ import {
 } from "../types/game";
 import FenValidator from "./FenValidator";
 import { MovesGenerator } from "./MovesGenerator";
-import { fenSymbolsToPiecesMapping, mapColumnIndexToLetter } from "../utils";
-import { MoveMaker } from "./MoveMaker";
-import { MoveIndexes } from "./MoveIndexes";
-import FenGenerator from "./FenGenerator";
+import { mapColumnIndexToLetter, mapLetterToColumnIndex } from "../utils";
 
 type FenFieldSymbol =
   | "p"
@@ -26,6 +23,21 @@ type FenFieldSymbol =
   | "Q"
   | "K";
 
+const fenSymbolsToPiecesMapping = {
+  p: { color: Colors.BLACK, piece: ChessPieces.PAWN },
+  r: { color: Colors.BLACK, piece: ChessPieces.ROOK },
+  n: { color: Colors.BLACK, piece: ChessPieces.KNIGHT },
+  b: { color: Colors.BLACK, piece: ChessPieces.BISHOP },
+  q: { color: Colors.BLACK, piece: ChessPieces.QUEEN },
+  k: { color: Colors.BLACK, piece: ChessPieces.KING },
+  P: { color: Colors.WHITE, piece: ChessPieces.PAWN },
+  R: { color: Colors.WHITE, piece: ChessPieces.ROOK },
+  N: { color: Colors.WHITE, piece: ChessPieces.KNIGHT },
+  B: { color: Colors.WHITE, piece: ChessPieces.BISHOP },
+  Q: { color: Colors.WHITE, piece: ChessPieces.QUEEN },
+  K: { color: Colors.WHITE, piece: ChessPieces.KING },
+};
+
 class Game {
   fen: string;
   gameState: GameState;
@@ -35,17 +47,13 @@ class Game {
   halfMoveClock: number;
   fullMoveNumber: number;
   possibleMoves: PossibleMoves;
-  isCheck: boolean;
-  isCheckmate: boolean;
-  isStalemate: boolean;
-  isInsufficientMaterial: boolean;
   private START_GAME_FEN =
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1";
 
   constructor(fen?: string) {
     this.fen = fen || this.START_GAME_FEN;
     this.fenToGameState(this.fen);
-    this.getAllPossibleMoves();
+    this.possibleMoves = this.getAllPossibleMoves();
   }
 
   private parseGameStateRowFen = (gameRowFen: string) => {
@@ -59,9 +67,8 @@ class Game {
   };
 
   private parseGameStateFen(gameStateFen: string): GameState {
-    const rows = gameStateFen.split("/").reverse();
-    const result = rows.map(this.parseGameStateRowFen) as GameState;
-    return result;
+    const rows = gameStateFen.split("/");
+    return rows.map(this.parseGameStateRowFen) as GameState;
   }
 
   private fenToGameState(fen: string) {
@@ -86,22 +93,7 @@ class Game {
 
   private getAllPossibleMoves() {
     const movesGenerator = new MovesGenerator(this.gameState);
-    const {
-      allMoves,
-      isCheck,
-      isCheckmate,
-      isStalemate,
-      isInsufficientMaterial,
-    } = movesGenerator.getAllPossibleMoves(
-      this.movesNext,
-      this.castlingAvailability,
-      this.enPassantPossibility,
-    );
-    this.isCheck = isCheck;
-    this.isCheckmate = isCheckmate;
-    this.isStalemate = isStalemate;
-    this.isInsufficientMaterial = isInsufficientMaterial;
-    this.possibleMoves = allMoves;
+    return movesGenerator.getAllPossibleMoves();
   }
 
   public getGameStateObject(): GameStateObject {
@@ -119,63 +111,21 @@ class Game {
     return gameStateObject;
   }
 
-  public isPromotionMove(from: string, to: string) {
-    const moveIndexes = new MoveIndexes(from, to);
-    return MoveMaker.isPromotionMove(
-      this.gameState,
-      moveIndexes,
-      this.movesNext,
-    );
-  }
-
-  public isDraw() {
-    if (this.isStalemate) {
-      return { isDraw: true, reason: "Stalemate" };
-    }
-    if (this.isInsufficientMaterial) {
-      return { isDraw: true, reason: "Insufficient Material" };
-    }
-    return { isDraw: false };
-  }
-
-  public move(from: string, to: string, promotion: string = "q") {
+  public move(from: string, to: string) {
     if (this.possibleMoves[from].includes(to)) {
-      const moveMaker = new MoveMaker(
-        this.gameState,
-        this.enPassantPossibility,
-        this.movesNext,
-        this.castlingAvailability,
-      );
-      const { gameState, enPassantPossibility, castlingAvailability } =
-        moveMaker.move(from, to, promotion);
-      this.gameState = gameState;
-      this.enPassantPossibility = enPassantPossibility;
-      this.castlingAvailability = castlingAvailability;
-      this.movesNext =
-        this.movesNext === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
-      this.getAllPossibleMoves();
-      FenGenerator.generateFen(
-        this.gameState,
-        this.movesNext,
-        this.castlingAvailability,
-        this.enPassantPossibility,
-        this.halfMoveClock,
-        this.fullMoveNumber,
-      );
+      const [from_column, from_row] = from.split("");
+      const [to_column, to_row] = to.split("");
+      const from_column_index = mapLetterToColumnIndex(from_column);
+      const from_row_index = Number(from_row) - 1;
+      const to_column_index = mapLetterToColumnIndex(to_column);
+      const to_row_index = Number(to_row) - 1;
+      this.gameState[to_row_index][to_column_index] =
+        this.gameState[from_row_index][from_column_index];
+      delete this.gameState[from_row_index][from_column_index];
+      this.possibleMoves = this.getAllPossibleMoves();
       return true;
     }
     return false;
-  }
-
-  public generateFen() {
-    return FenGenerator.generateFen(
-      this.gameState,
-      this.movesNext,
-      this.castlingAvailability,
-      this.enPassantPossibility,
-      this.halfMoveClock,
-      this.fullMoveNumber,
-    );
   }
 }
 

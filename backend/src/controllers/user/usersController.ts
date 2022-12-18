@@ -20,10 +20,8 @@ const usersController = {
   getUser: async (req: Request, res: Response) => {
     const username = req.params.username;
     try {
-      const user = await User.findOne({ username });
-      const { password, ...userWithoutPassword } = JSON.parse(
-        JSON.stringify(user),
-      );
+      const user = await User.findOne({username});
+      const {password, ...userWithoutPassword} = JSON.parse(JSON.stringify(user))
       res.json(userWithoutPassword);
     } catch (error) {
       console.log(getErrorMessage(error));

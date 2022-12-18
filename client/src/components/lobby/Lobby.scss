@@ -1,14 +1,6 @@
 @import "../../variables.scss";
 
 .lobby {
-  background-color: $dark-background;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  button {
-    height: 100px;
-    width: 100px;
-  }
+    background-color: $dark-background;
+    height: 100vh;
 }

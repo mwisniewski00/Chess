@@ -1,65 +1,39 @@
 import { Response, Request } from "express";
-import { io } from "../../app";
 import getErrorMessage from "../../helpers/getErrorMessage";
-import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import Game from "../../models/Game";
 
 const joinGameController = {
-  handleJoinGame: async (req: IGetUserAuthInfoRequest, res: Response) => {
+  handleJoinGame: async (req: Request, res: Response) => {
     const gameId = req.params.id;
-    const player = req.user;
+    const player = req.body;
 
     try {
       const game = await Game.findById(gameId).lean();
+      console.log("Found GAME: ", game);
 
       if (!game) {
         return res.status(404).json({ error: "Game not found" });
       }
 
-      // player rejoins game
-      if (
-        game.playerWhite?.username === player ||
-        game.playerBlack?.username === player
-      ) {
-        return res.status(200).json({ game });
-      }
-
-      // game is full
       if (game.playerWhite && game.playerBlack) {
         return res.status(400).json({ error: "Game is full" });
       }
 
-      // black player joins for the first time
       if (game.playerWhite && !game.playerBlack) {
-        game.playerBlack = { username: player as string };
-        game.chat.push({
-          message: `${game.playerBlack.username} joined as Black!`,
-          author: null,
-        });
-        await Game.findByIdAndUpdate(gameId, game);
-        io.emit(`player_connected${gameId}`, { playerBlack: game.playerBlack });
-        io.emit(`new_message${gameId}`, {
-          message: `${game.playerBlack.username} joined as Black!`,
-          author: null,
-        });
+        game.playerBlack = player;
       }
 
-      // white player joins for the first time
       if (!game.playerWhite) {
-        game.playerWhite = { username: player as string };
-        game.chat.push({
-          message: `${game.playerWhite.username} joined as White!`,
-          author: null,
-        });
-        await Game.findByIdAndUpdate(gameId, game);
-        io.emit(`player_connected${gameId}`, { playerWhite: game.playerWhite });
-        io.emit(`new_message${gameId}`, {
-          message: `${game.playerWhite.username} joined as White!`,
-          author: null,
-        });
+        game.playerWhite = player;
       }
 
-      res.status(200).json({ game });
+      const updatedGame = await Game.findByIdAndUpdate(gameId, game);
+
+      const returnColor =
+        player.username === updatedGame?.playerWhite ? "white" : "black";
+      console.log("returnColor: ", returnColor);
+
+      res.status(200).json({ color: returnColor });
     } catch (error) {
       console.log(getErrorMessage(error));
       res.status(500).json({ error: getErrorMessage(error) });

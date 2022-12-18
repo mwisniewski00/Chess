@@ -71,7 +71,15 @@ export const Navbar: React.FC = () => {
         )}
         {auth.username && (
           <NavLink
-            link="/profile"
+            link="/game"
+            text="Game"
+            selected={selectedLinks.game === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+          />
+        )}
+        {auth.username && (
+          <NavLink
+            link={`/profile/${auth.username}`}
             text="Profile"
             selected={selectedLinks.profile === "selected"}
             setIsBurgerMenuOpen={setIsBurgerMenuOpen}
