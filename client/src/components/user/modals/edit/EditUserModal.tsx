@@ -6,12 +6,14 @@ import { CustomInput } from "components/shared/custom-input/CustomInput";
 import { Form, Formik } from "formik";
 import axios from "api/axios";
 import useAuth from "hooks/useAuth";
-import registrationSchema from "components/user/registration/validation-schema/validation";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
-import LockIcon from "@mui/icons-material/Lock";
+import DescriptionIcon from '@mui/icons-material/Description';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import IUser from "models/IUser";
 import { Messages } from "components/user/registration/Registration";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import editUserSchema from "./validation-schema/validation";
 
 export type Status = "idle" | "pending" | "resolved" | "rejected";
 
@@ -24,10 +26,7 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
   setIsOpen,
   userData
 }) => {
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
+  const axiosPrivate = useAxiosPrivate();
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<Messages>({
     pending: "",
@@ -35,14 +34,19 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
     rejected: "",
   });
 
+  const handleClose = () => {
+    setIsOpen(false);
+    window.location.reload();
+  };
+
   const handleSubmit = async (user: IUser) => {
     setMessage({ ...message, pending: "Please wait..." });
     setStatus("pending");
     try {
-      const response = await axios.put("/users/profile", user);
+      const response = await axiosPrivate.put("/users/profile", user);
       setMessage({ ...message, resolved: "Registration successful!" });
       setStatus("resolved");
-      console.log(response.data);
+      handleClose();
     } catch (error) {
       console.error(error);
       setMessage({ ...message, rejected: "Something went wrong..." });
@@ -67,8 +71,8 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
         <div>
           <Formik
             initialValues={userData}
-            onSubmit={(user: IUser) => console.log(user)}
-            // validationSchema={registrationSchema}
+            onSubmit={(user: IUser) => handleSubmit(user)}
+            validationSchema={editUserSchema}
           >
             {formik => (
               <Form className="form">
@@ -80,13 +84,13 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
                     placeholder="Username"
                   />
                   <CustomInput
-                    icon={LockIcon}
+                    icon={DescriptionIcon}
                     type="text"
                     name="description"
                     placeholder="Description"
                   />
                   <CustomInput
-                    icon={LockIcon}
+                    icon={InsertPhotoIcon}
                     type="url"
                     name="avatarUrl"
                     placeholder="Confirm Password"
