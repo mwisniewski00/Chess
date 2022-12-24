@@ -10,7 +10,7 @@ import { ReactComponent as BLACK_BISHOP } from "../../../../assets/chesspieces/b
 import { ReactComponent as WHITE_BISHOP } from "../../../../assets/chesspieces/white_bishop.svg";
 import { ReactComponent as WHITE_KING } from "../../../../assets/chesspieces/white_king.svg";
 import { ReactComponent as BLACK_KING } from "../../../../assets/chesspieces/black_king.svg";
-import { Colors, ChessPieces } from "../../../../chessgame/src/types/common";
+import { Colors, ChessPieces } from "chess-easy";
 
 const all_pieces = {
   [`${Colors.BLACK}_${ChessPieces.PAWN}`]: BLACK_PAWN,

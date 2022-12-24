@@ -1,9 +1,6 @@
 import "./Chessboard.scss";
 import { useState, useCallback } from "react";
-import {
-  GameStateObject,
-  PossibleMoves,
-} from "../../../chessgame/src/types/game";
+import { GameStateObject, PossibleMoves } from "chess-easy";
 import Chesspiece from "./chesspieces/Chesspiece";
 
 interface ChessboardProps {

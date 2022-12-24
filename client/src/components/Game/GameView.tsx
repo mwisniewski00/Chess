@@ -1,15 +1,13 @@
 import { useState } from "react";
 
 import "./GameView.scss";
-import Game from "../../chessgame/src/game/Game";
-import { GameStateObject, PossibleMoves } from "../../chessgame/src/types/game";
+import { Game } from "chess-easy";
+import { GameStateObject, PossibleMoves } from "chess-easy";
 import Chessboard from "./chess-board/Chessboard";
 import IGame from "components/models/game/IGame";
 import PlayerSection from "./player-section/PlayerSection";
 import { PromotionDialog } from "./dialogs/PromotionDialog";
-const testGame = new Game(
-  "rnbqk1nr/p2p1ppp/3b4/1pp1p3/4P1P1/2N2N2/PPPP1P1P/1RBQKB1R b Kkq - 0 1",
-);
+const testGame = new Game();
 
 interface GameViewProps {
   game: IGame;
@@ -36,6 +34,15 @@ export function GameView({ game, setGame, color }: GameViewProps) {
     setGameState(testGame.getGameStateObject());
     setPossibleMoves(testGame.possibleMoves);
     console.log(testGame.generateFen());
+    if (testGame.isDraw()) {
+      console.log(testGame.isDraw());
+    }
+    if (testGame.isCheck) {
+      console.log("check");
+    }
+    if (testGame.isCheckmate) {
+      console.log("checkmate");
+    }
   };
 
   const movePiece = (from: string, to: string) => {
