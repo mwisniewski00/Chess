@@ -11,6 +11,7 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "axios": "0.27.2",
+    "chess-easy": "^1.0.0",
     "formik": "^2.2.9",
     "gsap": "^3.11.3",
     "react": "^18.2.0",
