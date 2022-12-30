@@ -1,11 +1,9 @@
-import IMessage from "../websocket/IChatMessage";
-import IPlayer from "./IPlayer";
+import { GameStateObject, PossibleMoves } from "chess-easy";
 
 interface IGame {
   id: string;
-  playerWhite: IPlayer | null;
-  playerBlack: IPlayer | null;
-  chat: IMessage[];
+  gameState: GameStateObject;
+  possibleMoves: PossibleMoves | null;
 }
 
 export default IGame;

@@ -1,27 +1,27 @@
-import IGame from "components/models/game/IGame";
 import "./GameChat.scss";
 import { useEffect, useRef } from "react";
 import useSocketClient from "hooks/useSocketClient";
 import IChatMessage from "components/models/websocket/IChatMessage";
 import MessageInput from "./message-input/MessageInput";
+import { useGameContext } from "components/Game/GameProvider";
 
-interface GameChatProps {
-  game: IGame;
-  setGame: React.Dispatch<React.SetStateAction<IGame>>;
-}
-
-const GameChat: React.FC<GameChatProps> = ({ game, setGame }) => {
+const GameChat: React.FC = () => {
   const socket = useSocketClient();
+  const {
+    chat,
+    setChat,
+    game: { id },
+  } = useGameContext();
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.on(`new_message${game.id}`, (message: IChatMessage) => {
-      setGame(prev => ({ ...prev, chat: [...prev.chat, message] }));
+    socket.on(`new_message${id}`, (message: IChatMessage) => {
+      setChat(prev => [...prev, message]);
     });
 
     return () => {
-      socket.off(`new_message${game.id}`);
+      socket.off(`new_message${id}`);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,13 +33,13 @@ const GameChat: React.FC<GameChatProps> = ({ game, setGame }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [game.chat]);
+  }, [chat]);
 
   return (
     <div className="chat-container">
       <div className="message-container">
-        {game.chat &&
-          game.chat.map((message, index) => (
+        {chat &&
+          chat.map((message, index) => (
             <div
               key={index}
               className={message.author ? "message" : "message system-message"}
@@ -52,7 +52,7 @@ const GameChat: React.FC<GameChatProps> = ({ game, setGame }) => {
           ))}
         <div ref={messagesEndRef} />
       </div>
-      <MessageInput game={game} />
+      <MessageInput />
     </div>
   );
 };

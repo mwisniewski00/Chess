@@ -1,27 +1,12 @@
 import { useState } from "react";
-
 import "./GameView.scss";
-import { Game } from "chess-easy";
-import { GameStateObject, PossibleMoves } from "chess-easy";
 import Chessboard from "./chess-board/Chessboard";
-import IGame from "components/models/game/IGame";
 import PlayerSection from "./player-section/PlayerSection";
 import { PromotionDialog } from "./dialogs/PromotionDialog";
-const testGame = new Game();
+import { useGameContext } from "./GameProvider";
 
-interface GameViewProps {
-  game: IGame;
-  setGame: React.Dispatch<React.SetStateAction<IGame>>;
-  color: string | null;
-}
-
-export function GameView({ game, setGame, color }: GameViewProps) {
-  const [gameState, setGameState] = useState<GameStateObject>(
-    testGame.getGameStateObject(),
-  );
-  const [possibleMoves, setPossibleMoves] = useState<PossibleMoves>(
-    testGame.possibleMoves,
-  );
+export function GameView() {
+  const { game, sendMove, gameInstance } = useGameContext();
 
   const [promotionDialogState, setPromotionDialogState] = useState({
     open: false,
@@ -30,24 +15,23 @@ export function GameView({ game, setGame, color }: GameViewProps) {
   });
 
   const makeMove = (from: string, to: string, promotion: string = "q") => {
-    testGame.move(from, to, promotion);
-    setGameState(testGame.getGameStateObject());
-    setPossibleMoves(testGame.possibleMoves);
-    console.log(testGame.generateFen());
-    if (testGame.isDraw()) {
-      console.log(testGame.isDraw());
-    }
-    if (testGame.isCheck) {
-      console.log("check");
-    }
-    if (testGame.isCheckmate) {
-      console.log("checkmate");
-    }
+    sendMove(from, to, promotion).then(() => {
+      console.log(gameInstance.generateFen());
+      if (gameInstance.isDraw()) {
+        console.log(gameInstance.isDraw());
+      }
+      if (gameInstance.isCheck) {
+        console.log("check");
+      }
+      if (gameInstance.isCheckmate) {
+        console.log("checkmate");
+      }
+    });
   };
 
   const movePiece = (from: string, to: string) => {
-    if (gameState[from]) {
-      if (testGame.isPromotionMove(from, to)) {
+    if (game.gameState[from]) {
+      if (gameInstance.isPromotionMove(from, to)) {
         setPromotionDialogState({ open: true, from, to });
       } else {
         makeMove(from, to);
@@ -68,11 +52,11 @@ export function GameView({ game, setGame, color }: GameViewProps) {
       />
       <section className="chessboard__section">
         <Chessboard
-          gameState={gameState}
+          gameState={game.gameState}
           movePiece={movePiece}
-          possibleMoves={possibleMoves}
+          possibleMoves={game.possibleMoves}
         />
-        <PlayerSection setGame={setGame} game={game} color={color as string} />
+        <PlayerSection />
       </section>
     </main>
   );
