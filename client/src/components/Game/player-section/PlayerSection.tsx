@@ -1,38 +1,29 @@
-import IGame from "components/models/game/IGame";
 import useAuth from "hooks/useAuth";
+import { useGameContext } from "../GameProvider";
 import GameChat from "./game-chat/GameChat";
 import InviteFriend from "./invite-friend/InviteFriend";
 import PlayerWindow from "./player-window/PlayerWindow";
 import "./PlayerSection.scss";
 
-interface PlayerSectionProps {
-  game: IGame;
-  setGame: React.Dispatch<React.SetStateAction<IGame>>;
-  color: string;
-}
-
-const PlayerSection: React.FC<PlayerSectionProps> = ({
-  game,
-  setGame,
-  color,
-}) => {
+const PlayerSection: React.FC = () => {
   const auth = useAuth().auth;
-
+  const {
+    players: { playerBlack, playerWhite },
+    color,
+  } = useGameContext();
   return (
     <div className="player-section">
-      {game.playerWhite && game.playerBlack ? (
-        <PlayerWindow
-          player={color === "white" ? game.playerBlack : game.playerWhite}
-        />
+      {playerWhite && playerBlack ? (
+        <PlayerWindow player={color === "white" ? playerBlack : playerWhite} />
       ) : (
         <InviteFriend />
       )}
-      <GameChat setGame={setGame} game={game} />
-      {game.playerWhite && game.playerWhite?.username === auth.username && (
-        <PlayerWindow player={game.playerWhite} />
+      <GameChat />
+      {playerWhite && playerWhite?.username === auth.username && (
+        <PlayerWindow player={playerWhite} />
       )}
-      {game.playerBlack && game.playerBlack?.username === auth.username && (
-        <PlayerWindow player={game.playerBlack} />
+      {playerBlack && playerBlack?.username === auth.username && (
+        <PlayerWindow player={playerBlack} />
       )}
     </div>
   );

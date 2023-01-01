@@ -6,7 +6,7 @@ import Chesspiece from "./chesspieces/Chesspiece";
 interface ChessboardProps {
   gameState: GameStateObject;
   movePiece: (from: string, to: string) => void;
-  possibleMoves: PossibleMoves;
+  possibleMoves: PossibleMoves | null;
 }
 
 export default function Chessboard({
@@ -21,18 +21,20 @@ export default function Chessboard({
 
   const getCursorType = useCallback(
     (field: string) => {
+      if (!possibleMoves) return "default";
       if (selectedPiece) {
         if (possibleMoves[selectedPiece].includes(field)) return "pointer";
         if (selectedPiece === field) return "default";
         return "not-allowed";
       }
-      return gameState[field] ? "pointer" : "default";
+      return possibleMoves[field].length ? "pointer" : "default";
     },
-    [gameState, possibleMoves, selectedPiece],
+    [possibleMoves, selectedPiece],
   );
 
   const isHighlighted = useCallback(
     (field: string) => {
+      if (!possibleMoves) return false;
       if (selectedPiece) {
         return (
           selectedPiece !== field &&
@@ -50,7 +52,8 @@ export default function Chessboard({
   );
 
   const handleClick = (id: string) => {
-    if (!selectedPiece && gameState[id]) {
+    if (!possibleMoves) return;
+    if (!selectedPiece && possibleMoves[id].length) {
       setSelectedPiece(id);
     }
     if (selectedPiece) {

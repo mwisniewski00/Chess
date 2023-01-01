@@ -10,6 +10,7 @@ const createGameController = {
         _id: nanoid(8),
         playerWhite: null,
         playerBlack: null,
+        fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       });
 
       res.status(201).json({ id: game._id });

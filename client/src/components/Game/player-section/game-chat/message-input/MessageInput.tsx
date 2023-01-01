@@ -2,14 +2,13 @@ import "./MessageInput.scss";
 import { Field, Form, Formik } from "formik";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import SendIcon from "@mui/icons-material/Send";
-import IGame from "components/models/game/IGame";
+import { useGameContext } from "components/Game/GameProvider";
 
-interface MessageInputProps {
-  game: IGame;
-}
-
-const MessageInput: React.FC<MessageInputProps> = ({ game }) => {
+const MessageInput: React.FC = () => {
   const axiosPrivate = useAxiosPrivate();
+  const {
+    game: { id },
+  } = useGameContext();
 
   const handleSendMessage = async (
     values: { message: string },
@@ -20,7 +19,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ game }) => {
     if (message) {
       try {
         resetForm();
-        await axiosPrivate.post(`/games/${game.id}/message`, { message });
+        await axiosPrivate.post(`/games/${id}/message`, { message });
         setSubmitting(false);
       } catch (error) {
         console.error(error);

@@ -6,11 +6,12 @@ export interface IMessage {
   message: string;
 }
 
-interface IGame {
+export interface IGame {
   _id: string;
   playerWhite: IPlayer | null;
   playerBlack: IPlayer | null;
   chat: IMessage[];
+  fen: string;
 }
 
 const gameSchema = new Schema<IGame>({
@@ -29,6 +30,10 @@ const gameSchema = new Schema<IGame>({
       message: String,
     },
   ],
+  fen: {
+    type: String,
+    required: true,
+  },
 });
 
 const Game = model<IGame>("Game", gameSchema);
