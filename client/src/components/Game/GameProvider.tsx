@@ -37,7 +37,7 @@ interface Move {
 
 const GameContext = createContext<GameProviderContext | null>(null);
 
-export const GameContextProvider = ({ children }: GameContextProviderProps) => {
+export const GameProvider = ({ children }: GameContextProviderProps) => {
   const [game, setGame] = useState<IGame>();
   const [color, setColor] = useState<string>();
   const [players, setPlayers] = useState<IPlayerConnected>();
@@ -130,23 +130,24 @@ export const GameContextProvider = ({ children }: GameContextProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sendMove = useCallback(
-    async (from: string, to: string, promotion: string = "q") => {
-      try {
-        await axiosPrivate.post(`/games/${gameId}/move`, {
-          auth,
-          from,
-          to,
-          promotion,
-        });
-        return true;
-      } catch (err) {
-        console.error(err);
-        return false;
-      }
-    },
-    [auth, axiosPrivate, gameId],
-  );
+  const sendMove = async (
+    from: string,
+    to: string,
+    promotion: string = "q",
+  ) => {
+    try {
+      await axiosPrivate.post(`/games/${gameId}/move`, {
+        auth,
+        from,
+        to,
+        promotion,
+      });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -173,4 +174,4 @@ export function useGameContext() {
   return context;
 }
 
-export default GameContextProvider;
+export default GameProvider;
