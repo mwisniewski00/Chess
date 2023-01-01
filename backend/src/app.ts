@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import dbConfig from "./config/dbConn";
@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
 import http from "http";
 
-const app = express();
+const app: Application = express();
 
 app.use(cookieParser());
 app.use(credentials);

@@ -1,6 +1,6 @@
 import useAuth from "hooks/useAuth";
 import useRefreshToken from "hooks/useRefreshToken";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 const PersistLogin: React.FC = () => {
@@ -8,7 +8,7 @@ const PersistLogin: React.FC = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const verifyRefreshToken = async () => {
       try {
         await refresh();
