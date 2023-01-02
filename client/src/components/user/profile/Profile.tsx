@@ -10,7 +10,10 @@ import "./Profile.scss"
 import useUserModal from "hooks/useUserModal";
 import {EditUserModal} from "../modals/edit/EditUserModal";
 import { useNavigate } from "react-router-dom";
-
+import EditIcon from '@mui/icons-material/Edit';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,6 +47,26 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
+function calculateTime(isoString: string) {
+  const date = new Date(isoString);
+  const now = new Date();
+  const timeSince = now.getTime() - date.getTime();
+  if (timeSince < 60000) { // Less than a minute
+    return `${Math.round(timeSince / 1000)} seconds`;
+  }
+  if (timeSince < 3600000) { // Less than an hour
+    return `${Math.round(timeSince / 60000)} minutes`;
+  }
+  if (timeSince < 86400000) { // Less than a day
+    return `${Math.round(timeSince / 3600000)} hours`;
+  }
+  if (timeSince < 2592000000) { // Less than a month
+    return `${Math.round(timeSince / 86400000)} days`;
+  }
+  return `${Math.round(timeSince / 2592000000)} months`;
+}
+
 
 
 const Profile: React.FC = () => {
@@ -80,8 +103,22 @@ const Profile: React.FC = () => {
           <div className="profile-details">
             <div className="profile-name"> {user.username} </div>
             <div className="profile-title"> Grand Master </div>
+            <div className="profile-status-bar">
+              <table>
+                <tr>
+                  <td><AccessAlarmIcon className="icon"/></td>
+                  <td><CalendarMonthIcon className="icon"/></td>
+                  <td><ScoreboardIcon className="icon"/></td>
+                </tr>
+                <tr>
+                  <td>{calculateTime(user.lastLoginDate)}</td>
+                  <td>{calculateTime(user.registrationDate)}</td>
+                  <td>0</td>
+                </tr>
+              </table>
+            </div>
           </div>
-          <div onClick={() => setIsOpen(true)} className="profile-edit"> Edit </div>
+          <div onClick={() => setIsOpen(true)} className="profile-edit"><EditIcon className="icon"/> Edit </div>
         </div>
 
         <div className="profile-section profile-box">
