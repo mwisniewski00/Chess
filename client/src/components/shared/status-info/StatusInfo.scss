@@ -8,6 +8,8 @@
   align-items: center;
   justify-content: center;
   font-size: 1.05rem;
+  margin-top: 35px;
+  margin-bottom: 25px;
   .status__pending {
     position: relative;
     color: $main-theme-color;
@@ -19,7 +21,7 @@
   }
   .status__resolved {
     position: relative;
-    color: rgb(0, 166, 0);
+    color: rgb(73, 230, 73);
     .success-icon {
       position: absolute;
       left: -30px;

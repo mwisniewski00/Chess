@@ -11,6 +11,8 @@ main {
   align-items: center;
   width: 100vw;
   height: 100vh;
+  z-index: 1;
+  position: relative;
 
   section {
     width: 100vw;

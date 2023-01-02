@@ -7,12 +7,22 @@ import useLogout from "hooks/useLogout";
 import useAuth from "hooks/useAuth";
 import useUserModal from "hooks/useUserModal";
 import BurgerMenuButton from "./burger-menu-button/BurgerMenuButton";
+import logo_white from "assets/images/logo_white.png";
+import logo_orange from "assets/images/logo_orange.png";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";
 }
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  isBurgerMenuOpen: boolean;
+  setIsBurgerMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({
+  isBurgerMenuOpen,
+  setIsBurgerMenuOpen,
+}) => {
   const logout = useLogout();
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -42,12 +52,10 @@ export const Navbar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
-
   return (
     <div className="navbar">
       <div className="navbar__logo__section">
-        <div className="navbar__logo"></div>
+        <img src={logo_white} alt="logo" className="navbar__logo"></img>
         <div className="navbar__title">ChessMasters</div>
       </div>
       <div

@@ -2,6 +2,7 @@ import "./Chessboard.scss";
 import { useState, useCallback } from "react";
 import { GameStateObject, PossibleMoves } from "chess-easy";
 import Chesspiece from "./chesspieces/Chesspiece";
+import { useGameContext } from "../GameProvider";
 
 interface ChessboardProps {
   gameState: GameStateObject;
@@ -14,7 +15,12 @@ export default function Chessboard({
   movePiece,
   possibleMoves,
 }: ChessboardProps) {
-  const rows = Array.from({ length: 8 }, (_, i) => i + 1).reverse();
+  const game = useGameContext();
+  const rows =
+    game.color === "white"
+      ? Array.from({ length: 8 }, (_, i) => i + 1).reverse()
+      : Array.from({ length: 8 }, (_, i) => i + 1);
+
   const columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null);

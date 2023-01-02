@@ -2,7 +2,6 @@ import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useLayoutEffect,
   useState,
   useEffect,
   createContext,
@@ -17,7 +16,7 @@ import IChatMessage from "components/models/websocket/IChatMessage";
 
 interface GameProviderContext {
   game: IGame;
-  color: string;
+  color: "white" | "black";
   players: IPlayerConnected;
   chat: IChatMessage[];
   setChat: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
@@ -39,7 +38,7 @@ const GameContext = createContext<GameProviderContext | null>(null);
 
 export const GameProvider = ({ children }: GameContextProviderProps) => {
   const [game, setGame] = useState<IGame>();
-  const [color, setColor] = useState<string>();
+  const [color, setColor] = useState<"white" | "black">();
   const [players, setPlayers] = useState<IPlayerConnected>();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -51,7 +50,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
   const [gameInstance, setGameInstance] = useState<GameInstance>();
   const [lastMove, setLastMove] = useState<Move>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const joinGame = async () => {
       try {
         setIsLoading(true);

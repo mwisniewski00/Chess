@@ -1,0 +1,44 @@
+.custom-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.custom-input .input-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+.custom-input .input-container input {
+  width: 100%;
+  outline: none;
+  border: none;
+  background-color: rgb(44, 44, 44);
+  color: white;
+  padding: 10px 10px;
+  padding-left: 50px;
+  border-radius: 10px;
+}
+.custom-input .input-container input:focus {
+  border: 2px solid rgb(205, 168, 139);
+}
+.custom-input .input-container .input-error {
+  border: 2px solid red;
+}
+.custom-input .input-container .input-correct {
+  border: 2px solid rgb(205, 168, 139);
+}
+.custom-input .input-container .icon {
+  color: rgb(205, 168, 139);
+  position: absolute;
+  top: 7px;
+  left: 11px;
+}
+.custom-input .error {
+  width: 100%;
+  text-align: center;
+  color: red;
+  margin-top: 2px;
+  font-size: 0.85rem;
+}/*# sourceMappingURL=CustomInput.css.map */

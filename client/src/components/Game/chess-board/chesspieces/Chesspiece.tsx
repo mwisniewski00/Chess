@@ -7,11 +7,7 @@ interface ChesspieceProps {
   gameState: GameStateObject;
 }
 
-export default function Chesspiece({
-  column,
-  row,
-  gameState,
-}: ChesspieceProps) {
+function Chesspiece({ column, row, gameState }: ChesspieceProps) {
   const stringField = `${column}${row}`;
   const piece = gameState[stringField];
 
@@ -21,3 +17,5 @@ export default function Chesspiece({
 
   return <ChessPieceSVG />;
 }
+
+export default Chesspiece;

@@ -13,6 +13,7 @@
   min-width: 300px;
   aspect-ratio: 1 / 1;
   background-color: black;
+  z-index: 1;
 }
 
 #chessboard > div {
@@ -31,6 +32,10 @@
   border-bottom-left-radius: var(--chessboard-border-radius);
   border-bottom-right-radius: var(--chessboard-border-radius);
 }
+
+// .chessboard.reverse {
+//   transform: rotate(180deg);
+// }
 
 .chessfield {
   width: calc(100% / 8);

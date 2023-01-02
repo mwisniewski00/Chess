@@ -1,0 +1,11 @@
+.lobby {
+  background-color: rgb(25, 25, 25);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lobby button {
+  height: 100px;
+  width: 100px;
+}/*# sourceMappingURL=Lobby.css.map */
