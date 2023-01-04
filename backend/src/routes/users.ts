@@ -9,7 +9,7 @@ import validationController from "../controllers/user/validationController";
 
 const router = express.Router();
 
-router.get("/", usersController.getUsers);
+router.get("/", verifyJWT, usersController.getUsers);
 
 router.delete("/logout", verifyJWT, logoutController.handleLogout);
 

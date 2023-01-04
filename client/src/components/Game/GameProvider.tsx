@@ -117,7 +117,6 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
 
   useEffect(() => {
     socket.on(`player_connected${gameId}`, (player: IPlayerConnected) => {
-      console.log("PLAYER FROM WEBSOCKETS:::::", player);
       setPlayers(prev => ({ ...prev, ...player }));
     });
     socket.on(`game/${gameId}/move`, setLastMove);
