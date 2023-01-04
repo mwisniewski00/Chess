@@ -1,9 +1,9 @@
 import "./GameChat.scss";
 import { useEffect, useRef } from "react";
 import useSocketClient from "hooks/useSocketClient";
-import IChatMessage from "components/models/websocket/IChatMessage";
+import IChatMessage from "models/websocket/IChatMessage";
 import MessageInput from "./message-input/MessageInput";
-import { useGameContext } from "components/Game/GameProvider";
+import { useGameContext } from "components/game/GameProvider";
 
 const GameChat: React.FC = () => {
   const socket = useSocketClient();

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import "./Login.scss";
 import { LoginForm } from "./form/LoginForm";
-import StatusInfo from "components/shared/status-info/StatusInfo";
-
-export type Status = "idle" | "pending" | "resolved" | "rejected";
+import StatusInfo, { Status } from "components/shared/status-info/StatusInfo";
+import logo_white from "assets/images/logo_white.png";
 
 export interface Messages {
   pending: string;
@@ -22,7 +21,8 @@ export const Login: React.FC = () => {
   return (
     <div className="login">
       <div className="login__top-section">
-        <div className="login__title">Join now!</div>
+        <img src={logo_white} alt="logo" height={100}></img>
+        <div className="login__title">Welcome back!</div>
         <div className="login__subtitle">
           Lorem ipsum dolor, sit amet consectetur.
         </div>

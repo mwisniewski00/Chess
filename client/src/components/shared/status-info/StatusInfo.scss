@@ -1,38 +1,46 @@
 @import "variables.scss";
 
-.status {
-  max-width: 80%;
-  text-align: center;
+.status-wrapper {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
-  font-size: 1.05rem;
-  .status__pending {
-    position: relative;
-    color: $main-theme-color;
-    .progress-animation {
-      position: absolute;
-      left: -40px;
-      top: -4px;
+  align-items: center;
+  width: 100%;
+  .status {
+    max-width: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    .status__pending {
+      position: relative;
+      color: $main-theme-color;
+      .progress-animation {
+        position: absolute;
+        left: -40px;
+        top: -4px;
+      }
     }
-  }
-  .status__resolved {
-    position: relative;
-    color: rgb(0, 166, 0);
-    .success-icon {
-      position: absolute;
-      left: -30px;
-      top: -2px;
+    .status__resolved {
+      position: relative;
+      color: rgb(73, 230, 73);
+      .success-icon {
+        position: absolute;
+        left: -30px;
+        top: -2px;
+      }
     }
-  }
-  .status__rejected {
-    position: relative;
-    color: red;
-    .error-icon {
-      position: absolute;
-      left: -30px;
-      top: -2.5px;
+    .status__rejected {
+      position: relative;
+      color: red;
+      .error-icon {
+        position: absolute;
+        left: -30px;
+        top: -2.5px;
+      }
     }
   }
 }

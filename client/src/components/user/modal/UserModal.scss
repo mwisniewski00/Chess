@@ -1,11 +1,11 @@
 @import "../../../variables.scss";
 
-.dialog-content {
+.dialog-content-user {
   border: none;
   margin: 0;
   padding: 0;
   background-color: $dark-background;
-  min-height: 500px;
+  min-height: 450px;
   max-height: 700px;
   width: 270px;
   border-radius: 0;

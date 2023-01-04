@@ -4,9 +4,10 @@ import { CustomInput } from "components/shared/custom-input/CustomInput";
 import loginSchema from "../validation-schema/validation";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
-import { Status, Messages } from "../Login";
+import { Messages } from "../Login";
 import useAuth from "hooks/useAuth";
 import axios from "api/axios";
+import { Status } from "components/shared/status-info/StatusInfo";
 
 interface LoginFormProps {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;

@@ -1,0 +1,92 @@
+@import "variables.scss";
+
+.dialog-game-over {
+  .dialog-game-over-content {
+    position: relative;
+    background-color: $dark-background;
+    padding: 35px 60px;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+    .dialog-game__logo {
+      position: absolute;
+      top: 20px;
+      left: 65px;
+      height: 270px;
+      opacity: 0.15;
+    }
+    .end-game {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+      .end-game__status {
+        .status-message {
+          font-size: 1.8rem;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+        .status-message.win {
+          color: #3dd73d;
+        }
+        .status-message.loss {
+          color: #ff0000;
+        }
+        .status-message.draw {
+          color: $main-theme-color;
+        }
+      }
+      .end-game__avatars {
+        display: flex;
+        gap: 40px;
+        .avatars__versus {
+          position: relative;
+          top: 15px;
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: white;
+        }
+        .avatars__player {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          img {
+            height: 75px;
+          }
+          .avatars__name {
+            position: relative;
+            max-width: 80px;
+            color: $text-grey;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      .end-game__ranking {
+        position: relative;
+        .ranking-new {
+          color: white;
+          font-size: 1.8rem;
+          font-weight: 600;
+        }
+        .ranking-diff {
+          font-size: 1.2rem;
+          position: absolute;
+          bottom: 4px;
+          right: -50px;
+          width: 40px;
+        }
+        .ranking-diff.up {
+          color: #3dd73d;
+        }
+        .ranking-diff.stay {
+          color: $main-theme-color;
+        }
+        .ranking-diff.down {
+          color: #ff0000;
+        }
+      }
+    }
+  }
+}
