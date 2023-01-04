@@ -1,4 +1,4 @@
-import IPlayer from "components/models/game/IPlayer";
+import IPlayer from "models/game/IPlayer";
 import "./PlayerWindow.scss";
 import defaultAvatar from "./default_profile.jpg";
 

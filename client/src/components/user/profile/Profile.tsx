@@ -25,18 +25,9 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ div: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+    <div role="tabpanel" className="profile-tab-content" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+      {children}
+    
     </div>
   );
 }
@@ -105,16 +96,18 @@ const Profile: React.FC = () => {
             <div className="profile-title"> Grand Master </div>
             <div className="profile-status-bar">
               <table>
-                <tr>
-                  <td><AccessAlarmIcon className="icon"/></td>
-                  <td><CalendarMonthIcon className="icon"/></td>
-                  <td><ScoreboardIcon className="icon"/></td>
-                </tr>
-                <tr>
-                  <td>{calculateTime(user.lastLoginDate)}</td>
-                  <td>{calculateTime(user.registrationDate)}</td>
-                  <td>0</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td><AccessAlarmIcon className="icon"/></td>
+                    <td><CalendarMonthIcon className="icon"/></td>
+                    <td><ScoreboardIcon className="icon"/></td>
+                  </tr>
+                  <tr>
+                    <td>{calculateTime(user.lastLoginDate)}</td>
+                    <td>{calculateTime(user.registrationDate)}</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -136,13 +129,13 @@ const Profile: React.FC = () => {
             </Tabs>
           </div>
           <TabPanel value={value} index={0}>
-            <p className="profile-description"> {user.description} </p>
+            {user.description} 
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <div className="profile-statistics"></div>
+            
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <div className="profile-game-history"></div>
+            
           </TabPanel>
         </div>
     
