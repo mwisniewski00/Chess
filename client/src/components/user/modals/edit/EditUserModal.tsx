@@ -1,15 +1,16 @@
 import "./EditUserModal.scss";
-import IUserModalProps from "../IUserModalProps";
+import IUserModalProps from "../../../../models/IUserModalProps";
 import { Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
-import { Form, Formik } from "formik";
+import { TextareaInput } from "components/shared/textarea-input/TextareaInput";
+import { Field, Form, Formik } from "formik";
 import axios from "api/axios";
 import useAuth from "hooks/useAuth";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
-import DescriptionIcon from '@mui/icons-material/Description';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import DescriptionIcon from "@mui/icons-material/Description";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import IUser from "models/IUser";
 import { Messages } from "components/user/registration/Registration";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -18,13 +19,13 @@ import editUserSchema from "./validation-schema/validation";
 export type Status = "idle" | "pending" | "resolved" | "rejected";
 
 interface IUserModalEdit extends IUserModalProps {
-  userData: IUser
+  userData: IUser;
 }
 
 export const EditUserModal: React.FC<IUserModalEdit> = ({
   isOpen,
   setIsOpen,
-  userData
+  userData,
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const [status, setStatus] = useState<Status>("idle");
@@ -83,9 +84,8 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
                     name="username"
                     placeholder="Username"
                   />
-                  <CustomInput
+                  <TextareaInput
                     icon={DescriptionIcon}
-                    type="text"
                     name="description"
                     placeholder="Description"
                   />

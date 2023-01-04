@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Login } from "../../login/Login";
 import { Registration } from "../../registration/Registration";
 import "./LoginRegisterModal.scss";
-import IUserModalProps from "../IUserModalProps"
+import IUserModalProps from "../../../../models/IUserModalProps"
 
 export const LoginRegisterModal: React.FC<IUserModalProps> = ({ isOpen, setIsOpen }) => {
   const [tab, setTab] = useState<"login" | "register">("login");
