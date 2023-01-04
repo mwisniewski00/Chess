@@ -3,6 +3,7 @@ import { io } from "../../app";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import Game from "../../models/Game";
+import User from "../../models/User";
 
 const joinGameController = {
   handleJoinGame: async (req: IGetUserAuthInfoRequest, res: Response) => {
@@ -31,7 +32,18 @@ const joinGameController = {
 
       // black player joins for the first time
       if (game.playerWhite && !game.playerBlack) {
-        game.playerBlack = { username: player as string };
+        const playerBlack = await User.findOne({
+          username: player as string,
+        }).lean();
+
+        if (!playerBlack) {
+          return res.status(404).json({ error: "Player not found" });
+        }
+
+        game.playerBlack = {
+          username: player as string,
+          rating: playerBlack.rating,
+        };
         game.chat.push({
           message: `${game.playerBlack.username} joined as Black!`,
           author: null,
@@ -46,7 +58,18 @@ const joinGameController = {
 
       // white player joins for the first time
       if (!game.playerWhite) {
-        game.playerWhite = { username: player as string };
+        const playerWhite = await User.findOne({
+          username: player as string,
+        }).lean();
+
+        if (!playerWhite) {
+          return res.status(404).json({ error: "Player not found" });
+        }
+
+        game.playerWhite = {
+          username: player as string,
+          rating: playerWhite.rating,
+        };
         game.chat.push({
           message: `${game.playerWhite.username} joined as White!`,
           author: null,

@@ -1,14 +1,15 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 interface IUser {
-    username: string;
-    email: string;
-    password: string;
-    refreshToken: string;
-    description: string;
-    avatarUrl: string;
-    registrationDate: Date;
-    lastLoginDate: Date;
+  username: string;
+  email: string;
+  password: string;
+  refreshToken: string;
+  description: string;
+  avatarUrl: string;
+  registrationDate: Date;
+  lastLoginDate: Date;
+  rating: number;
 }
 
 const userSchema = new Schema<IUser>(
@@ -41,22 +42,27 @@ const userSchema = new Schema<IUser>(
     },
     description: {
       type: String,
-      maxLength: 255
+      maxLength: 255,
     },
-    avatarUrl: { 
+    avatarUrl: {
       type: String,
       match: [
-        /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/, 
-        "Incorrect URL"]
+        /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/,
+        "Incorrect URL",
+      ],
     },
     registrationDate: {
-      type: Date
+      type: Date,
     },
     lastLoginDate: {
-      type: Date
-    }
+      type: Date,
+    },
+    rating: {
+      type: Number,
+      default: 1500,
+    },
   },
-  { collection: "users" }
+  { collection: "users" },
 );
 
 const User = model<IUser>("User", userSchema);

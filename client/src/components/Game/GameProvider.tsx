@@ -8,11 +8,11 @@ import {
   useContext,
   useCallback,
 } from "react";
-import IGame from "components/models/game/IGame";
+import IGame from "models/game/IGame";
 import useSocketClient from "hooks/useSocketClient";
-import IPlayerConnected from "components/models/websocket/IPlayerConnected";
+import IPlayerConnected from "models/websocket/IPlayerConnected";
 import { Game as GameInstance } from "chess-easy";
-import IChatMessage from "components/models/websocket/IChatMessage";
+import IChatMessage from "models/websocket/IChatMessage";
 
 interface GameProviderContext {
   game: IGame;
@@ -117,6 +117,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
 
   useEffect(() => {
     socket.on(`player_connected${gameId}`, (player: IPlayerConnected) => {
+      console.log("PLAYER FROM WEBSOCKETS:::::", player);
       setPlayers(prev => ({ ...prev, ...player }));
     });
     socket.on(`game/${gameId}/move`, setLastMove);

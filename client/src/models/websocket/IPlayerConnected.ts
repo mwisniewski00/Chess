@@ -1,4 +1,4 @@
-import IPlayer from "components/models/game/IPlayer";
+import IPlayer from "models/game/IPlayer";
 
 interface IPlayerConnected {
   playerWhite?: IPlayer;

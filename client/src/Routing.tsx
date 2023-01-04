@@ -6,6 +6,7 @@ import { HeroPage } from "./components/hero-page/HeroPage";
 import { Lobby } from "./components/lobby/Lobby";
 import GameProvider from "./components/game/GameProvider";
 import { GameView } from "components/game/GameView";
+import GameOver from "components/game/GameOver";
 
 export const Routing: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ export const Routing: React.FC = () => {
             path="/:id"
             element={
               <GameProvider>
+                <GameOver />
                 <GameView />
               </GameProvider>
             }

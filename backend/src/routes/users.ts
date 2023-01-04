@@ -9,7 +9,7 @@ import validationController from "../controllers/user/validationController";
 
 const router = express.Router();
 
-router.get("/", verifyJWT, usersController.getUsers);
+router.get("/", usersController.getUsers);
 
 router.delete("/logout", verifyJWT, logoutController.handleLogout);
 
@@ -23,6 +23,6 @@ router.post("/login", loginController.handleLogin);
 
 router.post("/register", registerController.handleRegister);
 
-router.get("/profile/:username", usersController.getUser)
+router.get("/profile/:username", usersController.getUser);
 
 export default router;

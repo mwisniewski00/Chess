@@ -8,7 +8,6 @@ import useAuth from "hooks/useAuth";
 import useUserModal from "hooks/useUserModal";
 import BurgerMenuButton from "./burger-menu-button/BurgerMenuButton";
 import logo_white from "assets/images/logo_white.png";
-import logo_orange from "assets/images/logo_orange.png";
 
 interface SelectedLinks {
   [key: string]: "selected" | "not-selected";

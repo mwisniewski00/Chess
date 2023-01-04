@@ -1,10 +1,8 @@
 import { useState } from "react";
 import "./Login.scss";
 import { LoginForm } from "./form/LoginForm";
-import StatusInfo from "components/shared/status-info/StatusInfo";
+import StatusInfo, { Status } from "components/shared/status-info/StatusInfo";
 import logo_white from "assets/images/logo_white.png";
-
-export type Status = "idle" | "pending" | "resolved" | "rejected";
 
 export interface Messages {
   pending: string;
