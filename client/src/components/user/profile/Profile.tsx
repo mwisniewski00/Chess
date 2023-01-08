@@ -8,14 +8,14 @@ import { useEffect, useState } from "react";
 import IUser from "../../../models/IUser";
 import "./Profile.scss";
 import useUserModal from "hooks/useUserModal";
-import { EditUserModal } from "../modals/edit/EditUserModal";
+import { EditDescriptionModal } from "../modals/edit/description/EditDescriptionModal";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ScoreboardIcon from "@mui/icons-material/Scoreboard";
 import useAuth from "hooks/useAuth";
-import EditDescriptionModal from "../modals/edit/EditDescriptionModal";
+import EditAvatarUrlModal from "../modals/edit/avatarUrl/EditAvatarUrlModal";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -75,6 +75,8 @@ const Profile: React.FC = () => {
   const [value, setValue] = useState(0);
   const axiosPrivate = useAxiosPrivate();
   const { isOpen: isOpenDescription, setIsOpen: setIsOpenDescription } = useUserModal();
+  const { isOpen: isOpenAvatar, setIsOpen: setIsOpenAvatar } = useUserModal();
+
   const navigate = useNavigate();
   const auth = useAuth().auth;
   const loggedInUser = auth.username;
@@ -105,11 +107,22 @@ const Profile: React.FC = () => {
     }
   }
 
-  return (
-    <div className="profile-page">
-      <div className="profile-content">
-        <div className="profile-header profile-box">
-          <div
+  function avatar(){
+    if (username === loggedInUser) {
+      return (
+        <div
+            className="profile-avatar hover"
+            onClick={() => setIsOpenAvatar(true)}
+            style={{
+              backgroundImage: `url("${
+                user.avatarUrl ||
+                "https://raw.githubusercontent.com/mwisniewski00/Chess/main/client/public/logo512.png"
+              }")`,
+            }}
+          ></div>
+      );
+    } else {
+      <div
             className="profile-avatar"
             style={{
               backgroundImage: `url("${
@@ -118,6 +131,14 @@ const Profile: React.FC = () => {
               }")`,
             }}
           ></div>
+    }
+  }
+
+  return (
+    <div className="profile-page">
+      <div className="profile-content">
+        <div className="profile-header profile-box">
+          {avatar()}
           <div className="profile-details">
             <div className="profile-name"> {user.username} </div>
             <div className="profile-status-bar">
@@ -169,6 +190,7 @@ const Profile: React.FC = () => {
       </div>
 
       <EditDescriptionModal isOpen={isOpenDescription} setIsOpen={setIsOpenDescription} userData={user} />
+      <EditAvatarUrlModal isOpen={isOpenAvatar} setIsOpen={setIsOpenAvatar} userData={user} />
     </div>
   );
 };

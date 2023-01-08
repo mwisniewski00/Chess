@@ -1,5 +1,5 @@
-import "./EditUserModal.scss";
-import IUserModalProps from "../../../../models/IUserModalProps";
+import "./EditAvatarUrlModal.scss";
+import IUserModalProps from "../../../../../models/IUserModalProps";
 import { Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
@@ -14,7 +14,7 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import IUser from "models/IUser";
 import { Messages } from "components/user/registration/Registration";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import editUserSchema from "./validation-schema/validation";
+import editUserSchema from "../../validation-schema/validation";
 
 export type Status = "idle" | "pending" | "resolved" | "rejected";
 
@@ -22,7 +22,7 @@ interface IUserModalEdit extends IUserModalProps {
   userData: IUser;
 }
 
-export const EditUserModal: React.FC<IUserModalEdit> = ({
+export const EditAvatarUrlModal: React.FC<IUserModalEdit> = ({
   isOpen,
   setIsOpen,
   userData,
@@ -78,18 +78,7 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
             {formik => (
               <Form className="form">
                 <div className="inputs">
-                  <CustomInput
-                    icon={PersonIcon}
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                  />
-                  <TextareaInput
-                    icon={DescriptionIcon}
-                    name="description"
-                    placeholder="Description"
-                  />
-                  <CustomInput
+                <CustomInput
                     icon={InsertPhotoIcon}
                     type="url"
                     name="avatarUrl"
@@ -113,4 +102,4 @@ export const EditUserModal: React.FC<IUserModalEdit> = ({
   );
 };
 
-export default EditUserModal;
+export default EditAvatarUrlModal;

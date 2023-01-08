@@ -83,4 +83,9 @@
     }
 }
 
+.hover:hover {
+  cursor: pointer;
+  background-color: $main-theme-color-hover;
+}
+
 .MuiTabs-indicator{ background-color: $main-theme-color !important;} 
