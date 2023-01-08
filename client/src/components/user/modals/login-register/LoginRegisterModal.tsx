@@ -34,7 +34,7 @@ export const LoginRegisterModal: React.FC<IUserModalProps> = ({ isOpen, setIsOpe
       open={isOpen}
       onClose={handleClose}
     >
-      <DialogContent className="dialog-content">
+      <DialogContent className="dialog-content-user">
         {tab === "login" && (
           <div className="log-in">
             <Login />

@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import "./PromotionDialog.scss";
-import "../../hero-page/hero-button/HeroButton.scss";
+import "../../../hero-page/hero-button/HeroButton.scss";
 
 interface PromotionDialogProps {
   isOpen: boolean;

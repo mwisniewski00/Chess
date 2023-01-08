@@ -1,4 +1,3 @@
-import { CirclePattern } from "./circle-pattern/CirclePattern";
 import "./HeroPage.scss";
 import boardImg from "./board1.png";
 import { useLayoutEffect, useRef } from "react";
@@ -35,18 +34,6 @@ export const HeroPage: React.FC = () => {
             y: -20,
           },
         );
-      gsap.fromTo(
-        ".circle",
-        {
-          opacity: 0,
-        },
-        {
-          stagger: {
-            each: 0.02,
-          },
-          opacity: 0.5,
-        },
-      );
     }, scope);
 
     return () => {
@@ -63,12 +50,6 @@ export const HeroPage: React.FC = () => {
           doloremque consectetur distinctio odio a expedita sapiente.
         </div>
         <HeroButton />
-      </div>
-      <div className="circle-pattern__left">
-        <CirclePattern height={5} width={19} />
-      </div>
-      <div className="circle-pattern__right">
-        <CirclePattern height={6} width={7} />
       </div>
       <img className="board-3d" alt="board" src={boardImg}></img>
     </div>

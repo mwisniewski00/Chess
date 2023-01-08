@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./GameView.scss";
 import Chessboard from "./chess-board/Chessboard";
 import PlayerSection from "./player-section/PlayerSection";
-import { PromotionDialog } from "./dialogs/PromotionDialog";
+import { PromotionDialog } from "./dialogs/promotion-dialog/PromotionDialog";
 import { useGameContext } from "./GameProvider";
 
 export function GameView() {

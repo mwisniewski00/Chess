@@ -1,8 +1,10 @@
-import { Messages, Status } from "components/user/login/Login";
+import { Messages } from "components/user/login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import "./StatusInfo.scss";
+
+export type Status = "idle" | "pending" | "resolved" | "rejected";
 
 interface StatusInfoProps {
   status: Status;
@@ -16,29 +18,33 @@ const StatusInfo: React.FC<StatusInfoProps> = ({
   componentName,
 }) => {
   return (
-    <div className={`status ${componentName}-status`}>
-      {status === "pending" && (
-        <div className="status__pending">
-          {message.pending}
-          <div className="progress-animation">
-            <CircularProgress size={26} color="inherit" />
-          </div>
-        </div>
-      )}
-      {status === "resolved" && (
-        <div className="status__resolved">
-          {message.resolved}
-          <div className="success-icon">
-            <DoneIcon color="inherit" />
-          </div>
-        </div>
-      )}
-      {status === "rejected" && (
-        <div className="status__rejected">
-          {message.rejected}
-          <div className="error-icon">
-            <CloseIcon color="inherit" />
-          </div>
+    <div className="status-wrapper">
+      {status !== "idle" && (
+        <div className={`status ${componentName}-status`}>
+          {status === "pending" && (
+            <div className="status__pending">
+              {message.pending}
+              <div className="progress-animation">
+                <CircularProgress size={26} color="inherit" />
+              </div>
+            </div>
+          )}
+          {status === "resolved" && (
+            <div className="status__resolved">
+              {message.resolved}
+              <div className="success-icon">
+                <DoneIcon color="inherit" />
+              </div>
+            </div>
+          )}
+          {status === "rejected" && (
+            <div className="status__rejected">
+              {message.rejected}
+              <div className="error-icon">
+                <CloseIcon color="inherit" />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

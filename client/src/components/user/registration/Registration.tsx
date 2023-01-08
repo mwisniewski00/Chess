@@ -1,9 +1,8 @@
 import "./Registration.scss";
 import { RegistrationForm } from "./form/RegistrationForm";
 import { useState } from "react";
-import StatusInfo from "components/shared/status-info/StatusInfo";
-
-export type Status = "idle" | "pending" | "resolved" | "rejected";
+import StatusInfo, { Status } from "components/shared/status-info/StatusInfo";
+import logo_white from "assets/images/logo_white.png";
 
 export interface Messages {
   pending: string;
@@ -22,10 +21,8 @@ export const Registration: React.FC = () => {
   return (
     <div className="registration">
       <div className="registration__top-section">
-        <div className="registration__title">Join now!</div>
-        <div className="registration__subtitle">
-          Lorem ipsum dolor, sit amet consectetur.
-        </div>
+        <img height={100} src={logo_white} alt="logo"></img>
+        <div className="registration__title">Join now for free!</div>
       </div>
       <StatusInfo
         status={status}

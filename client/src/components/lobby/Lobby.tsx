@@ -1,6 +1,7 @@
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import "./Lobby.scss";
+import Button from "@mui/material/Button";
 
 export const Lobby: React.FC = () => {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ export const Lobby: React.FC = () => {
   const initiateGame = async () => {
     try {
       const initiatedGame = await axiosPrivate.post("/games");
-      // console.log(initiatedGame);
       navigate(`/${initiatedGame.data.id}`);
     } catch (error) {
       console.error(error);
@@ -17,7 +17,14 @@ export const Lobby: React.FC = () => {
   };
   return (
     <div className="lobby">
-      <button onClick={() => initiateGame()}>CREATE TEST GAME</button>
+      <h2>Lobby coming soon..</h2>
+      <Button
+        color="success"
+        variant="contained"
+        onClick={() => initiateGame()}
+      >
+        Play
+      </Button>
     </div>
   );
 };
