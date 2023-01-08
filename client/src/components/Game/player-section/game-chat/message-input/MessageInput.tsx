@@ -2,7 +2,7 @@ import "./MessageInput.scss";
 import { Field, Form, Formik } from "formik";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import SendIcon from "@mui/icons-material/Send";
-import { useGameContext } from "components/game/GameProvider";
+import { useGameContext } from "components/Game/GameProvider";
 
 const MessageInput: React.FC = () => {
   const axiosPrivate = useAxiosPrivate();

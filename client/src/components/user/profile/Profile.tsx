@@ -1,9 +1,6 @@
-import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "api/axios";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import IUser from "../../../models/IUser";
 import "./Profile.scss";
@@ -73,7 +70,6 @@ function calculateTime(isoString: string) {
 const Profile: React.FC = () => {
   const [user, setUser] = useState({} as IUser);
   const [value, setValue] = useState(0);
-  const axiosPrivate = useAxiosPrivate();
   const { isOpen: isOpenDescription, setIsOpen: setIsOpenDescription } = useUserModal();
   const { isOpen: isOpenAvatar, setIsOpen: setIsOpenAvatar } = useUserModal();
 
@@ -95,7 +91,7 @@ const Profile: React.FC = () => {
       }
     }
     getUser();
-  }, []);
+  }, );
 
   function descriptionEdit(){
     if (username === loggedInUser) {

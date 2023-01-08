@@ -1,4 +1,4 @@
-import { useGameContext } from "components/game/GameProvider";
+import { useGameContext } from "components/Game/GameProvider";
 import useSocketClient from "hooks/useSocketClient";
 import { useEffect, useState } from "react";
 import useAuth from "hooks/useAuth";

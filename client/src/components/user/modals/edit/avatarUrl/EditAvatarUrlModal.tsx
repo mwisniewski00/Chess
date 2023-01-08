@@ -1,22 +1,12 @@
 import "./EditAvatarUrlModal.scss";
 import IUserModalProps from "../../../../../models/IUserModalProps";
 import { Dialog, DialogContent } from "@mui/material";
-import { useState } from "react";
 import { CustomInput } from "components/shared/custom-input/CustomInput";
-import { TextareaInput } from "components/shared/textarea-input/TextareaInput";
-import { Field, Form, Formik } from "formik";
-import axios from "api/axios";
-import useAuth from "hooks/useAuth";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import DescriptionIcon from "@mui/icons-material/Description";
+import { Form, Formik } from "formik";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import IUser from "models/IUser";
-import { Messages } from "components/user/registration/Registration";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import editUserSchema from "../../validation-schema/validation";
-
-export type Status = "idle" | "pending" | "resolved" | "rejected";
 
 interface IUserModalEdit extends IUserModalProps {
   userData: IUser;
@@ -28,30 +18,18 @@ export const EditAvatarUrlModal: React.FC<IUserModalEdit> = ({
   userData,
 }) => {
   const axiosPrivate = useAxiosPrivate();
-  const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState<Messages>({
-    pending: "",
-    resolved: "",
-    rejected: "",
-  });
-
   const handleClose = () => {
     setIsOpen(false);
     window.location.reload();
   };
 
   const handleSubmit = async (user: IUser) => {
-    setMessage({ ...message, pending: "Please wait..." });
-    setStatus("pending");
     try {
-      const response = await axiosPrivate.put("/users/profile", user);
-      setMessage({ ...message, resolved: "Registration successful!" });
-      setStatus("resolved");
+      await axiosPrivate.put("/users/profile", user);
       handleClose();
     } catch (error) {
       console.error(error);
-      setMessage({ ...message, rejected: "Something went wrong..." });
-      setStatus("rejected");
+      
     }
   };
 

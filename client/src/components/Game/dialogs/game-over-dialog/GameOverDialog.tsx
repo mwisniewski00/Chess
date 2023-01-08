@@ -2,7 +2,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import "./GameOverDialog.scss";
 import defaultAvatar from "assets/images/default_profile.jpg";
-import { playerGameStatus } from "components/game/GameOver";
+import { playerGameStatus } from "components/Game/GameOver";
 import IPlayer from "models/game/IPlayer";
 import logo_white from "assets/images/logo_white.png";
 

@@ -1,25 +1,25 @@
 import * as yup from "yup";
-import axios from "api/axios";
+// import axios from "api/axios";
 
-interface IPreviousUsername {
-  username: string | undefined;
-  isValid: boolean;
-}
+// interface IPreviousUsername {
+//   username: string | undefined;
+//   isValid: boolean;
+// }
 
-const previousUsername: IPreviousUsername = {
-  username: "",
-  isValid: true,
-};
+// const previousUsername: IPreviousUsername = {
+//   username: "",
+//   isValid: true,
+// };
 
-interface IPreviousEmail {
-  email: string | undefined;
-  isValid: boolean;
-}
+// interface IPreviousEmail {
+//   email: string | undefined;
+//   isValid: boolean;
+// }
 
-const previousEmail: IPreviousEmail = {
-  email: "",
-  isValid: true,
-};
+// const previousEmail: IPreviousEmail = {
+//   email: "",
+//   isValid: true,
+// };
 
 //ToDo Update validation
 
@@ -81,7 +81,7 @@ const editUserSchema = yup.object().shape({
   avatarUrl: yup
     .string()
     .matches(
-      /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/,
+      /^(http(s):\/\/.)[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
         'Enter correct url!'
     )
   // password: yup
