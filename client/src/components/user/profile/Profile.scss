@@ -26,7 +26,6 @@
     .profile-header {
       padding: 1rem;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
 
       .profile-avatar {
@@ -38,30 +37,14 @@
         background-size: 100% 100%;
       }
 
-      .profile-edit {
-        display: flex;
-        position: absolute;
-        right: 1rem;
-        top: 0.5rem;
-          &:hover {
-            cursor: pointer;
-            text-decoration: underline;
-          }
-      }
-
       .profile-details {
-        width: 75%;
+        width: 80%;
         display: flex;
         flex-direction: column;
         margin-left: 1rem;
-
         .profile-name{
           font-size: 2.9rem;
           font-weight: bold;
-        }
-
-        .profile-title{
-          margin-left: 0.5rem;
         }
 
         .profile-status-bar{
@@ -83,9 +66,21 @@
 
       .profile-tab-content{
         margin-top: 1rem;
+        position: relative;
       }
     }
   }
+}
+
+.description-edit {
+  display: flex;
+  position: absolute;
+  right: 1rem;
+  top: -1rem;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
 }
 
 .MuiTabs-indicator{ background-color: $main-theme-color !important;} 
