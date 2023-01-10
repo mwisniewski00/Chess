@@ -1,10 +1,9 @@
+import "./Profile.scss";
 import axios from "api/axios";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useEffect, useState } from "react";
 import IUser from "../../../models/IUser";
-import "./Profile.scss";
-import useUserModal from "hooks/useUserModal";
 import { EditDescriptionModal } from "../modals/edit/description/EditDescriptionModal";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -70,8 +69,8 @@ function calculateTime(isoString: string) {
 const Profile: React.FC = () => {
   const [user, setUser] = useState({} as IUser);
   const [value, setValue] = useState(0);
-  const { isOpen: isOpenDescription, setIsOpen: setIsOpenDescription } = useUserModal();
-  const { isOpen: isOpenAvatar, setIsOpen: setIsOpenAvatar } = useUserModal();
+  const [isOpenDescription, setIsOpenDescription] = useState(false);
+  const [isOpenAvatar, setIsOpenAvatar] = useState(false);
 
   const navigate = useNavigate();
   const auth = useAuth().auth;
@@ -91,42 +90,45 @@ const Profile: React.FC = () => {
       }
     }
     getUser();
-  }, );
+  });
 
-  function descriptionEdit(){
+  function descriptionEdit() {
     if (username === loggedInUser) {
       return (
-        <div onClick={() => setIsOpenDescription(true)} className="description-edit">
-          <EditIcon className="icon"/>
+        <div
+          onClick={() => setIsOpenDescription(true)}
+          className="description-edit"
+        >
+          <EditIcon className="icon" />
         </div>
       );
     }
   }
 
-  function avatar(){
+  function avatar() {
     if (username === loggedInUser) {
       return (
         <div
-            className="profile-avatar hover"
-            onClick={() => setIsOpenAvatar(true)}
-            style={{
-              backgroundImage: `url("${
-                user.avatarUrl ||
-                "https://raw.githubusercontent.com/mwisniewski00/Chess/main/client/public/logo512.png"
-              }")`,
-            }}
-          ></div>
+          className="profile-avatar hover"
+          onClick={() => setIsOpenAvatar(true)}
+          style={{
+            backgroundImage: `url("${
+              user.avatarUrl ||
+              "https://raw.githubusercontent.com/mwisniewski00/Chess/main/client/public/logo512.png"
+            }")`,
+          }}
+        ></div>
       );
     } else {
       <div
-            className="profile-avatar"
-            style={{
-              backgroundImage: `url("${
-                user.avatarUrl ||
-                "https://raw.githubusercontent.com/mwisniewski00/Chess/main/client/public/logo512.png"
-              }")`,
-            }}
-          ></div>
+        className="profile-avatar"
+        style={{
+          backgroundImage: `url("${
+            user.avatarUrl ||
+            "https://raw.githubusercontent.com/mwisniewski00/Chess/main/client/public/logo512.png"
+          }")`,
+        }}
+      ></div>;
     }
   }
 
@@ -185,8 +187,17 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-      <EditDescriptionModal isOpen={isOpenDescription} setIsOpen={setIsOpenDescription} userData={user} />
-      <EditAvatarUrlModal isOpen={isOpenAvatar} setIsOpen={setIsOpenAvatar} userData={user} />
+      <EditDescriptionModal
+        isOpen={isOpenDescription}
+        setIsOpen={setIsOpenDescription}
+        userData={user}
+      />
+      
+      <EditAvatarUrlModal
+        isOpen={isOpenAvatar}
+        setIsOpen={setIsOpenAvatar}
+        userData={user}
+      />
     </div>
   );
 };

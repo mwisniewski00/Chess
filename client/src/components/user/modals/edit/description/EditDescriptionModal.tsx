@@ -1,5 +1,4 @@
 import "./EditDescriptionModal.scss";
-import IUserModalProps from "../../../../../models/IUserModalProps";
 import { Dialog, DialogContent } from "@mui/material";
 import { TextareaInput } from "components/shared/textarea-input/TextareaInput";
 import { Form, Formik } from "formik";
@@ -8,20 +7,11 @@ import IUser from "models/IUser";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import editUserSchema from "../../validation-schema/validation";
 
-interface IUserModalEdit extends IUserModalProps {
-  userData: IUser;
-}
-
-export const EditDescriptionModal: React.FC<IUserModalEdit> = ({
-  isOpen,
-  setIsOpen,
-  userData,
-}) => {
+export const EditDescriptionModal = ({ isOpen, setIsOpen, userData }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const handleClose = () => {
     setIsOpen(false);
-    window.location.reload();
   };
 
   const handleSubmit = async (user: IUser) => {
@@ -37,7 +27,7 @@ export const EditDescriptionModal: React.FC<IUserModalEdit> = ({
     <Dialog
       PaperProps={{
         style: {
-          backgroundColor: "transparent",
+          backgroundColor: "rgb(25, 25, 25)",
           padding: 0,
           margin: 0,
         },
