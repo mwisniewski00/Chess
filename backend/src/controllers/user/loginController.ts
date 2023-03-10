@@ -17,17 +17,18 @@ const loginController = {
       }
 
       if (await bcrypt.compare(password, user.password)) {
+        const tokenData = { username: user.username, _id: user._id };
         const accessToken = jwt.sign(
-          { username: user.username },
+          tokenData,
           process.env.ACCESS_TOKEN_SECRET as Secret,
-          { expiresIn: "1d" },
+          { expiresIn: 60 },
         );
         const refreshToken = jwt.sign(
-          { username: user.username },
+          tokenData,
           process.env.REFRESH_TOKEN_SECRET as Secret,
           { expiresIn: "7d" },
         );
-        const lastLoginDate = new Date()
+        const lastLoginDate = new Date();
 
         user.refreshToken = refreshToken;
         user.lastLoginDate = lastLoginDate;

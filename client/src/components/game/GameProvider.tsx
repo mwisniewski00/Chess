@@ -20,7 +20,7 @@ interface GameProviderContext {
   players: IPlayerConnected;
   chat: IChatMessage[];
   setChat: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
-  sendMove: (from: string, to: string, promotion?: string) => Promise<boolean>;
+  sendMove: (from: string, to: string, promotion?: string) => Promise<void>;
   gameInstance: GameInstance;
 }
 
@@ -44,7 +44,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
   const navigate = useNavigate();
   const auth = useAuth().auth;
   const gameId = useParams().id;
-  const socket = useSocketClient();
+  const { socket } = useSocketClient();
   const [isLoading, setIsLoading] = useState(false);
   const [chat, setChat] = useState<IChatMessage[]>([]);
   const [gameInstance, setGameInstance] = useState<GameInstance>();
@@ -116,6 +116,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
   }, [gameInstance, getPossibleMoves, lastMove]);
 
   useEffect(() => {
+    if (!socket) return;
     socket.on(`player_connected${gameId}`, (player: IPlayerConnected) => {
       setPlayers(prev => ({ ...prev, ...player }));
     });
@@ -127,7 +128,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   const sendMove = async (
     from: string,
@@ -135,16 +136,9 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
     promotion: string = "q",
   ) => {
     try {
-      await axiosPrivate.post(`/games/${gameId}/move`, {
-        auth,
-        from,
-        to,
-        promotion,
-      });
-      return true;
+      await socket?.emit("move", { from, to, promotion });
     } catch (err) {
       console.error(err);
-      return false;
     }
   };
 

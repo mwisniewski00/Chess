@@ -13,4 +13,3 @@ const RequireAuth: React.FC = () => {
 };
 
 export default RequireAuth;
-
