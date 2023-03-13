@@ -1,11 +1,6 @@
-import io from "socket.io-client";
+import { useContext } from "react";
+import { SocketContext } from "context/SocketProvider";
 
-const useSocketClient = () => {
-  const socketClientUrl =
-    process.env.SOCKET_CLIENT_URL || "http://localhost:5000";
-  const socket = io(socketClientUrl);
-
-  return socket;
-};
+const useSocketClient = () => useContext(SocketContext);
 
 export default useSocketClient;
