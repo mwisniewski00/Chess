@@ -6,7 +6,7 @@ import MessageInput from "./message-input/MessageInput";
 import { useGameContext } from "components/game/GameProvider";
 
 const GameChat: React.FC = () => {
-  const socket = useSocketClient();
+  const { socket } = useSocketClient();
   const {
     chat,
     setChat,
@@ -16,16 +16,17 @@ const GameChat: React.FC = () => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.on(`new_message${id}`, (message: IChatMessage) => {
+    if (!socket) return;
+    socket.on(`new_message`, (message: IChatMessage) => {
       setChat(prev => [...prev, message]);
     });
 
     return () => {
-      socket.off(`new_message${id}`);
+      socket.off(`new_message`);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

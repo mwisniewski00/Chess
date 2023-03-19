@@ -22,7 +22,7 @@ const GameOver: React.FC = () => {
   const localPlayer =
     playerBlack?.username === auth.username ? playerBlack : playerWhite;
 
-  const socket = useSocketClient();
+  const { socket } = useSocketClient();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [playerGameStatus, setPlayerGameStatus] =
     useState<playerGameStatus>(null);
@@ -30,6 +30,7 @@ const GameOver: React.FC = () => {
     useState<playerGameStatus>(null);
 
   useEffect(() => {
+    if (!socket) return;
     socket.on(`game_end${game.id}`, (gameEndInfo: IGameEnd) => {
       const localPlayerGameStatus =
         gameEndInfo.player1.username === auth.username
@@ -51,7 +52,7 @@ const GameOver: React.FC = () => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   return (
     <div>

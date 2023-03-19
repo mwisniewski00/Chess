@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { NavLink } from "./nav-link/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
-import { UserModal } from "../../user/modal/UserModal";
+import { LoginRegisterModal } from "../../user/modals/login-register/LoginRegisterModal";
 import useLogout from "hooks/useLogout";
 import useAuth from "hooks/useAuth";
 import useUserModal from "hooks/useUserModal";
@@ -78,7 +78,15 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
         {auth.username && (
           <NavLink
-            link="/profile"
+            link="/game"
+            text="Game"
+            selected={selectedLinks.game === "selected"}
+            setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+          />
+        )}
+        {auth.username && (
+          <NavLink
+            link={`/profile/${auth.username}`}
             text="Profile"
             selected={selectedLinks.profile === "selected"}
             setIsBurgerMenuOpen={setIsBurgerMenuOpen}
@@ -92,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div onClick={() => setIsOpen(true)} className="navbar__menu__item">
               Login / Register
             </div>
-            <UserModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <LoginRegisterModal isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         )}
         {auth.username && (

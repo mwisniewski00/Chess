@@ -1,4 +1,4 @@
-import IAuth from "models/IAuth";
+import IAuth from "../models/IAuth";
 import { createContext, useState, ReactNode } from "react";
 
 interface IAuthContext {

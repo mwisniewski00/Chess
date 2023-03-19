@@ -1,5 +1,4 @@
 import { Response, Request } from "express";
-import { io } from "../../app";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import Game from "../../models/Game";
@@ -9,6 +8,7 @@ const joinGameController = {
   handleJoinGame: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const gameId = req.params.id;
     const player = req.user;
+    const io = req.app.io.of(`/game/${gameId}`);
 
     try {
       const game = await Game.findById(gameId).lean();
@@ -50,7 +50,7 @@ const joinGameController = {
         });
         await Game.findByIdAndUpdate(gameId, game);
         io.emit(`player_connected${gameId}`, { playerBlack: game.playerBlack });
-        io.emit(`new_message${gameId}`, {
+        io.emit(`new_message`, {
           message: `${game.playerBlack.username} joined as Black!`,
           author: null,
         });
@@ -76,7 +76,7 @@ const joinGameController = {
         });
         await Game.findByIdAndUpdate(gameId, game);
         io.emit(`player_connected${gameId}`, { playerWhite: game.playerWhite });
-        io.emit(`new_message${gameId}`, {
+        io.emit(`new_message`, {
           message: `${game.playerWhite.username} joined as White!`,
           author: null,
         });

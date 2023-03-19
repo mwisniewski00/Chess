@@ -3,8 +3,8 @@ interface IUser {
     email: string;
     description: string;
     avatarUrl: string;
-    registrationDate: Date;
-    lastLoginDate: Date
+    registrationDate: string;
+    lastLoginDate: string
 }
 
 export default IUser;

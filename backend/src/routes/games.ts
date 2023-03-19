@@ -18,6 +18,4 @@ router.put("/join/:id", verifyJWT, joinGameController.handleJoinGame);
 
 router.post("/:id/message", verifyJWT, chatController.handleNewMessage);
 
-router.post("/:id/move", verifyJWT, gameMovesController.handleMove);
-
 export default router;

@@ -1,16 +1,12 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
-import { Login } from "../login/Login";
-import { Registration } from "../registration/Registration";
-import "./UserModal.scss";
+import { Login } from "../../login/Login";
+import { Registration } from "../../registration/Registration";
+import "./LoginRegisterModal.scss";
+import IUserModalProps from "../../../../models/IUserModalProps"
 
-interface UserModalProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
-
-export const UserModal: React.FC<UserModalProps> = ({ isOpen, setIsOpen }) => {
+export const LoginRegisterModal: React.FC<IUserModalProps> = ({ isOpen, setIsOpen }) => {
   const [tab, setTab] = useState<"login" | "register">("login");
 
   const changeTab = () => {
