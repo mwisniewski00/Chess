@@ -10,18 +10,22 @@ import {
 } from "react";
 import IGame from "models/game/IGame";
 import useSocketClient from "hooks/useSocketClient";
-import IPlayerConnected from "models/websocket/IPlayerConnected";
+import IPlayerConnectedData from "models/websocket/IPlayerConnected";
 import { Game as GameInstance } from "chess-easy";
 import IChatMessage from "models/websocket/IChatMessage";
+import { ITimers } from "types";
 
 interface GameProviderContext {
   game: IGame;
   color: "white" | "black";
-  players: IPlayerConnected;
+  players: IPlayerConnectedData;
   chat: IChatMessage[];
   setChat: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
   sendMove: (from: string, to: string, promotion?: string) => Promise<void>;
   gameInstance: GameInstance;
+  isFinished: boolean;
+  setIsFinished: React.Dispatch<React.SetStateAction<boolean>>;
+  timers: ITimers | null;
 }
 
 interface GameContextProviderProps {
@@ -34,12 +38,16 @@ interface Move {
   promotion: string;
 }
 
+interface MoveMessage extends Move {
+  timers?: ITimers;
+}
+
 const GameContext = createContext<GameProviderContext | null>(null);
 
 export const GameProvider = ({ children }: GameContextProviderProps) => {
   const [game, setGame] = useState<IGame>();
   const [color, setColor] = useState<"white" | "black">();
-  const [players, setPlayers] = useState<IPlayerConnected>();
+  const [players, setPlayers] = useState<IPlayerConnectedData>();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const auth = useAuth().auth;
@@ -49,6 +57,8 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
   const [chat, setChat] = useState<IChatMessage[]>([]);
   const [gameInstance, setGameInstance] = useState<GameInstance>();
   const [lastMove, setLastMove] = useState<Move>();
+  const [isFinished, setIsFinished] = useState(false);
+  const [timers, setTimers] = useState<ITimers | null>(null);
 
   useEffect(() => {
     const joinGame = async () => {
@@ -59,8 +69,18 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
         });
 
         if (joinAttempt.status === 200) {
-          const { fen, chat, playerWhite, playerBlack, _id, ...rest } =
-            joinAttempt.data.game;
+          const {
+            fen,
+            chat,
+            playerWhite,
+            playerBlack,
+            _id,
+            isFinished,
+            whiteTimer,
+            blackTimer,
+            ...rest
+          } = joinAttempt.data.game;
+          setIsFinished(isFinished);
           setChat(chat);
           setPlayers({ playerBlack, playerWhite });
           const gameInstance = new GameInstance(...(fen ? [fen] : []));
@@ -71,6 +91,9 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
             gameState: gameInstance.getGameStateObject(),
             possibleMoves: getPossibleMoves(gameInstance),
           });
+          if (whiteTimer && blackTimer) {
+            setTimers({ white: whiteTimer, black: blackTimer });
+          }
           if (playerWhite?.username === auth.username) {
             setColor("white");
           } else if (playerBlack?.username === auth.username) {
@@ -91,13 +114,14 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
 
   const getPossibleMoves = useCallback(
     (gameInstance: GameInstance) => {
+      if (isFinished) return null;
       if (!players || !Object.values(players).every(value => value))
         return null;
       return gameInstance.getNextColor() === color
         ? gameInstance.possibleMoves
         : null;
     },
-    [color, players],
+    [color, isFinished, players],
   );
 
   useEffect(() => {
@@ -115,20 +139,37 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameInstance, getPossibleMoves, lastMove]);
 
+  const onMoveMessage = (message: MoveMessage) => {
+    const { timers, ...move } = message;
+    setLastMove(move);
+    if (timers) {
+      setTimers(timers);
+    }
+  };
+
   useEffect(() => {
     if (!socket) return;
-    socket.on(`player_connected${gameId}`, (player: IPlayerConnected) => {
-      setPlayers(prev => ({ ...prev, ...player }));
+    socket.on(`player_connected`, (data: IPlayerConnectedData) => {
+      setPlayers(prev => ({ ...prev, ...data }));
+      if (data.timers) {
+        setTimers(data.timers);
+      }
     });
-    socket.on(`game/${gameId}/move`, setLastMove);
+    socket.on(`move`, onMoveMessage);
 
     return () => {
-      socket.off(`player_connected${gameId}`);
-      socket.off(`game/${gameId}/move`);
+      socket.off(`player_connected`);
+      socket.off(`move`);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
+
+  useEffect(() => {
+    if (!isLoading && socket) {
+      socket.connect();
+    }
+  }, [isLoading, socket]);
 
   const sendMove = async (
     from: string,
@@ -136,7 +177,9 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
     promotion: string = "q",
   ) => {
     try {
-      await socket?.emit("move", { from, to, promotion });
+      if (!isFinished) {
+        await socket?.emit("move", { from, to, promotion });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -152,7 +195,18 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
 
   return (
     <GameContext.Provider
-      value={{ game, color, players, chat, setChat, sendMove, gameInstance }}
+      value={{
+        game,
+        color,
+        players,
+        chat,
+        setChat,
+        sendMove,
+        gameInstance,
+        isFinished,
+        setIsFinished,
+        timers,
+      }}
     >
       {children}
     </GameContext.Provider>

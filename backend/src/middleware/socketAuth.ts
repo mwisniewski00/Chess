@@ -39,8 +39,8 @@ const verifyGameRoomAffiliation = async (
       return next(onAuthError());
     }
     if (
-      !gameModel?.playerBlack === user._id ||
-      !gameModel?.playerWhite === user._id
+      !gameModel?.playerBlack?.equals(user._id) &&
+      !gameModel?.playerWhite?.equals(user._id)
     ) {
       return next(onAuthError());
     }

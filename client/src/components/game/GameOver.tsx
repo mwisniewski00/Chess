@@ -14,8 +14,8 @@ export type playerGameStatus = {
 
 const GameOver: React.FC = () => {
   const {
-    game,
     players: { playerBlack, playerWhite },
+    setIsFinished,
   } = useGameContext();
   const auth = useAuth().auth;
 
@@ -31,7 +31,7 @@ const GameOver: React.FC = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on(`game_end${game.id}`, (gameEndInfo: IGameEnd) => {
+    socket.on(`game_end`, (gameEndInfo: IGameEnd) => {
       const localPlayerGameStatus =
         gameEndInfo.player1.username === auth.username
           ? gameEndInfo.player1
@@ -44,11 +44,12 @@ const GameOver: React.FC = () => {
       setPlayerGameStatus(localPlayerGameStatus as playerGameStatus);
       setEnemyGameStatus(enemyPlayerGameStatus as playerGameStatus);
 
+      setIsFinished(true);
       setIsOpen(true);
     });
 
     return () => {
-      socket.off(`game_end${game.id}`);
+      socket.off(`game_end`);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
