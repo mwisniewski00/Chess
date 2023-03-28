@@ -1,13 +1,15 @@
-FROM node:16-alpine AS builder
+# builder stage
+FROM node:18-alpine AS builder
 WORKDIR /api
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:16-alpine AS service
+# production stage
+FROM node:18-alpine AS service
 WORKDIR /api
-COPY package* ./
+COPY package*.json ./
 RUN npm install --omit=dev
 COPY --from=builder ./api/build ./build
 EXPOSE 5000
