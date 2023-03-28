@@ -24,12 +24,14 @@ function Timer({ timer }: TimerProps) {
   useEffect(() => {
     if (!timer.running) return;
     if (timeRemaining <= 0) {
-      !isFinished && socket?.emit("timer_end");
+      if (!isFinished) {
+        socket?.emit("timer_end");
+      }
       return;
     }
 
     const intervalId = setInterval(() => {
-      setTimeRemaining(time => (time - 1000 < 0 ? time - 1000 : 0));
+      setTimeRemaining(time => (time - 1000 < 0 ? 0 : time - 1000));
     }, 1000);
 
     return () => {
