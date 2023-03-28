@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt, { Secret } from "jsonwebtoken";
-import User from "../../models/User";
+import { User } from "../../models/User";
 import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 

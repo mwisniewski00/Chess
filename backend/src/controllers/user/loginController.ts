@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
-import User from "../../models/User";
+import { User } from "../../models/User";
 import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 

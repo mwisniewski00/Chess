@@ -10,20 +10,25 @@ const PlayerSection: React.FC = () => {
   const {
     players: { playerBlack, playerWhite },
     color,
+    timers,
   } = useGameContext();
+
   return (
     <div className="player-section">
       {playerWhite && playerBlack ? (
-        <PlayerWindow player={color === "white" ? playerBlack : playerWhite} />
+        <PlayerWindow
+          player={color === "white" ? playerBlack : playerWhite}
+          timer={color === "white" ? timers?.black : timers?.white}
+        />
       ) : (
         <InviteFriend />
       )}
       <GameChat />
       {playerWhite && playerWhite?.username === auth.username && (
-        <PlayerWindow player={playerWhite} />
+        <PlayerWindow player={playerWhite} timer={timers?.white} />
       )}
       {playerBlack && playerBlack?.username === auth.username && (
-        <PlayerWindow player={playerBlack} />
+        <PlayerWindow player={playerBlack} timer={timers?.black} />
       )}
     </div>
   );

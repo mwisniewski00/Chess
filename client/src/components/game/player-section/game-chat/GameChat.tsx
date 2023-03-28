@@ -7,11 +7,7 @@ import { useGameContext } from "components/game/GameProvider";
 
 const GameChat: React.FC = () => {
   const { socket } = useSocketClient();
-  const {
-    chat,
-    setChat,
-    game: { id },
-  } = useGameContext();
+  const { chat, setChat } = useGameContext();
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 

@@ -8,7 +8,7 @@ const Game: React.FC = () => {
   const { id } = useParams();
 
   return (
-    <SocketProvider path={`/game/${id}`}>
+    <SocketProvider path={`/game/${id}`} autoConnect={false}>
       <GameProvider>
         <GameOver />
         <GameView />
