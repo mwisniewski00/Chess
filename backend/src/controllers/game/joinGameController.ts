@@ -1,17 +1,25 @@
-import { Response, Request } from "express";
-import { io } from "../../app";
+import { Response } from "express";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import Game from "../../models/Game";
-import User from "../../models/User";
+import { User } from "../../models/User";
 
 const joinGameController = {
   handleJoinGame: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const gameId = req.params.id;
     const player = req.user;
+    const io = req.app.io.of(`/game/${gameId}`);
 
     try {
-      const game = await Game.findById(gameId).lean();
+      const game = await Game.findById(gameId)
+        .populate({
+          path: "playerWhite",
+          select: "-password -refreshToken",
+        })
+        .populate({
+          path: "playerBlack",
+          select: "-password -refreshToken",
+        });
 
       if (!game) {
         return res.status(404).json({ error: "Game not found" });
@@ -19,8 +27,8 @@ const joinGameController = {
 
       // player rejoins game
       if (
-        game.playerWhite?.username === player ||
-        game.playerBlack?.username === player
+        game?.playerWhite?._id?.equals(player?._id) ||
+        game?.playerBlack?._id?.equals(player?._id)
       ) {
         return res.status(200).json({ game });
       }
@@ -31,55 +39,40 @@ const joinGameController = {
       }
 
       // black player joins for the first time
+      const user = await User.findById(player?._id).select(
+        "-password -refreshToken",
+      );
+      const playerData = {
+        username: user?.username,
+        rating: user?.rating,
+      };
       if (game.playerWhite && !game.playerBlack) {
-        const playerBlack = await User.findOne({
-          username: player as string,
-        }).lean();
-
-        if (!playerBlack) {
-          return res.status(404).json({ error: "Player not found" });
-        }
-
-        game.playerBlack = {
-          username: player as string,
-          rating: playerBlack.rating,
+        game.playerBlack = user;
+        const newMessage = {
+          message: `${player?.username} joined as Black!`,
+          author: null,
         };
-        game.chat.push({
-          message: `${game.playerBlack.username} joined as Black!`,
-          author: null,
-        });
+        game.chat.push(newMessage);
+        game.whiteTimer.running = Date.now();
         await Game.findByIdAndUpdate(gameId, game);
-        io.emit(`player_connected${gameId}`, { playerBlack: game.playerBlack });
-        io.emit(`new_message${gameId}`, {
-          message: `${game.playerBlack.username} joined as Black!`,
-          author: null,
+        io.emit(`player_connected`, {
+          playerBlack: playerData,
+          timers: { white: game.whiteTimer, black: game.blackTimer },
         });
+        io.emit(`new_message`, newMessage);
       }
 
       // white player joins for the first time
       if (!game.playerWhite) {
-        const playerWhite = await User.findOne({
-          username: player as string,
-        }).lean();
-
-        if (!playerWhite) {
-          return res.status(404).json({ error: "Player not found" });
-        }
-
-        game.playerWhite = {
-          username: player as string,
-          rating: playerWhite.rating,
+        game.playerWhite = user;
+        const newMessage = {
+          message: `${player?.username} joined as White!`,
+          author: null,
         };
-        game.chat.push({
-          message: `${game.playerWhite.username} joined as White!`,
-          author: null,
-        });
+        game.chat.push(newMessage);
         await Game.findByIdAndUpdate(gameId, game);
-        io.emit(`player_connected${gameId}`, { playerWhite: game.playerWhite });
-        io.emit(`new_message${gameId}`, {
-          message: `${game.playerWhite.username} joined as White!`,
-          author: null,
-        });
+        io.emit("player_connected", { playerWhite: playerData });
+        io.emit(`new_message`, newMessage);
       }
 
       res.status(200).json({ game });

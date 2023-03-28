@@ -7,8 +7,10 @@ import games from "./routes/games";
 import credentials from "./middleware/credentials";
 import corsOptions from "./config/corsOptions";
 import cookieParser from "cookie-parser";
-import { Server } from "socket.io";
 import http from "http";
+import { initSocket } from "./socket";
+
+mongoose.set("strictQuery", false);
 
 const app: Application = express();
 
@@ -22,7 +24,7 @@ app.use("/games", games);
 
 const server = http.createServer(app);
 
-export const io = new Server(server, { cors: corsOptions });
+initSocket(server, app);
 
 mongoose
   .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {

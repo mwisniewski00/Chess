@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt, { Secret } from "jsonwebtoken";
-import User from "../../models/User";
+import { User } from "../../models/User";
 import getErrorMessage from "../../helpers/getErrorMessage";
 require("dotenv").config();
 
@@ -17,11 +17,15 @@ const refreshTokenController = {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET as Secret,
         (err: any, decoded: any) => {
-          if (err || user.username !== decoded.username) {
+          if (
+            err ||
+            !user._id.equals(decoded._id) ||
+            user.username !== decoded.username
+          ) {
             return res.sendStatus(403);
           }
           const accessToken = jwt.sign(
-            { username: decoded.username },
+            { username: decoded.username, _id: decoded._id },
             process.env.ACCESS_TOKEN_SECRET as Secret,
             { expiresIn: "15m" },
           );

@@ -1,8 +1,10 @@
 import IPlayer from "models/game/IPlayer";
+import { ITimers } from "types";
 
-interface IPlayerConnected {
+interface IPlayerConnectedData {
   playerWhite?: IPlayer;
   playerBlack?: IPlayer;
+  timers?: ITimers;
 }
 
-export default IPlayerConnected;
+export default IPlayerConnectedData;

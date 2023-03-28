@@ -1,17 +1,16 @@
-import { Response, Request } from "express";
+import { Response } from "express";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import Game, { IMessage } from "../../models/Game";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
-import { io } from "../../app";
 
 const chatController = {
   handleNewMessage: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const gameId = req.params.id;
-    const author = req.user;
+    const author = req.user?.username;
     const { message } = req.body;
 
     try {
-      io.emit(`new_message${gameId}`, { message, author });
+      req.app.io.of(`/game/${gameId}`).emit(`new_message`, { message, author });
 
       const game = await Game.findById(gameId).lean();
 

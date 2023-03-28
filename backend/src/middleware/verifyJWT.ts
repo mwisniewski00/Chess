@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { DecodedUser } from "../types";
 
 export interface IGetUserAuthInfoRequest extends Request {
-  user?: string;
+  user?: DecodedUser;
 }
 
 const verifyJWT = (
@@ -20,7 +21,7 @@ const verifyJWT = (
     process.env.ACCESS_TOKEN_SECRET as jwt.Secret,
     (err, decoded: any) => {
       if (err) return res.sendStatus(403); //invalid token
-      req.user = decoded.username;
+      req.user = decoded;
       next();
     },
   );
