@@ -6,7 +6,7 @@ import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 const chatController = {
   handleNewMessage: async (req: IGetUserAuthInfoRequest, res: Response) => {
     const gameId = req.params.id;
-    const author = req.user;
+    const author = req.user?.username;
     const { message } = req.body;
 
     try {

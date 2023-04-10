@@ -13,9 +13,14 @@ export const SocketContext = createContext<SocketContextType>({
 interface SocketProviderProps {
   children: React.ReactNode;
   path: String;
+  autoConnect?: boolean;
 }
 
-export const SocketProvider = ({ children, path }: SocketProviderProps) => {
+export const SocketProvider = ({
+  children,
+  path,
+  autoConnect = true,
+}: SocketProviderProps) => {
   const { auth } = useAuth();
   const socketClientUrl =
     (process.env.SOCKET_CLIENT_URL || "http://localhost:5000") + path;
@@ -26,6 +31,7 @@ export const SocketProvider = ({ children, path }: SocketProviderProps) => {
       extraHeaders: {
         Authorization: `Bearer ${auth?.token}`,
       },
+      autoConnect,
     };
     const socketClient = io(socketClientUrl, options);
     setSocket(socketClient);
@@ -33,7 +39,7 @@ export const SocketProvider = ({ children, path }: SocketProviderProps) => {
     return () => {
       socketClient.disconnect();
     };
-  }, [socketClientUrl, auth?.token]);
+  }, [socketClientUrl, auth?.token, autoConnect]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

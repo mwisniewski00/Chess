@@ -15,18 +15,7 @@ export function GameView() {
   });
 
   const makeMove = (from: string, to: string, promotion: string = "q") => {
-    sendMove(from, to, promotion).then(() => {
-      console.log(gameInstance.generateFen());
-      if (gameInstance.isDraw()) {
-        console.log(gameInstance.isDraw());
-      }
-      if (gameInstance.isCheck) {
-        console.log("check");
-      }
-      if (gameInstance.isCheckmate) {
-        console.log("checkmate");
-      }
-    });
+    sendMove(from, to, promotion);
   };
 
   const movePiece = (from: string, to: string) => {
