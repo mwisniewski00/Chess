@@ -4,6 +4,7 @@ import Chessboard from "./chess-board/Chessboard";
 import PlayerSection from "./player-section/PlayerSection";
 import { PromotionDialog } from "./dialogs/promotion-dialog/PromotionDialog";
 import { useGameContext } from "./GameProvider";
+import { PromotionPossibility } from "chess-easy";
 
 export function GameView() {
   const { game, sendMove, gameInstance } = useGameContext();
@@ -14,7 +15,11 @@ export function GameView() {
     to: "",
   });
 
-  const makeMove = (from: string, to: string, promotion: string = "q") => {
+  const makeMove = (
+    from: string,
+    to: string,
+    promotion: PromotionPossibility = PromotionPossibility.QUEEN,
+  ) => {
     sendMove(from, to, promotion);
   };
 
@@ -28,7 +33,7 @@ export function GameView() {
     }
   };
 
-  const onPromotionChoice = (piece: string) => {
+  const onPromotionChoice = (piece: PromotionPossibility) => {
     makeMove(promotionDialogState.from, promotionDialogState.to, piece);
     setPromotionDialogState({ open: false, from: "", to: "" });
   };

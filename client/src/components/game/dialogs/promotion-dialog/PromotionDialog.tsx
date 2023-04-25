@@ -2,10 +2,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import "./PromotionDialog.scss";
 import "../../../hero-page/hero-button/HeroButton.scss";
+import { PromotionPossibility } from "chess-easy";
 
 interface PromotionDialogProps {
   isOpen: boolean;
-  onPromotionChoice: (piece: string) => void;
+  onPromotionChoice: (piece: PromotionPossibility) => void;
 }
 
 export function PromotionDialog({
@@ -16,7 +17,7 @@ export function PromotionDialog({
     <Dialog
       PaperProps={{
         style: {
-          backgroundColor: "transparent",
+          backgroundColor: "rgb(25, 25, 25)",
           padding: 0,
           margin: 0,
         },
@@ -31,16 +32,32 @@ export function PromotionDialog({
           <h3>Choose promotion piece</h3>
           <div className="promotion__buttons">
             <div className="hero-button">
-              <button onClick={() => onPromotionChoice("q")}>Queen</button>
+              <button
+                onClick={() => onPromotionChoice(PromotionPossibility.QUEEN)}
+              >
+                Queen
+              </button>
             </div>
             <div className="hero-button">
-              <button onClick={() => onPromotionChoice("r")}>Rook</button>
+              <button
+                onClick={() => onPromotionChoice(PromotionPossibility.ROOK)}
+              >
+                Rook
+              </button>
             </div>
             <div className="hero-button">
-              <button onClick={() => onPromotionChoice("b")}>Bishop</button>
+              <button
+                onClick={() => onPromotionChoice(PromotionPossibility.BISHOP)}
+              >
+                Bishop
+              </button>
             </div>
             <div className="hero-button">
-              <button onClick={() => onPromotionChoice("k")}>Knight</button>
+              <button
+                onClick={() => onPromotionChoice(PromotionPossibility.KNIGHT)}
+              >
+                Knight
+              </button>
             </div>
           </div>
         </section>
