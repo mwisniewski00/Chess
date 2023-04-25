@@ -22,25 +22,45 @@ function Timer({ timer }: TimerProps) {
   const { isFinished } = useGameContext();
 
   useEffect(() => {
-    if (!timer.running) return;
     if (timeRemaining <= 0) {
       if (!isFinished) {
         socket?.emit("timer_end");
       }
       return;
     }
+  }, [socket, timeRemaining, isFinished]);
 
-    const intervalId = setInterval(() => {
-      setTimeRemaining(time => (time - 1000 < 0 ? 0 : time - 1000));
-    }, 1000);
+  useEffect(() => {
+    if (!timer.running) return;
+
+    const createInterval = () =>
+      setInterval(
+        () => setTimeRemaining(time => (time - 1000 < 0 ? 0 : time - 1000)),
+        1000,
+      );
+
+    let intervalId = createInterval();
+    let timestampBeforeTabHidden: number | null = null;
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        timestampBeforeTabHidden = Date.now();
+        clearInterval(intervalId);
+      } else if (timestampBeforeTabHidden) {
+        const passedTime = Date.now() - timestampBeforeTabHidden;
+        setTimeRemaining(prev => prev - passedTime);
+        timestampBeforeTabHidden = null;
+        intervalId = createInterval();
+      }
+    });
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [socket, timeRemaining, timer.running, isFinished]);
+  }, [timer.running]);
 
-  const minutes = Math.floor(timeRemaining / 60000);
-  const seconds = ((timeRemaining % 60000) / 1000).toFixed(0);
+  const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+  const seconds = Math.floor((timeRemaining / 1000) % 60);
 
   return (
     <div>
