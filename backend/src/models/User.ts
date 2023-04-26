@@ -10,6 +10,8 @@ interface IUser extends Document {
   registrationDate: Date;
   lastLoginDate: Date;
   rating: number;
+  ratingDeviation: number;
+  volatility: number;
 }
 
 const userSchema = new Schema<IUser>(
@@ -60,6 +62,14 @@ const userSchema = new Schema<IUser>(
     rating: {
       type: Number,
       default: 1500,
+    },
+    ratingDeviation: {
+      type: Number,
+      default: 350,
+    },
+    volatility: {
+      type: Number,
+      default: 0.06,
     },
   },
   { collection: "users" },

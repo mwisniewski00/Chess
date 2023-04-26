@@ -48,7 +48,7 @@ function Timer({ timer }: TimerProps) {
         clearInterval(intervalId);
       } else if (timestampBeforeTabHidden) {
         const passedTime = Date.now() - timestampBeforeTabHidden;
-        setTimeRemaining(prev => prev - passedTime);
+        setTimeRemaining(prev => (prev > 0 ? prev - passedTime : 0));
         timestampBeforeTabHidden = null;
         intervalId = createInterval();
       }
