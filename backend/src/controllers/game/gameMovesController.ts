@@ -44,16 +44,30 @@ const handleGameEnd = async (
   }
 
   const { player1Rating, player2Rating } = getGlickoRating(
-    { rating: player1.rating, rd: 300, vol: 0.06 },
-    { rating: player2.rating, rd: 300, vol: 0.06 },
+    {
+      rating: player1.rating,
+      rd: player1.ratingDeviation,
+      vol: player1.volatility,
+    },
+    {
+      rating: player2.rating,
+      rd: player2.ratingDeviation,
+      vol: player2.volatility,
+    },
     score,
   );
 
-  const player1RatingDiff = player1Rating - player1.rating;
-  const player2RatingDiff = player2Rating - player2.rating;
+  const player1RatingDiff =
+    Math.floor(player1Rating.getRating()) - Math.floor(player1.rating);
+  const player2RatingDiff =
+    Math.floor(player2Rating.getRating()) - Math.floor(player2.rating);
 
-  player1.rating = player1Rating as number;
-  player2.rating = player2Rating as number;
+  player1.rating = player1Rating.getRating();
+  player1.ratingDeviation = player1Rating.getRd();
+  player1.volatility = player1Rating.getVol();
+  player2.rating = player2Rating.getRating();
+  player2.ratingDeviation = player2Rating.getRd();
+  player2.volatility = player2Rating.getVol();
 
   await player1.save();
   await player2.save();
