@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { ITimer } from "types";
 import useSocketClient from "hooks/useSocketClient";
 import { useGameContext } from "./GameProvider";
@@ -8,16 +8,15 @@ interface TimerProps {
 }
 
 function Timer({ timer }: TimerProps) {
-  const calculatedTimerRemaining = useMemo(
-    () =>
-      timer.running
-        ? timer.timeLeft - (Date.now() - timer.running)
-        : timer.timeLeft,
-    [timer.running, timer.timeLeft],
-  );
-  const [timeRemaining, setTimeRemaining] = useState(
-    calculatedTimerRemaining < 0 ? 0 : calculatedTimerRemaining,
-  );
+  const calculateTimeRemaining = (timer: ITimer) => {
+    const remainingTime = timer.running
+      ? timer.timeLeft - (Date.now() - timer.running)
+      : timer.timeLeft;
+    return remainingTime < 0 ? 0 : remainingTime;
+  };
+
+  const [timeRemaining, setTimeRemaining] = useState(0);
+
   const { socket } = useSocketClient();
   const { isFinished } = useGameContext();
 
@@ -31,6 +30,7 @@ function Timer({ timer }: TimerProps) {
   }, [socket, timeRemaining, isFinished]);
 
   useEffect(() => {
+    setTimeRemaining(calculateTimeRemaining(timer));
     if (!timer.running) return;
 
     const createInterval = () =>
@@ -42,7 +42,7 @@ function Timer({ timer }: TimerProps) {
     let intervalId = createInterval();
     let timestampBeforeTabHidden: number | null = null;
 
-    document.addEventListener("visibilitychange", () => {
+    const listener = () => {
       if (document.hidden) {
         timestampBeforeTabHidden = Date.now();
         clearInterval(intervalId);
@@ -52,12 +52,15 @@ function Timer({ timer }: TimerProps) {
         timestampBeforeTabHidden = null;
         intervalId = createInterval();
       }
-    });
+    };
+
+    document.addEventListener("visibilitychange", listener);
 
     return () => {
       clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", listener);
     };
-  }, [timer.running]);
+  }, [timer]);
 
   const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
   const seconds = Math.floor((timeRemaining / 1000) % 60);

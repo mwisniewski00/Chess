@@ -2,10 +2,11 @@ import { Game } from "chess-easy";
 import GameModel, { GameType, Timer } from "../../models/Game";
 import { HydratedDocument } from "mongoose";
 import { IGame } from "../../models/Game";
-import { User } from "../../models/User";
+import { IUser, User } from "../../models/User";
 import getGlickoRating, { Score } from "../../helpers/getGlickoRating";
 import getErrorMessage from "../../helpers/getErrorMessage";
 import { Namespace, Server } from "socket.io";
+import { Player } from "chessrating";
 
 interface GameMoveMessage {
   from: string;
@@ -21,6 +22,19 @@ const getWinnerUsername = (game: Game, gameModel: HydratedDocument<IGame>) => {
   return loserColor === "white"
     ? gameModel.playerBlack.username
     : gameModel.playerWhite.username;
+};
+
+const getRatingDifference = (updatedRating: Player, savedPlayerData: IUser) =>
+  Math.floor(updatedRating.rating) - Math.floor(savedPlayerData.rating);
+
+const updateRatingFields = async (
+  updatedRating: Player,
+  savedPlayerData: IUser,
+) => {
+  savedPlayerData.rating = updatedRating.rating;
+  savedPlayerData.ratingDeviation = updatedRating.ratingDeviation;
+  savedPlayerData.volatility = updatedRating.volatility;
+  await savedPlayerData.save();
 };
 
 const handleGameEnd = async (
@@ -44,33 +58,16 @@ const handleGameEnd = async (
   }
 
   const { player1Rating, player2Rating } = getGlickoRating(
-    {
-      rating: player1.rating,
-      rd: player1.ratingDeviation,
-      vol: player1.volatility,
-    },
-    {
-      rating: player2.rating,
-      rd: player2.ratingDeviation,
-      vol: player2.volatility,
-    },
+    player1,
+    player2,
     score,
   );
 
-  const player1RatingDiff =
-    Math.floor(player1Rating.getRating()) - Math.floor(player1.rating);
-  const player2RatingDiff =
-    Math.floor(player2Rating.getRating()) - Math.floor(player2.rating);
+  const player1RatingDiff = getRatingDifference(player1Rating, player1);
+  const player2RatingDiff = getRatingDifference(player2Rating, player2);
 
-  player1.rating = player1Rating.getRating();
-  player1.ratingDeviation = player1Rating.getRd();
-  player1.volatility = player1Rating.getVol();
-  player2.rating = player2Rating.getRating();
-  player2.ratingDeviation = player2Rating.getRd();
-  player2.volatility = player2Rating.getVol();
-
-  await player1.save();
-  await player2.save();
+  updateRatingFields(player1Rating, player1);
+  updateRatingFields(player2Rating, player2);
 
   gameModel.isFinished = true;
 

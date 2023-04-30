@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./User";
 
-const TEN_MINUTES = 10 * 60 * 1000;
+const TEN_MINUTES = 60 * 1000;
 
 export interface IMessage {
   author: string | null;
