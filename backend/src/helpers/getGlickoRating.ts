@@ -1,20 +1,19 @@
 import { Glicko2, Player } from "chessrating";
+import { IUser } from "../models/User";
 
 export type Score = 0.5 | 1;
 
-interface IGlickoPlayer {
-  rating: number;
-  rd: number;
-  vol: number;
-}
-
-const getGlickoRating = (
-  player: IGlickoPlayer,
-  opponent: IGlickoPlayer,
-  score: Score,
-) => {
-  const player1 = new Player(player.rating, player.rd, player.vol);
-  const player2 = new Player(opponent.rating, opponent.rd, opponent.vol);
+const getGlickoRating = (player: IUser, opponent: IUser, score: Score) => {
+  const player1 = new Player(
+    player.rating,
+    player.ratingDeviation,
+    player.volatility,
+  );
+  const player2 = new Player(
+    opponent.rating,
+    opponent.ratingDeviation,
+    opponent.volatility,
+  );
 
   Glicko2.executeMatch(player1, player2, score);
 
