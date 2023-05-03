@@ -12,6 +12,7 @@ interface IUser extends Document {
   rating: number;
   ratingDeviation: number;
   volatility: number;
+  lastGameTimestamp: number;
 }
 
 const userSchema = new Schema<IUser>(
@@ -70,6 +71,9 @@ const userSchema = new Schema<IUser>(
     volatility: {
       type: Number,
       default: 0.06,
+    },
+    lastGameTimestamp: {
+      type: Number,
     },
   },
   { collection: "users" },
