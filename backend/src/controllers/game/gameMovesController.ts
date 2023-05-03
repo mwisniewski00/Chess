@@ -34,6 +34,7 @@ const updateRatingFields = async (
   savedPlayerData.rating = updatedRating.rating;
   savedPlayerData.ratingDeviation = updatedRating.ratingDeviation;
   savedPlayerData.volatility = updatedRating.volatility;
+  savedPlayerData.lastGameTimestamp = Date.now();
   await savedPlayerData.save();
 };
 
