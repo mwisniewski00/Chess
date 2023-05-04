@@ -69,7 +69,10 @@ const GameOverDialog: React.FC<GameOverDialogProps> = ({
               </div>
               <div className="end-game__ranking">
                 <div className="ranking-new">
-                  {(localPlayer.rating + playerGameStatus.ratingDiff) as number}
+                  {
+                    (Math.floor(localPlayer.rating) +
+                      playerGameStatus.ratingDiff) as number
+                  }
                 </div>
                 {playerGameStatus.ratingDiff > 0 && (
                   <div className="ranking-diff up">
