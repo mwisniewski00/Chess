@@ -37,6 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     lobby: "not-selected",
     game: "not-selected",
     profile: "not-selected",
+    ranking: "not-selected",
   });
 
   const location = useLocation();
@@ -78,9 +79,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
         {auth.username && (
           <NavLink
-            link="/game"
-            text="Game"
-            selected={selectedLinks.game === "selected"}
+            link="/ranking"
+            text="Ranking"
+            selected={selectedLinks.ranking === "selected"}
             setIsBurgerMenuOpen={setIsBurgerMenuOpen}
           />
         )}

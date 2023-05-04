@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { HeroPage } from "./components/hero-page/HeroPage";
 import { Lobby } from "./components/lobby/Lobby";
 import Game from "components/game/Game";
+import RankingContainer from "components/ranking/RankingContainer";
 
 export const Routing: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ export const Routing: React.FC = () => {
           <Route path="/lobby" element={<Lobby />} />
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/:id" element={<Game />} />
+          <Route path="/ranking" element={<RankingContainer />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/home" replace />} />
