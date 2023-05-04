@@ -6,6 +6,7 @@ import refreshTokenController from "../controllers/user/refreshTokenController";
 import registerController from "../controllers/user/registerController";
 import usersController from "../controllers/user/usersController";
 import validationController from "../controllers/user/validationController";
+import usersRankingController from "../controllers/user/usersRankingController";
 
 const router = express.Router();
 
@@ -25,6 +26,8 @@ router.post("/register", registerController.handleRegister);
 
 router.get("/profile/:username", usersController.getUser);
 
-router.put("/profile", verifyJWT, usersController.editUser)
+router.put("/profile", verifyJWT, usersController.editUser);
+
+router.get("/ranking", verifyJWT, usersRankingController.getRankingData);
 
 export default router;

@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { User } from "../../models/User";
 import { IGetUserAuthInfoRequest } from "../../middleware/verifyJWT";
 import getErrorMessage from "../../helpers/getErrorMessage";
+import { RequestWithVerifiedUser } from "../../types";
 require("dotenv").config();
 
 const usersController = {
@@ -29,12 +30,12 @@ const usersController = {
     }
   },
 
-  editUser: async (req: IGetUserAuthInfoRequest, res: Response) => {
-    const username = req.user;
+  editUser: async (req: Request, res: Response) => {
+    const request = req as RequestWithVerifiedUser;
     try {
       const userToUpdate = req.body;
       const user = await User.findOneAndUpdate(
-        { username },
+        { _id: request.user._id },
         { ...userToUpdate },
         { returnNewDocument: true },
       );
