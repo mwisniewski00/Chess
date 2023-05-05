@@ -27,7 +27,7 @@ const server = http.createServer(app);
 initSocket(server, app);
 
 mongoose
-  .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
+  .connect(process.env.MONGO_URL || `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as ConnectOptions)
