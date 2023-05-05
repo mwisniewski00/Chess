@@ -1,4 +1,4 @@
-import { Game } from "chess-easy";
+import { Game as GameInstance, PromotionPossibility } from "chess-easy";
 import GameModel, { GameType, Timer } from "../../models/Game";
 import { HydratedDocument } from "mongoose";
 import { IGame } from "../../models/Game";
@@ -11,13 +11,13 @@ import { Player } from "chessrating";
 interface GameMoveMessage {
   from: string;
   to: string;
-  promotion: string;
+  promotion: PromotionPossibility;
 }
 
 const capitalizeFirstLetter = (word: String) =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
-const getWinnerUsername = (game: Game, gameModel: HydratedDocument<IGame>) => {
+const getWinnerUsername = (game: GameInstance, gameModel: HydratedDocument<IGame>) => {
   const loserColor = game.getNextColor();
   return loserColor === "white"
     ? gameModel.playerBlack.username
@@ -40,7 +40,7 @@ const updateRatingFields = async (
 
 const handleGameEnd = async (
   gameModel: HydratedDocument<IGame>,
-  game: Game,
+  game: GameInstance,
   score: Score,
   io: Namespace,
 ) => {
@@ -101,7 +101,7 @@ const sendMessage = async (
 
 const handleGameStateMessage = async (
   gameModel: HydratedDocument<IGame>,
-  game: Game,
+  game: GameInstance,
   io: Namespace,
 ) => {
   let message = "";
@@ -140,7 +140,7 @@ const updateTimers = (currentPlayerTimer: Timer, opponentTimer: Timer) => {
 
 const handleGameMove = async (
   gameModel: HydratedDocument<IGame>,
-  game: Game,
+  game: GameInstance,
   io: Namespace,
   message: GameMoveMessage,
 ) => {
@@ -164,7 +164,7 @@ const handleGameMove = async (
 const handleGameWithTimer = async (
   userId: string,
   gameModel: HydratedDocument<IGame>,
-  game: Game,
+  game: GameInstance,
   io: Namespace,
   message?: GameMoveMessage,
 ) => {
@@ -199,7 +199,7 @@ const gameMovesController = {
       if (!gameModel) {
         return;
       }
-      const game = new Game(gameModel.fen);
+      const game = new GameInstance(gameModel.fen);
       if (gameModel.type === GameType.WITH_TIMER) {
         await handleGameWithTimer(userId, gameModel, game, socket, message);
       } else if (message) {
