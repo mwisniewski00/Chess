@@ -23,7 +23,7 @@ export const SocketProvider = ({
 }: SocketProviderProps) => {
   const { auth } = useAuth();
   const socketClientUrl =
-    (process.env.SOCKET_CLIENT_URL || "http://localhost:5000") + path;
+    (process.env.REACT_APP_SOCKET_URL || "http://localhost:5000") + path;
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
