@@ -13,13 +13,19 @@ const usersRankingController = {
     if (!user) {
       throw Error("Logged in user not found");
     }
-    const usersWithHigherRating = await User.countDocuments({
-      rating: { $lt: user?.rating },
-    });
+    const usersWithHigherRating =
+      user.ratingDeviation <= 100
+        ? await User.countDocuments({
+            rating: { $lt: user?.rating },
+            ratingDeviation: { $lte: 100 },
+          })
+        : null;
+    const position =
+      usersWithHigherRating !== null ? usersWithHigherRating + 1 : null;
     res.send({
       users: topUsers,
       currentUser: {
-        position: usersWithHigherRating + 1,
+        position,
         avatarUrl: user.avatarUrl,
         username: user.username,
       },

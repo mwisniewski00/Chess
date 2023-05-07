@@ -18,7 +18,7 @@ interface RankingServerResponse {
 
 export interface CurrentUserRankingData {
   avatarUrl?: string;
-  position: number;
+  position: number | null;
   username: string;
 }
 
