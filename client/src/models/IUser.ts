@@ -4,7 +4,8 @@ interface IUser {
     description: string;
     avatarUrl: string;
     registrationDate: string;
-    lastLoginDate: string
+    lastLoginDate: string;
+    rating?: number;
 }
 
 export default IUser;
