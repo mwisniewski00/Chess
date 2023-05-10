@@ -25,8 +25,14 @@ app.use("/games", games);
 const server = http.createServer(app);
 
 initSocket(server, app);
+
+const mongoConnectionString =
+  process.env.NODE_ENV === "production"
+    ? `mongodb+srv://${dbConfig.user}:${dbConfig.password}@chess.opemt6o.mongodb.net/?retryWrites=true&w=majority`
+    : `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`;
+
 mongoose
-  .connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@chess.opemt6o.mongodb.net/?retryWrites=true&w=majority` || `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
+  .connect(mongoConnectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as ConnectOptions)
