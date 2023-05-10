@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
                   <tr>
                     <td>{calculateTime(user.lastLoginDate)}</td>
                     <td>{calculateTime(user.registrationDate)}</td>
-                    <td>0</td>
+                    <td>{user.rating || "unknown"}</td>
                   </tr>
                 </tbody>
               </table>

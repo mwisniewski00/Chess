@@ -39,7 +39,7 @@ const usersController = {
         { ...userToUpdate },
         { returnNewDocument: true },
       );
-      const { password, refreshToken, _id, ...userWithoutPassword } =
+      const { password, refreshToken, _id, ratingDeviation, volatility,  ...userWithoutPassword } =
         JSON.parse(JSON.stringify(user));
       res.json(userWithoutPassword);
     } catch (error) {
