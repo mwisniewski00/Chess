@@ -12,16 +12,6 @@ const registerController = {
     try {
       const hashedPassword = await bcrypt.hash(password, 15);
 
-      const accessToken = jwt.sign(
-        { username: username },
-        process.env.ACCESS_TOKEN_SECRET as Secret,
-        { expiresIn: "15m" },
-      );
-      const refreshToken = jwt.sign(
-        { username: username },
-        process.env.REFRESH_TOKEN_SECRET as Secret,
-        { expiresIn: "7d" },
-      );
       const registrationDate = new Date();
       const lastLoginDate = registrationDate;
 
@@ -29,15 +19,29 @@ const registerController = {
         username,
         email,
         password: hashedPassword,
-        refreshToken,
         registrationDate,
         lastLoginDate,
       });
 
+      const accessToken = jwt.sign(
+        { username: username, _id: user._id },
+        process.env.ACCESS_TOKEN_SECRET as Secret,
+        { expiresIn: "15m" },
+      );
+      const refreshToken = jwt.sign(
+        { username: username, _id: user._id },
+        process.env.REFRESH_TOKEN_SECRET as Secret,
+        { expiresIn: "7d" },
+      );
+
+      user.refreshToken = refreshToken;
+      await user.save();
+
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
         sameSite: "none",
-        secure: true,
+        // Uncomment when ssl is done
+        // secure: true,
         maxAge: 24 * 60 * 60 * 1000 * 7,
       });
 

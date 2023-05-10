@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
       }
     }
     getUser();
-  });
+  }, [navigate, username]);
 
   function descriptionEdit() {
     if (username === loggedInUser) {
@@ -192,7 +192,7 @@ const Profile: React.FC = () => {
         setIsOpen={setIsOpenDescription}
         userData={user}
       />
-      
+
       <EditAvatarUrlModal
         isOpen={isOpenAvatar}
         setIsOpen={setIsOpenAvatar}

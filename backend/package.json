@@ -24,7 +24,7 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/lodash": "^4.14.191",
     "bcryptjs": "^2.4.3",
-    "chess-easy": "^1.0.1",
+    "chess-easy": "^1.0.3",
     "chessrating": "^1.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

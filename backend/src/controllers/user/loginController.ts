@@ -37,7 +37,8 @@ const loginController = {
         res.cookie("jwt", refreshToken, {
           httpOnly: true,
           sameSite: "none",
-          secure: true,
+          // Uncomment when ssl is done
+          // secure: true,
           maxAge: 24 * 60 * 60 * 1000 * 7,
         });
 

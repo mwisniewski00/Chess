@@ -64,7 +64,9 @@ export default function Ranking({
               src={currentUser.avatarUrl || FALLBACK_AVATAR}
             />
             <div>
-              Your position: <strong>{currentUser.position}</strong>
+              {currentUser.position
+                ? `Your position: ${currentUser.position}`
+                : "You have to play more games to be ranked"}
             </div>
           </Box>
           <TableContainer
