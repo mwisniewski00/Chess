@@ -1,8 +1,8 @@
 @import "variables.scss";
 
 :root {
-  --chessfield-light: #e9ecef;
-  --chessfield-dark: #6c757d;
+  --chessfield-color-first: #e9ecef;
+  --chessfield-color-second: #6c757d;
   --chessfield-highlighted: #76520e;
 }
 
@@ -36,7 +36,7 @@
 .chessfield {
   width: calc(100% / 8);
   height: 100%;
-  background-color: var(--chessfield-light);
+  background-color: var(--chessfield-color-first);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,14 +50,14 @@
 .chessfield.highlighted {
   background: linear-gradient(
     to right,
-    var(--chessfield-light) 0%,
+    var(--chessfield-color-first) 0%,
     $main-theme-color 100%
   );
 }
 
 #chessboard > div:nth-child(2n) > .chessfield:nth-child(2n).chessfield,
 #chessboard > div:nth-child(2n + 1) > .chessfield:nth-child(2n + 1).chessfield {
-  background-color: var(--chessfield-dark);
+  background-color: var(--chessfield-color-second);
 }
 
 #chessboard
@@ -68,7 +68,7 @@
   > .chessfield:nth-child(2n + 1).chessfield.highlighted {
   background: linear-gradient(
     to right,
-    var(--chessfield-dark) 0%,
+    var(--chessfield-color-second) 0%,
     $main-theme-color 100%
   );
 }

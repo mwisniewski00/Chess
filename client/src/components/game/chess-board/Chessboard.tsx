@@ -1,5 +1,5 @@
 import "./Chessboard.scss";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { GameStateObject, PossibleMoves } from "chess-easy";
 import Chesspiece from "./chesspieces/Chesspiece";
 import { useGameContext } from "../GameProvider";
@@ -9,6 +9,9 @@ interface ChessboardProps {
   movePiece: (from: string, to: string) => void;
   possibleMoves: PossibleMoves | null;
 }
+
+const LIGHT_COLOR = "#e9ecef";
+const DARK_COLOR = "#6c757d";
 
 export default function Chessboard({
   gameState,
@@ -69,6 +72,18 @@ export default function Chessboard({
       setSelectedPiece(null);
     }
   };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--chessfield-color-first",
+      game.color === "white" ? LIGHT_COLOR : DARK_COLOR,
+    );
+    root.style.setProperty(
+      "--chessfield-color-second",
+      game.color === "white" ? DARK_COLOR : LIGHT_COLOR,
+    );
+  }, [game.color]);
 
   return (
     <div id="chessboard">
