@@ -7,8 +7,9 @@ import games from "./routes/games";
 import credentials from "./middleware/credentials";
 import corsOptions from "./config/corsOptions";
 import cookieParser from "cookie-parser";
-import http from "http";
+import https from "https";
 import { initSocket } from "./socket";
+import sslOptions from "./config/sslOptions";
 
 mongoose.set("strictQuery", false);
 
@@ -22,7 +23,7 @@ app.use(express.json());
 app.use("/users", users);
 app.use("/games", games);
 
-const server = http.createServer(app);
+const server = https.createServer(sslOptions, app);
 
 initSocket(server, app);
 
@@ -39,6 +40,9 @@ mongoose
   .then(response => {
     console.log(
       `Connected to MongoDB. Database name: "${response.connections[0].name}"`,
+      process.env.NODE_ENV === "production"
+        ? console.log("Connected to MongoDB Atlas")
+        : console.log("Connected to local instance of MongoDB")
     );
     const port = process.env.PORT || 5000;
     server.listen(port, () => {
