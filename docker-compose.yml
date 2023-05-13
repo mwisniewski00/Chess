@@ -19,11 +19,6 @@ services:
       CLIENT_URL: "https://nginx/"
       PORT: 5000
       NODE_ENV: "production"
-      PATH_TO_KEY: "/etc/ssl/private/backend.key"
-      PATH_TO_CERT: "/etc/ssl/public/backend.crt"
-    volumes:
-      - ./backend/ssl/backend.key:/etc/ssl/private/backend.key
-      - ./backend/ssl/backend.crt:/etc/ssl/public/backend.crt
 
   nginx:
     restart: always
