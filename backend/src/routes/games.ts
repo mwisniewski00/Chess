@@ -3,19 +3,27 @@ import chatController from "../controllers/game/chatController";
 import createGameController from "../controllers/game/createGameController";
 import gamesController from "../controllers/game/gamesController";
 import joinGameController from "../controllers/game/joinGameController";
-import gameMovesController from "../controllers/game/gameMovesController";
 import verifyJWT from "../middleware/verifyJWT";
+import catchAsync from "../helpers/catchAsync";
 
 const router = express.Router();
 
-router.get("/", verifyJWT, gamesController.handleGetGames);
+router.get("/", verifyJWT, catchAsync(gamesController.handleGetGames));
 
-router.get("/:id", verifyJWT, gamesController.handleGetGameById);
+router.get("/:id", verifyJWT, catchAsync(gamesController.handleGetGameById));
 
-router.post("/", verifyJWT, createGameController.handleCreateGame);
+router.post("/", verifyJWT, catchAsync(createGameController.handleCreateGame));
 
-router.put("/join/:id", verifyJWT, joinGameController.handleJoinGame);
+router.put(
+  "/join/:id",
+  verifyJWT,
+  catchAsync(joinGameController.handleJoinGame),
+);
 
-router.post("/:id/message", verifyJWT, chatController.handleNewMessage);
+router.post(
+  "/:id/message",
+  verifyJWT,
+  catchAsync(chatController.handleNewMessage),
+);
 
 export default router;
