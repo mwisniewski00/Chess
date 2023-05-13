@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import dbConfig from "./config/dbConn";
@@ -9,6 +9,8 @@ import corsOptions from "./config/corsOptions";
 import cookieParser from "cookie-parser";
 import http from "http";
 import { initSocket } from "./socket";
+import ExpressError from "./helpers/ExpressError";
+import getErrorMessage from "./helpers/getErrorMessage";
 
 mongoose.set("strictQuery", false);
 
@@ -21,6 +23,20 @@ app.use(express.json());
 
 app.use("/users", users);
 app.use("/games", games);
+
+app.all("*", (_req: Request, res: Response) =>
+  res.status(404).send({ error: "Route not found" }),
+);
+
+app.use(
+  (error: ExpressError, _req: Request, res: Response, next: NextFunction) => {
+    const { statusCode = 500, message } = error;
+    console.error(getErrorMessage(error));
+    res
+      .status(statusCode)
+      .send({ error: message || "Oh no, something went wrong!" });
+  },
+);
 
 const server = http.createServer(app);
 

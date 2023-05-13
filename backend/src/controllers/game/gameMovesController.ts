@@ -4,9 +4,9 @@ import { HydratedDocument } from "mongoose";
 import { IGame } from "../../models/Game";
 import { IUser, User } from "../../models/User";
 import getGlickoRating, { Score } from "../../helpers/getGlickoRating";
-import getErrorMessage from "../../helpers/getErrorMessage";
 import { Namespace, Server } from "socket.io";
 import { Player } from "chessrating";
+import ExpressError from "../../helpers/ExpressError";
 
 interface GameMoveMessage {
   from: string;
@@ -17,7 +17,10 @@ interface GameMoveMessage {
 const capitalizeFirstLetter = (word: String) =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
-const getWinnerUsername = (game: GameInstance, gameModel: HydratedDocument<IGame>) => {
+const getWinnerUsername = (
+  game: GameInstance,
+  gameModel: HydratedDocument<IGame>,
+) => {
   const loserColor = game.getNextColor();
   return loserColor === "white"
     ? gameModel.playerBlack.username
@@ -55,7 +58,7 @@ const handleGameEnd = async (
   const player2 = await User.findOne({ username: player2Username });
 
   if (!player1 || !player2) {
-    throw new Error("User not found");
+    throw new ExpressError("User not found", 404);
   }
 
   const { player1Rating, player2Rating } = getGlickoRating(
@@ -191,22 +194,18 @@ const gameMovesController = {
     userId: string,
     message?: GameMoveMessage,
   ) => {
-    try {
-      const gameModel = await GameModel.findById(gameId)
-        .populate("playerWhite")
-        .populate("playerBlack");
-      const socket = io.of(`/game/${gameId}`);
-      if (!gameModel) {
-        return;
-      }
-      const game = new GameInstance(gameModel.fen);
-      if (gameModel.type === GameType.WITH_TIMER) {
-        await handleGameWithTimer(userId, gameModel, game, socket, message);
-      } else if (message) {
-        await handleGameMove(gameModel, game, socket, message);
-      }
-    } catch (error) {
-      console.log(getErrorMessage(error));
+    const gameModel = await GameModel.findById(gameId)
+      .populate("playerWhite")
+      .populate("playerBlack");
+    const socket = io.of(`/game/${gameId}`);
+    if (!gameModel) {
+      return;
+    }
+    const game = new GameInstance(gameModel.fen);
+    if (gameModel.type === GameType.WITH_TIMER) {
+      await handleGameWithTimer(userId, gameModel, game, socket, message);
+    } else if (message) {
+      await handleGameMove(gameModel, game, socket, message);
     }
   },
 };
