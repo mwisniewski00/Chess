@@ -1,6 +1,7 @@
-import { User } from "../../models/User";
+import { IUser, User } from "../../models/User";
 import { Response, Request } from "express";
 import { RequestWithVerifiedUser } from "../../types";
+import ExpressError from "../../helpers/ExpressError";
 
 const usersRankingController = {
   getRankingData: async (req: Request, res: Response) => {
@@ -11,7 +12,7 @@ const usersRankingController = {
       .select("username rating avatarUrl");
     const user = await User.findById(reqWithUser.user._id);
     if (!user) {
-      throw Error("Logged in user not found");
+      throw new ExpressError("Logged in user not found", 404);
     }
     const usersWithHigherRating =
       user.ratingDeviation <= 100
