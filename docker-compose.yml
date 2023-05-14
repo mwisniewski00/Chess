@@ -27,8 +27,20 @@ services:
       - "4433:4433"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/ssl/nginx.key:/etc/ssl/private/nginx.key
-      - ./nginx/ssl/nginx.crt:/etc/ssl/certs/nginx.crt
+      - ./certbot/conf/:/etc/nginx/ssl/
+      - ./certbot/data:/usr/share/nginx/letsencrypt
     depends_on:
       - client
       - backend
+
+  certbot:
+    image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/usr/share/nginx/letsencrypt --email patryk31415@gmail.com --agree-tos --no-eff-email -d azalurg.ddns.net
+    volumes:
+      - ./certbot/conf/:/etc/letsencrypt
+      - ./certbot/logs/:/var/log/letsencrypt
+      - ./certbot/data:/usr/share/nginx/letsencrypt
+   
+   
+
+
