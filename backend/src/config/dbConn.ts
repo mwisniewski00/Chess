@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 interface IConfig {
     host: string;
     port: number | string;

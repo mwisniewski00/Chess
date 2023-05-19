@@ -7,7 +7,6 @@ require("dotenv").config();
 const loginController = {
   handleLogin: async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email }).lean();
 
     if (!user) {

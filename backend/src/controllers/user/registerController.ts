@@ -39,9 +39,8 @@ const registerController = {
 
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
-        // Uncomment when ssl is done
-        // sameSite: "none",
-        // secure: true,
+        sameSite: "none",
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000 * 7,
       });
 
