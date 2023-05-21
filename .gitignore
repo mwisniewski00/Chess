@@ -1,0 +1,7 @@
+docker-compose.yaml
+.env
+
+# ssl
+*.pem
+*.key
+*.crt

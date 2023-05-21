@@ -1,7 +1,10 @@
 node_modules
 build
 
-.env
 package-lock.json
 yarn.lock
 npm-debug.log*
+
+*.pem
+*.key
+*.crt

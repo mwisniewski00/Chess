@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
       }
     }
     getUser();
-  });
+  }, [navigate, username]);
 
   function descriptionEdit() {
     if (username === loggedInUser) {
@@ -156,7 +156,7 @@ const Profile: React.FC = () => {
                   <tr>
                     <td>{calculateTime(user.lastLoginDate)}</td>
                     <td>{calculateTime(user.registrationDate)}</td>
-                    <td>0</td>
+                    <td>{Math.floor(user.rating)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -192,7 +192,7 @@ const Profile: React.FC = () => {
         setIsOpen={setIsOpenDescription}
         userData={user}
       />
-      
+
       <EditAvatarUrlModal
         isOpen={isOpenAvatar}
         setIsOpen={setIsOpenAvatar}

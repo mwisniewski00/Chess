@@ -15,7 +15,9 @@ const PlayerWindow: React.FC<PlayerWindowProps> = ({ player, timer }) => {
       <img src={defaultAvatar} alt="player_avatar"></img>
       <div className="player-window__info">
         <div className="player-window__name">{player.username}</div>
-        <div className="player-window__rating">({player.rating})</div>
+        <div className="player-window__rating">
+          ({Math.floor(player.rating)})
+        </div>
         {timer ? <Timer timer={timer} /> : null}
       </div>
     </div>

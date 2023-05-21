@@ -11,7 +11,7 @@ import {
 import IGame from "models/game/IGame";
 import useSocketClient from "hooks/useSocketClient";
 import IPlayerConnectedData from "models/websocket/IPlayerConnected";
-import { Game as GameInstance } from "chess-easy";
+import { Game as GameInstance, PromotionPossibility } from "chess-easy";
 import IChatMessage from "models/websocket/IChatMessage";
 import { ITimers } from "types";
 
@@ -21,7 +21,11 @@ interface GameProviderContext {
   players: IPlayerConnectedData;
   chat: IChatMessage[];
   setChat: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
-  sendMove: (from: string, to: string, promotion?: string) => Promise<void>;
+  sendMove: (
+    from: string,
+    to: string,
+    promotion?: PromotionPossibility,
+  ) => Promise<void>;
   gameInstance: GameInstance;
   isFinished: boolean;
   setIsFinished: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,7 +39,7 @@ interface GameContextProviderProps {
 interface Move {
   from: string;
   to: string;
-  promotion: string;
+  promotion: PromotionPossibility;
 }
 
 interface MoveMessage extends Move {
@@ -83,7 +87,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
           setIsFinished(isFinished);
           setChat(chat);
           setPlayers({ playerBlack, playerWhite });
-          const gameInstance = new GameInstance(...(fen ? [fen] : []));
+          const gameInstance = new GameInstance(fen || []);
           setGameInstance(gameInstance);
           setGame({
             ...rest,
@@ -174,7 +178,7 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
   const sendMove = async (
     from: string,
     to: string,
-    promotion: string = "q",
+    promotion: string = PromotionPossibility.QUEEN,
   ) => {
     try {
       if (!isFinished) {
