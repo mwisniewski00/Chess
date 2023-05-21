@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./User";
 
-const TEN_MINUTES = 10 * 60 * 1000;
-
 export interface IMessage {
   author: string | null;
   message: string;
@@ -22,11 +20,14 @@ export interface IGame {
   _id: string;
   playerWhite: IUser["_id"];
   playerBlack: IUser["_id"];
+  author: string;
+  winner: string | null;
+  timed: boolean;
   chat: IMessage[];
   fen: string;
   type: GameType;
-  whiteTimer: Timer;
-  blackTimer: Timer;
+  whiteTimer: Timer | null;
+  blackTimer: Timer | null;
   isFinished: Boolean;
 }
 
@@ -41,6 +42,17 @@ const gameSchema = new Schema<IGame>({
   playerBlack: {
     type: Schema.Types.ObjectId,
     ref: "User",
+  },
+  author: {
+    type: String,
+  },
+  winner: {
+    type: String,
+    default: null,
+  },
+  timed: {
+    type: Boolean,
+    default: false,
   },
   chat: [
     {
@@ -58,16 +70,10 @@ const gameSchema = new Schema<IGame>({
     enum: ["classic", "with_timer"],
   },
   whiteTimer: {
-    type: Object,
-    default: {
-      timeLeft: TEN_MINUTES,
-    },
+    type: Object || null,
   },
   blackTimer: {
-    type: Object,
-    default: {
-      timeLeft: TEN_MINUTES,
-    },
+    type: Object || null,
   },
   isFinished: {
     type: Boolean,

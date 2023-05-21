@@ -49,7 +49,6 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         });
       }, 2000);
     } catch (error) {
-      console.error(error);
       setMessage({ ...message, rejected: "Something went wrong..." });
       setStatus("rejected");
     }

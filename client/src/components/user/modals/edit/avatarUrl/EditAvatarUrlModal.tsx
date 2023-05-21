@@ -14,12 +14,9 @@ export const EditAvatarUrlModal = ({ isOpen, setIsOpen, userData }) => {
   };
 
   const handleSubmit = async (user: IUser) => {
-    try {
-      await axiosPrivate.put("/users/profile", user);
+    await axiosPrivate.put("/users/profile", user).then(() => {
       handleClose();
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   return (

@@ -44,10 +44,13 @@ export const HeroPage: React.FC = () => {
   return (
     <div ref={scope} className="hero-page">
       <div className="main-content">
-        <div className="hero-text">Lorem Ipsum Dolor Sit Amet consectetur</div>
+        <div className="hero-text">
+          Pick up the challenge with Chess Masters
+        </div>
         <div className="hero-sub-text">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste,
-          doloremque consectetur distinctio odio a expedita sapiente.
+          Play and chat with your friends online. Compete with other players and
+          climb the ranking ladder. Customize your profile to your liking. Play
+          standard games and relax or turn the timer on and enjoy the challenge.
         </div>
         <HeroButton />
       </div>

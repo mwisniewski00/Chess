@@ -148,6 +148,7 @@ const handleGameMove = async (
   message: GameMoveMessage,
 ) => {
   const { from, to, promotion } = message;
+
   if (game.move(from, to, promotion)) {
     gameModel.fen = game.generateFen();
     await gameModel.save();
@@ -172,6 +173,11 @@ const handleGameWithTimer = async (
   message?: GameMoveMessage,
 ) => {
   const [currentPlayerTimer, opponentTimer] = getTimers(userId, gameModel);
+
+  if (!currentPlayerTimer || !opponentTimer) {
+    throw new Error("Timer not found");
+  }
+
   const isGameOver = updateTimers(currentPlayerTimer, opponentTimer);
   gameModel.markModified("whiteTimer");
   gameModel.markModified("blackTimer");

@@ -39,8 +39,6 @@ const updateRatingDeviation = async () => {
       await user.save();
       updatedCount++;
     }
-
-    console.log("Rating deviation updated for", updatedCount, "users");
   } catch (error) {
     console.error("Error updating rating deviation:", error);
   }

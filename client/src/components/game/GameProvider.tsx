@@ -25,7 +25,7 @@ interface GameProviderContext {
     from: string,
     to: string,
     promotion?: PromotionPossibility,
-  ) => Promise<void>;
+  ) => void;
   gameInstance: GameInstance;
   isFinished: boolean;
   setIsFinished: React.Dispatch<React.SetStateAction<boolean>>;
@@ -106,7 +106,6 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
         }
         setIsLoading(false);
       } catch (error) {
-        console.error(error);
         navigate("/lobby");
       }
     };
@@ -175,17 +174,13 @@ export const GameProvider = ({ children }: GameContextProviderProps) => {
     }
   }, [isLoading, socket]);
 
-  const sendMove = async (
+  const sendMove = (
     from: string,
     to: string,
     promotion: string = PromotionPossibility.QUEEN,
   ) => {
-    try {
-      if (!isFinished) {
-        await socket?.emit("move", { from, to, promotion });
-      }
-    } catch (err) {
-      console.error(err);
+    if (!isFinished) {
+      socket?.emit("move", { from, to, promotion });
     }
   };
 

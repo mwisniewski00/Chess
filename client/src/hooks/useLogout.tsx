@@ -7,13 +7,9 @@ const useLogout = () => {
 
   const logout = async () => {
     setAuth({});
-    try {
-      await axiosPrivate.delete("/users/logout", {
-        withCredentials: true,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await axiosPrivate.delete("/users/logout", {
+      withCredentials: true,
+    });
   };
 
   return logout;

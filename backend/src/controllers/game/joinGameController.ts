@@ -52,7 +52,11 @@ const joinGameController = {
         author: null,
       };
       game.chat.push(newMessage);
-      game.whiteTimer.running = Date.now();
+
+      if (game.whiteTimer) {
+        game.whiteTimer.running = Date.now();
+      }
+
       await Game.findByIdAndUpdate(gameId, game);
       io.emit(`player_connected`, {
         playerBlack: playerData,

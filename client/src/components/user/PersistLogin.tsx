@@ -10,13 +10,9 @@ const PersistLogin: React.FC = () => {
 
   useEffect(() => {
     const verifyRefreshToken = async () => {
-      try {
-        await refresh();
-      } catch (error) {
-        console.error(error);
-      } finally {
+      await refresh().then(() => {
         setIsLoading(false);
-      }
+      });
     };
 
     //only run when no user in state

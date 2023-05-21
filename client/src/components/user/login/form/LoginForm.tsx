@@ -47,7 +47,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         });
       }, 2000);
     } catch (error: any) {
-      console.error(error);
       if (error.response.status === 401) {
         setMessage({ ...message, rejected: "Invalid user data" });
         setStatus("rejected");
