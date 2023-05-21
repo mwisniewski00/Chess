@@ -1,7 +1,7 @@
 @import "variables.scss";
 
 .linkContainer {
-  @media (max-width: 768px) {
+  @media (max-width: 868px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,7 +22,7 @@
       color: white;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 868px) {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -47,7 +47,7 @@
     background-color: $main-theme-color;
     opacity: 0;
     transition: opacity 200ms;
-    @media (max-width: 768px) {
+    @media (max-width: 868px) {
       display: none;
     }
   }
@@ -62,7 +62,7 @@
     color: white;
     font-size: 1.1rem;
     font-weight: bold;
-    @media (max-width: 768px) {
+    @media (max-width: 868px) {
       font-size: 1.3rem;
       font-weight: normal;
       color: lightgray;

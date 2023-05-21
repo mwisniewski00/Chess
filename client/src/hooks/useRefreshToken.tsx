@@ -25,7 +25,6 @@ const useRefreshToken = () => {
         setAuth({});
         navigate("/home");
       }
-      console.error(error);
       return null;
     }
   };

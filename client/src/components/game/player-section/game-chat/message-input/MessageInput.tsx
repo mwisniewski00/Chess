@@ -17,13 +17,10 @@ const MessageInput: React.FC = () => {
   ) => {
     const message = values.message;
     if (message) {
-      try {
-        resetForm();
-        await axiosPrivate.post(`/games/${id}/message`, { message });
+      resetForm();
+      await axiosPrivate.post(`/games/${id}/message`, { message }).then(() => {
         setSubmitting(false);
-      } catch (error) {
-        console.error(error);
-      }
+      });
     } else {
       setSubmitting(false);
     }

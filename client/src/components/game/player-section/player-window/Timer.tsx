@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ITimer } from "types";
 import useSocketClient from "hooks/useSocketClient";
-import { useGameContext } from "./GameProvider";
+import { useGameContext } from "../../GameProvider";
+import "./Timer.scss";
 
 interface TimerProps {
   timer: ITimer;
@@ -20,7 +21,13 @@ function Timer({ timer }: TimerProps) {
   const { socket } = useSocketClient();
   const { isFinished } = useGameContext();
 
+  const intervalRef = useRef<NodeJS.Timer | null>(null);
+
   useEffect(() => {
+    if (isFinished) {
+      intervalRef.current && clearInterval(intervalRef.current);
+    }
+
     if (timeRemaining <= 0) {
       if (!isFinished) {
         socket?.emit("timer_end");
@@ -39,25 +46,25 @@ function Timer({ timer }: TimerProps) {
         1000,
       );
 
-    let intervalId = createInterval();
+    intervalRef.current = createInterval();
     let timestampBeforeTabHidden: number | null = null;
 
     const listener = () => {
       if (document.hidden) {
         timestampBeforeTabHidden = Date.now();
-        clearInterval(intervalId);
+        intervalRef.current && clearInterval(intervalRef.current);
       } else if (timestampBeforeTabHidden) {
         const passedTime = Date.now() - timestampBeforeTabHidden;
         setTimeRemaining(prev => (prev > 0 ? prev - passedTime : 0));
         timestampBeforeTabHidden = null;
-        intervalId = createInterval();
+        intervalRef.current = createInterval();
       }
     };
 
     document.addEventListener("visibilitychange", listener);
 
     return () => {
-      clearInterval(intervalId);
+      intervalRef.current && clearInterval(intervalRef.current);
       document.removeEventListener("visibilitychange", listener);
     };
   }, [timer]);
@@ -66,9 +73,9 @@ function Timer({ timer }: TimerProps) {
   const seconds = Math.floor((timeRemaining / 1000) % 60);
 
   return (
-    <div>
-      <h1>{`${minutes}:${Number(seconds) < 10 ? "0" : ""}${seconds}`}</h1>
-    </div>
+    <div className="timer">{`${minutes}:${
+      Number(seconds) < 10 ? "0" : ""
+    }${seconds}`}</div>
   );
 }
 
