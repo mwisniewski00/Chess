@@ -24,7 +24,7 @@ export const Login: React.FC = () => {
         <img src={logo_white} alt="logo" height={100}></img>
         <div className="login__title">Welcome back!</div>
         <div className="login__subtitle">
-          Lorem ipsum dolor, sit amet consectetur.
+          Step into the Chess Arena: Outsmart. Outmaneuver. Outplay.
         </div>
       </div>
       <StatusInfo status={status} message={message} componentName={"login"} />
