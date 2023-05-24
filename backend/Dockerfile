@@ -13,4 +13,5 @@ COPY package*.json ./
 RUN npm install --omit=dev
 COPY --from=builder ./api/build ./build
 EXPOSE 5000
-CMD ["npm", "start"]
+COPY start.sh start.sh
+CMD ["sh", "./start.sh"]

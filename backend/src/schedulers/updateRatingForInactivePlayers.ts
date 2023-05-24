@@ -5,10 +5,13 @@ import { Player } from "chessrating";
 import schedule from "node-schedule";
 
 mongoose
-  .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions)
+  .connect(
+    `mongodb+srv://${dbConfig.user}:${dbConfig.password}@chess.opemt6o.mongodb.net/?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    } as ConnectOptions,
+  )
   .then(response => {
     console.log(
       `Connected to MongoDB. Database name: "${response.connections[0].name}"`,
