@@ -77,11 +77,11 @@ export default function Chessboard({
     const root = document.documentElement;
     root.style.setProperty(
       "--chessfield-color-first",
-      game.color === "white" ? LIGHT_COLOR : DARK_COLOR,
+      game.color === "white" ? DARK_COLOR : LIGHT_COLOR,
     );
     root.style.setProperty(
       "--chessfield-color-second",
-      game.color === "white" ? DARK_COLOR : LIGHT_COLOR,
+      game.color === "white" ? LIGHT_COLOR : DARK_COLOR,
     );
   }, [game.color]);
 
